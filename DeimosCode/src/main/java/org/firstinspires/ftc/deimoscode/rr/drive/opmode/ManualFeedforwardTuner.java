@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.deimoscode.rr.drive.opmode;
 
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.MAX_ACCEL;
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.MAX_VEL;
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.kA;
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.kStatic;
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.kV;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.kA;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.kStatic;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.kV;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -20,7 +20,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.RobotLog;
 
-import org.firstinspires.ftc.phoboscode.rr.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.deimoscode.rr.drive.SampleMecanumDrive;
 
 import java.util.Objects;
 
@@ -33,7 +33,7 @@ import java.util.Objects;
  * you are using the Control Hub. Once you've successfully connected, start the program, and your
  * robot will begin moving forward and backward according to a motion profile. Your job is to graph
  * the velocity errors over time and adjust the feedforward coefficients. Once you've found a
- * satisfactory set of gains, add them to the appropriate fields in the DriveConstants.java file.
+ * satisfactory set of gains, add them to the appropriate fields in the driveConstants.java file.
  *
  * Pressing Y/Δ (Xbox/PS4) will pause the tuning process and enter driver override, allowing the
  * user to reset the position of the bot in the event that it drifts off the path.

@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.MovingStatistics;
 import com.qualcomm.robotcore.util.RobotLog;
 
-import org.firstinspires.ftc.phoboscode.rr.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.phoboscode.rr.drive.StandardTrackingWheelLocalizer;
+import org.firstinspires.ftc.deimoscode.rr.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.deimoscode.rr.drive.StandardTrackingWheelLocalizer;
 import org.firstinspires.ftc.robotcore.internal.system.Misc;
 
 /**

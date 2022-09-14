@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.MovingStatistics;
 
-import org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants;
-import org.firstinspires.ftc.phoboscode.rr.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants;
+import org.firstinspires.ftc.deimoscode.rr.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.robotcore.internal.system.Misc;
 
 /*

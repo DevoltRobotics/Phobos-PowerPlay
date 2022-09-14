@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants;
-import org.firstinspires.ftc.phoboscode.rr.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants;
+import org.firstinspires.ftc.deimoscode.rr.drive.SampleMecanumDrive;
 
 import java.util.Objects;
 

@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.deimoscode.rr.drive.opmode;
 
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.MAX_ACCEL;
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.MAX_VEL;
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.kV;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.MOTOR_VELO_PID;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.kV;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -19,7 +19,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.RobotLog;
 
-import org.firstinspires.ftc.phoboscode.rr.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.deimoscode.rr.drive.SampleMecanumDrive;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ import java.util.List;
  * connected, start the program, and your robot will begin moving forward and backward according to
  * a motion profile. Your job is to graph the velocity errors over time and adjust the PID
  * coefficients (note: the tuning variable will not appear until the op mode finishes initializing).
- * Once you've found a satisfactory set of gains, add them to the DriveConstants.java file under the
+ * Once you've found a satisfactory set of gains, add them to the driveConstants.java file under the
  * MOTOR_VELO_PID field.
  *
  * Recommended tuning process:

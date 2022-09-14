@@ -5,8 +5,8 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.phoboscode.rr.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.phoboscode.rr.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.deimoscode.rr.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.deimoscode.rr.trajectorysequence.TrajectorySequence;
 
 /*
  * Op mode for preliminary tuning of the follower PID coefficients (located in the drive base
@@ -40,6 +40,7 @@ public class FollowerPIDTuner extends LinearOpMode {
 
         while (!isStopRequested()) {
             TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
+
                     .forward(DISTANCE)
                     .turn(Math.toRadians(90))
                     .forward(DISTANCE)

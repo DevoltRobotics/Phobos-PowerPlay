@@ -1,13 +1,16 @@
 package org.firstinspires.ftc.deimoscode.rr.drive;
 
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.MAX_ACCEL;
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.MAX_ANG_ACCEL;
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.MAX_ANG_VEL;
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.MAX_VEL;
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.TRACK_WIDTH;
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.encoderTicksToInches;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.MAX_ANG_ACCEL;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.MAX_ANG_VEL;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.MOTOR_VELO_PID;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.TRACK_WIDTH;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.kV;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.kA;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.kStatic;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.MOTOR_VELO_PID;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.encoderTicksToInches;
 
 import androidx.annotation.NonNull;
 
@@ -35,10 +38,11 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
-import org.firstinspires.ftc.phoboscode.rr.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.phoboscode.rr.trajectorysequence.TrajectorySequenceBuilder;
-import org.firstinspires.ftc.phoboscode.rr.trajectorysequence.TrajectorySequenceRunner;
-import org.firstinspires.ftc.phoboscode.rr.util.LynxModuleUtil;
+import org.firstinspires.ftc.deimoscode.rr.trajectorysequence.TrajectorySequenceRunner;
+import org.firstinspires.ftc.deimoscode.rr.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.deimoscode.rr.trajectorysequence.TrajectorySequenceBuilder;
+import org.firstinspires.ftc.deimoscode.rr.util.LynxModuleUtil;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,6 +53,7 @@ import java.util.List;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
+    private static final boolean RUN_USING_ENCODER = true;
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
 
@@ -113,6 +118,8 @@ public class SampleMecanumDrive extends MecanumDrive {
         // For example, if +Y in this diagram faces downwards, you would use AxisDirection.NEG_Y.
         // BNO055IMUUtil.remapZAxis(imu, AxisDirection.NEG_Y);
 
+
+        //TODO CAMBIAR NOMBRE DE MOTORES !!!!
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
         leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
         rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");

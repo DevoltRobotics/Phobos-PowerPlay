@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.deimoscode.rr.drive.opmode;
 
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.MAX_RPM;
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.rpmToVelocity;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.MAX_RPM;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.deimoscode.rr.drive.DriveConstants.rpmToVelocity;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -13,9 +13,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.RobotLog;
 
-import org.firstinspires.ftc.phoboscode.rr.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.phoboscode.rr.util.LoggingUtil;
-import org.firstinspires.ftc.phoboscode.rr.util.RegressionUtil;
+import org.firstinspires.ftc.deimoscode.rr.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.deimoscode.rr.util.LoggingUtil;
+import org.firstinspires.ftc.deimoscode.rr.util.RegressionUtil;
 import org.firstinspires.ftc.robotcore.internal.system.Misc;
 
 import java.util.ArrayList;
