@@ -2,7 +2,7 @@ package org.firstinspires.ftc.deimoscode.rr.trajectorysequence;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 
-import org.firstinspires.ftc.phoboscode.rr.trajectorysequence.sequencesegment.SequenceSegment;
+import org.firstinspires.ftc.deimoscode.rr.trajectorysequence.sequencesegment.SequenceSegment;
 
 import java.util.Collections;
 import java.util.List;

@@ -16,11 +16,11 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryMarker;
 import com.acmerobotics.roadrunner.util.NanoClock;
 
-import org.firstinspires.ftc.phoboscode.rr.trajectorysequence.sequencesegment.SequenceSegment;
-import org.firstinspires.ftc.phoboscode.rr.trajectorysequence.sequencesegment.TrajectorySegment;
-import org.firstinspires.ftc.phoboscode.rr.trajectorysequence.sequencesegment.TurnSegment;
-import org.firstinspires.ftc.phoboscode.rr.trajectorysequence.sequencesegment.WaitSegment;
-import org.firstinspires.ftc.phoboscode.rr.util.DashboardUtil;
+import org.firstinspires.ftc.deimoscode.rr.trajectorysequence.sequencesegment.SequenceSegment;
+import org.firstinspires.ftc.deimoscode.rr.trajectorysequence.sequencesegment.TrajectorySegment;
+import org.firstinspires.ftc.deimoscode.rr.trajectorysequence.sequencesegment.TurnSegment;
+import org.firstinspires.ftc.deimoscode.rr.trajectorysequence.sequencesegment.WaitSegment;
+import org.firstinspires.ftc.deimoscode.rr.util.DashboardUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
