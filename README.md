@@ -79,6 +79,11 @@ The readme.md file located in the [/TeamCode/src/main/java/org/firstinspires/ftc
 * Deletes the deprecated `OpMode` method `resetStartTime()` (use `resetRuntime()` instead).
 * Deletes the protected `LinearOpMode.LinearOpModeHelper` class (which was not meant for use by Op Modes).
 * Removes I2C Device (Synchronous) config type (deprecated since 2018)
+  * Setting `pitchMode` to `PitchMode.WINDOWS` would break the coordinate conventions used by the driver.
+* Moves `OpModeManagerImpl` to the `com.qualcomm.robotcore.eventloop.opmode` package.
+  * This breaks third party libraries EasyOpenCV (version 1.5.1 and earlier) and FTC Dashboard (version 0.4.4 and earlier).
+* Deletes the deprecated `OpMode` method `resetStartTime()` (use `resetRuntime()` instead).
+* Deletes the protected `LinearOpMode.LinearOpModeHelper` class (which was not me
 
 ### Enhancements
 * Uncaught exceptions in Op Modes no longer require a Restart Robot
