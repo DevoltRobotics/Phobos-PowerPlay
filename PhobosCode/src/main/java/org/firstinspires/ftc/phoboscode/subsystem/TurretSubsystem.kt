@@ -31,6 +31,7 @@ object Turret {
     @JvmField var pid = PIDCoefficients()
 
     val ticksPerRev = 1120
-    val gearRatio = 24 / 119.0
+    val gearRatio = 119.0 / 32
+
     val ticksPerAngle = (ticksPerRev * gearRatio) / 360.0
 }

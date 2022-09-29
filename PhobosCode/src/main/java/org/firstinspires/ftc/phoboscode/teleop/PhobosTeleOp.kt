@@ -27,13 +27,16 @@ class PhobosTeleOp : PhobosOpMode() {
         })
 
         // turret positions
-        superGamepad2.scheduleOn(Button.DPAD_UP,
+        superGamepad2.scheduleOnPress(Button.DPAD_UP,
             TurretMoveToAngleCmd(0.0))
-        superGamepad2.scheduleOn(Button.DPAD_DOWN,
+
+        superGamepad2.scheduleOnPress(Button.DPAD_DOWN,
             TurretMoveToAngleCmd(180.0))
-        superGamepad2.scheduleOn(Button.DPAD_LEFT,
+
+        superGamepad2.scheduleOnPress(Button.DPAD_LEFT,
             TurretMoveToAngleCmd(90.0))
-        superGamepad2.scheduleOn(Button.DPAD_RIGHT,
+
+        superGamepad2.scheduleOnPress(Button.DPAD_RIGHT,
             TurretMoveToAngleCmd(-90.0))
 
         // telemetry
