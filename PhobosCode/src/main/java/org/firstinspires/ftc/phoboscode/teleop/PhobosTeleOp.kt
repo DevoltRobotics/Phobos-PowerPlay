@@ -30,9 +30,6 @@ class PhobosTeleOp : PhobosOpMode() {
         superGamepad2.scheduleOnPress(Button.DPAD_UP,
             TurretMoveToAngleCmd(0.0))
 
-        superGamepad2.scheduleOnPress(Button.DPAD_DOWN,
-            TurretMoveToAngleCmd(180.0))
-
         superGamepad2.scheduleOnPress(Button.DPAD_LEFT,
             TurretMoveToAngleCmd(90.0))
 
