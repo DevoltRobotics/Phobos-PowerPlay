@@ -6,21 +6,21 @@ import com.github.serivesmejia.deltacommander.subsystem
 import org.firstinspires.ftc.phoboscode.subsystem.Lift
 import org.firstinspires.ftc.phoboscode.subsystem.LiftSubsystem
 
-class LiftMoveToPosCmd(val position: Double) : DeltaCommand() {
+open class LiftMoveToPosCmd(val position: Double) : DeltaCommand() {
 
     val sub = require<LiftSubsystem>()
 
     override fun init() {
-        sub.leftController.reset()
-        sub.leftController.targetPosition = position
-
-        sub.rightController.reset()
-        sub.rightController.targetPosition = position
+        sub.controller.reset()
+        sub.controller.targetPosition = position
     }
 
     override fun run() {
-        sub.leftMotor.power = sub.leftController.update(sub.leftMotor.currentPosition.toDouble())
-        sub.rightMotor.power = sub.rightController.update(sub.rightMotor.currentPosition.toDouble())
+        sub.power = sub.controller.update(sub.leftMotor.currentPosition.toDouble())
     }
 
 }
+
+class LiftMoveToHighCmd : LiftMoveToPosCmd(Lift.highPos.toDouble())
+class LiftMoveToMidCmd : LiftMoveToPosCmd(Lift.midPos.toDouble())
+class LiftMoveToLowCmd : LiftMoveToPosCmd(Lift.lowPos.toDouble())

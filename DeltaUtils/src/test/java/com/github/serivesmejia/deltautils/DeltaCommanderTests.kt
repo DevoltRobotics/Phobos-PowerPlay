@@ -38,7 +38,7 @@ class DeltaCommanderTests {
             }
         }
 
-        override fun endCondition() = timer.seconds() >= 10
+        override fun isActive() = timer.seconds() >= 10
 
         override fun ending() {
             println("ending $index (${timer.seconds()}s)")

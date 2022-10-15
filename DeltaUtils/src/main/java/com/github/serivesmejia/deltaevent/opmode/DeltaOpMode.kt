@@ -2,7 +2,6 @@ package com.github.serivesmejia.deltaevent.opmode
 
 import com.github.serivesmejia.deltacommander.deltaScheduler
 import com.github.serivesmejia.deltacommander.reset
-import com.github.serivesmejia.deltadrive.hardware.DeltaHardware
 import com.github.serivesmejia.deltaevent.gamepad.SuperGamepad
 import com.github.serivesmejia.deltasimple.SimpleHardware
 import com.qualcomm.hardware.lynx.LynxModule
@@ -53,7 +52,7 @@ abstract class DeltaOpMode : LinearOpMode() {
                 module.clearBulkCache()
             }
 
-            update()
+            runUpdate()
 
             deltaScheduler.update()
 
@@ -69,7 +68,7 @@ abstract class DeltaOpMode : LinearOpMode() {
 
     open fun begin() { }
 
-    open fun update() {
+    open fun runUpdate() {
         isDefaultRun = true
     }
 

@@ -11,8 +11,7 @@ class LiftMoveCmd(val powerSupplier: () -> Double) : DeltaCommand() {
     constructor(power: Double) : this({power})
 
     override fun run() {
-        sub.leftMotor.power = powerSupplier()
-        sub.rightMotor.power = powerSupplier()
+        sub.power = powerSupplier()
     }
 
 }

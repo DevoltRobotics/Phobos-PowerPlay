@@ -41,7 +41,7 @@ abstract class DeltaCommand {
         }
     }
 
-    open fun endCondition() = true
+    open fun isActive() = true
 
     inline fun <reified S : DeltaSubsystem> require() = require(S::class)
 

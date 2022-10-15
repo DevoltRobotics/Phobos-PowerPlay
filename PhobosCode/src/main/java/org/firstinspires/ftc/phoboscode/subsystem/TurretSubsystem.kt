@@ -6,13 +6,19 @@ import com.acmerobotics.roadrunner.control.PIDFController
 import com.github.serivesmejia.deltacommander.DeltaSubsystem
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
+import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveCmd
+import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveToAngleCmd
+import kotlin.math.abs
 
 class TurretSubsystem(val motor: DcMotorEx) : DeltaSubsystem() {
 
     val controller = PIDFController(Turret.pid)
 
+    val isOnTarget get() = abs(controller.lastError) > 3 * Turret.ticksPerAngle
+
     init {
         motor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+        defaultCommand = TurretMoveToAngleCmd(0.0)
     }
 
     override fun loop() {
