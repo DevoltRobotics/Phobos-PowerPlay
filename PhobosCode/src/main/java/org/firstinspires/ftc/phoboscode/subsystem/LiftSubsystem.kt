@@ -4,16 +4,21 @@ import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.control.PIDCoefficients
 import com.acmerobotics.roadrunner.control.PIDFController
 import com.github.serivesmejia.deltacommander.DeltaSubsystem
-import com.qualcomm.robotcore.hardware.DcMotor
-import com.qualcomm.robotcore.hardware.DcMotorEx
-import com.qualcomm.robotcore.hardware.DcMotorSimple
-import com.qualcomm.robotcore.hardware.PIDFCoefficients
+import com.qualcomm.hardware.rev.RevTouchSensor
+import com.qualcomm.robotcore.hardware.*
 import org.firstinspires.ftc.phoboscode.command.lift.LiftMoveCmd
 
-class LiftSubsystem(val leftMotor: DcMotorEx, val rightMotor: DcMotorEx) : DeltaSubsystem() {
+class LiftSubsystem(val leftMotor: DcMotorEx, val rightMotor: DcMotorEx, val touchSensor: RevTouchSensor) : DeltaSubsystem() {
 
     val leftController = PIDFController(Lift.leftPID)
     val rightController = PIDFController(Lift.rightPID)
+
+    var power = 0.0
+        set(value) {
+            leftMotor.power = power
+            rightMotor.power = power
+            field = value
+        }
 
     init {
         leftMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
@@ -25,6 +30,7 @@ class LiftSubsystem(val leftMotor: DcMotorEx, val rightMotor: DcMotorEx) : Delta
     }
 
     override fun loop() {
+
     }
 
 }

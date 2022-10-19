@@ -11,8 +11,14 @@ class LiftMoveCmd(val powerSupplier: () -> Double) : DeltaCommand() {
     constructor(power: Double) : this({power})
 
     override fun run() {
-        sub.leftMotor.power = powerSupplier()
-        sub.rightMotor.power = powerSupplier()
+        val power = powerSupplier()
+
+        if(sub.touchSensor.isPressed && power < 0) {
+            sub.power = 0.0
+            return
+        }
+
+        sub.power = power
     }
 
 }

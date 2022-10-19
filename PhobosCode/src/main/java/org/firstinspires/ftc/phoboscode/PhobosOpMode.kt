@@ -20,7 +20,7 @@ abstract class PhobosOpMode : DeltaOpMode() {
 
         mecanumSub = MecanumSubsystem(hardware.drive)
         turretSubsystem = TurretSubsystem(hardware.turretMotor)
-        liftSubsystem = LiftSubsystem(hardware.sliderLeftMotor, hardware.sliderRightMotor)
+        liftSubsystem = LiftSubsystem(hardware.sliderLeftMotor, hardware.sliderRightMotor, hardware.sliderTouch)
 
         setup()
     }
