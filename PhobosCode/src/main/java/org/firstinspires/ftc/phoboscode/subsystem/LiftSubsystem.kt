@@ -8,16 +8,30 @@ import com.qualcomm.hardware.rev.RevTouchSensor
 import com.qualcomm.robotcore.hardware.*
 import org.firstinspires.ftc.phoboscode.command.lift.LiftMoveCmd
 
-class LiftSubsystem(val leftMotor: DcMotorEx, val rightMotor: DcMotorEx, val touchSensor: RevTouchSensor) : DeltaSubsystem() {
+class LiftSubsystem(
+        val leftMotor: DcMotorEx,
+        val rightMotor: DcMotorEx,
+        val topLimitSensor: RevTouchSensor,
+        val bottomLimitSensor: RevTouchSensor
+) : DeltaSubsystem() {
 
-    val leftController = PIDFController(Lift.leftPID)
-    val rightController = PIDFController(Lift.rightPID)
+    val controller = PIDFController(Lift.pid)
 
-    var power = 0.0
+    var power: Double
+        get() = leftMotor.power
         set(value) {
-            leftMotor.power = power
-            rightMotor.power = power
-            field = value
+            if(bottomLimitSensor.isPressed && value < 0) {
+                leftMotor.power = 0.0
+                rightMotor.power = 0.0
+                return
+            } else if(topLimitSensor.isPressed && value > 0) {
+                leftMotor.power = 0.0
+                rightMotor.power = 0.0
+                return
+            }
+
+            leftMotor.power = value
+            rightMotor.power = value
         }
 
     init {
@@ -26,7 +40,7 @@ class LiftSubsystem(val leftMotor: DcMotorEx, val rightMotor: DcMotorEx, val tou
 
         leftMotor.direction = DcMotorSimple.Direction.REVERSE
 
-        defaultCommand = LiftMoveCmd(0.1)
+        defaultCommand = LiftMoveCmd(0.2)
     }
 
     override fun loop() {
@@ -37,6 +51,9 @@ class LiftSubsystem(val leftMotor: DcMotorEx, val rightMotor: DcMotorEx, val tou
 
 @Config
 object Lift {
-    @JvmField var leftPID = PIDCoefficients()
-    @JvmField var rightPID = PIDCoefficients()
+    @JvmField var pid = PIDCoefficients()
+
+    @JvmField var highPos = 2400
+    @JvmField var midPos = 1000
+    @JvmField var lowPos = 400
 }

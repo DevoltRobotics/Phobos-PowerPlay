@@ -68,7 +68,7 @@ class DeltaScheduler internal constructor() {
                             if (!scheduledCommands[runningCmd]!!.interruptible) {
                                 return false
                             } else {
-                                if (!runningCmd.endCondition()) {
+                                if (!runningCmd.isActive()) {
                                     if (!runningCmd.endingCalled) {
                                         runningCmd.ending()
                                         runningCmd.endingCalled = true
@@ -164,7 +164,7 @@ class DeltaScheduler internal constructor() {
         queuedCommandsLoop@
         for(queuedCommand in commandScheduleQueue.toTypedArray()) {
             for(waitingCommand in queuedCommand.waitingCommands) {
-                if(!waitingCommand.endCondition() && !waitingCommand.finishRequested)
+                if(!waitingCommand.isActive() && !waitingCommand.finishRequested)
                     continue@queuedCommandsLoop
             }
 
@@ -178,7 +178,7 @@ class DeltaScheduler internal constructor() {
 
             for(evt in runEvents) { evt.run(cmd) } //execute the user events
 
-            if(cmd.endCondition() && cmd.finishRequested) { //end and remove the command if it's finished
+            if(cmd.isActive() && cmd.finishRequested) { //end and remove the command if it's finished
                 stop(cmd)
             }
         }

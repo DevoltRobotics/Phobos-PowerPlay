@@ -1,6 +1,7 @@
 package com.github.serivesmejia.deltacommander.dsl
 
 import com.github.serivesmejia.deltacommander.DeltaCommand
+import com.github.serivesmejia.deltacommander.DeltaSubsystem
 import com.github.serivesmejia.deltacommander.command.DeltaInstantCmd
 import com.github.serivesmejia.deltacommander.command.DeltaSequentialCmd
 import com.github.serivesmejia.deltacommander.command.DeltaWaitCmd
@@ -10,6 +11,8 @@ import com.github.serivesmejia.deltadrive.utils.task.Task
 class DeltaSequenceBuilder(private val block: DeltaSequenceBuilder.() -> Unit) {
 
     private val commands = mutableListOf<DeltaCommand>()
+
+    private val requirements = mutableListOf<DeltaSubsystem>()
 
     operator fun <T : DeltaCommand> T.unaryMinus(): T {
         commands.add(this)
@@ -29,6 +32,8 @@ class DeltaSequenceBuilder(private val block: DeltaSequenceBuilder.() -> Unit) {
 
     fun waitForSeconds(seconds: Double) = DeltaWaitCmd(seconds)
 
+    fun require(subsystem: DeltaSubsystem) = requirements.add(subsystem)
+
     inline fun <reified C: DeltaCommand> C.stopOn(noinline condition: C.() -> Boolean): DeltaCommand {
         val command = this
 
@@ -40,9 +45,11 @@ class DeltaSequenceBuilder(private val block: DeltaSequenceBuilder.() -> Unit) {
         return this
     }
 
-    fun build(): DeltaSequentialCmd {
+    protected fun build(): DeltaSequentialCmd {
         block()
-        return DeltaSequentialCmd(*commands.toTypedArray())
+        return DeltaSequentialCmd(*commands.toTypedArray()).apply {
+            require(*requirements.toTypedArray())
+        }
     }
 
 }

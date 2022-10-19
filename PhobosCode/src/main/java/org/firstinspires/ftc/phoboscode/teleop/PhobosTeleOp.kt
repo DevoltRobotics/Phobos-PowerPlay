@@ -4,7 +4,11 @@ import com.github.serivesmejia.deltacommander.command.DeltaRunCmd
 import com.github.serivesmejia.deltaevent.gamepad.button.Button
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.phoboscode.PhobosOpMode
+import org.firstinspires.ftc.phoboscode.command.intake.*
 import org.firstinspires.ftc.phoboscode.command.lift.LiftMoveCmd
+import org.firstinspires.ftc.phoboscode.command.lift.LiftMoveToHighCmd
+import org.firstinspires.ftc.phoboscode.command.lift.LiftMoveToLowCmd
+import org.firstinspires.ftc.phoboscode.command.lift.LiftMoveToMidCmd
 import org.firstinspires.ftc.phoboscode.command.mecanum.FieldCentricMecanumCmd
 import org.firstinspires.ftc.phoboscode.command.mecanum.RobotCentricMecanumCmd
 import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveCmd
@@ -14,17 +18,52 @@ import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveToAngleCmd
 class PhobosTeleOp : PhobosOpMode() {
 
     override fun setup() {
-        // START A
+        /* START A */
+
+        // MECANUM
         + RobotCentricMecanumCmd(gamepad1)
 
-        // START B
+        // INTAKE
+
+        superGamepad1.scheduleOn(Button.A,
+                IntakeWheelsAbsorbCmd(),
+                IntakeWheelsStopCmd()
+        )
+
+        superGamepad1.scheduleOn(Button.B,
+                IntakeWheelsReleaseCmd(),
+                IntakeWheelsStopCmd()
+        )
+
+        /* START B */
+
+        // LIFT
+
         + LiftMoveCmd { (-gamepad2.left_stick_y).toDouble() }
 
-        + TurretMoveCmd { (gamepad2.left_trigger - gamepad2.right_trigger).toDouble() * 0.8}
+        // lift positions
+        superGamepad2.scheduleOnPress(Button.Y,
+                LiftMoveToHighCmd()
+        )
+        superGamepad2.scheduleOnPress(Button.B,
+                LiftMoveToMidCmd()
+        )
+        superGamepad2.scheduleOnPress(Button.A,
+                LiftMoveToLowCmd()
+        )
 
-        superGamepad2.scheduleOnPress(Button.X, DeltaRunCmd {
-            turretSubsystem.reset()
-        })
+        // INTAKE
+
+        + IntakeArmPositionIncrementCmd { (-gamepad2.right_stick_y).toDouble() * 0.05 }
+
+        superGamepad2.toggleScheduleOn(Button.X,
+                IntakeTiltCmd(0.3),
+                IntakeZeroTiltCmd()
+        )
+
+        // TURRET
+
+        + TurretMoveCmd { (gamepad2.left_trigger - gamepad2.right_trigger).toDouble() * 0.8}
 
         // turret positions
         superGamepad2.scheduleOnPress(Button.DPAD_UP,
