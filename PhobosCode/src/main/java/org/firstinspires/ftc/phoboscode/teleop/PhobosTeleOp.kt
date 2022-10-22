@@ -39,7 +39,7 @@ class PhobosTeleOp : PhobosOpMode() {
 
         // LIFT
 
-        + LiftMoveCmd { (-gamepad2.left_stick_y).toDouble() }
+        liftSubsystem.defaultCommand = LiftMoveCmd { (-gamepad2.left_stick_y).toDouble() }
 
         // lift positions
         superGamepad2.scheduleOnPress(Button.Y,
@@ -79,6 +79,11 @@ class PhobosTeleOp : PhobosOpMode() {
         + DeltaRunCmd {
             telemetry.addData("turret pos", hardware.turretMotor.currentPosition)
             telemetry.addData("turret target", turretSubsystem.controller.targetPosition)
+
+            telemetry.addData("lift power", liftSubsystem.power)
+            telemetry.addData("lift top pressed", hardware.sliderTopLimitSensor.isPressed)
+            telemetry.addData("lift bottom pressed", hardware.sliderBottomLimitSensor.isPressed)
+
             telemetry.update()
         }
     }

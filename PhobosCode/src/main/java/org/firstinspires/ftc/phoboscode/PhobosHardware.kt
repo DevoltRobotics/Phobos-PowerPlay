@@ -28,7 +28,7 @@ class PhobosHardware : SimpleHardware() {
         // squeezing out extra degrees from gobilda servos
         (intakeArmServo as ServoImplEx).pwmRange = PwmControl.PwmRange(500.0, 2500.0)
 
-        (intakeLeftServo as ServoImplEx).pwmRange = PwmControl.PwmRange(500.0, 2500.0)
+        (intakeLeftServo as CRServoImplEx).pwmRange = PwmControl.PwmRange(500.0, 2500.0)
         (intakeRightServo as CRServoImplEx).pwmRange = PwmControl.PwmRange(500.0, 2500.0)
     }
 

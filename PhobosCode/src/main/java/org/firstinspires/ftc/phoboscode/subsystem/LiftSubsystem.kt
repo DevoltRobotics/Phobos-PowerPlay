@@ -7,6 +7,7 @@ import com.github.serivesmejia.deltacommander.DeltaSubsystem
 import com.qualcomm.hardware.rev.RevTouchSensor
 import com.qualcomm.robotcore.hardware.*
 import org.firstinspires.ftc.phoboscode.command.lift.LiftMoveCmd
+import kotlin.math.sign
 
 class LiftSubsystem(
         val leftMotor: DcMotorEx,
@@ -21,17 +22,17 @@ class LiftSubsystem(
         get() = leftMotor.power
         set(value) {
             if(bottomLimitSensor.isPressed && value < 0) {
-                leftMotor.power = 0.0
-                rightMotor.power = 0.0
+                leftMotor.power = Lift.F
+                rightMotor.power = Lift.F
                 return
             } else if(topLimitSensor.isPressed && value > 0) {
-                leftMotor.power = 0.0
-                rightMotor.power = 0.0
+                leftMotor.power = Lift.F
+                rightMotor.power = Lift.F
                 return
             }
 
-            leftMotor.power = value
-            rightMotor.power = value
+            leftMotor.power = value + (sign(value) * Lift.F)
+            rightMotor.power = value + (sign(value) * Lift.F)
         }
 
     init {
@@ -39,8 +40,6 @@ class LiftSubsystem(
         rightMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
 
         leftMotor.direction = DcMotorSimple.Direction.REVERSE
-
-        defaultCommand = LiftMoveCmd(0.2)
     }
 
     override fun loop() {
@@ -52,6 +51,8 @@ class LiftSubsystem(
 @Config
 object Lift {
     @JvmField var pid = PIDCoefficients()
+
+    @JvmField var F = 0.12
 
     @JvmField var highPos = 2400
     @JvmField var midPos = 1000
