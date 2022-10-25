@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.phoboscode.teleop
 
 import com.github.serivesmejia.deltacommander.command.DeltaRunCmd
+import com.github.serivesmejia.deltacommander.endRightAway
 import com.github.serivesmejia.deltaevent.gamepad.button.Button
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.phoboscode.PhobosOpMode
@@ -39,7 +40,7 @@ class PhobosTeleOp : PhobosOpMode() {
 
         // LIFT
 
-        + LiftMoveCmd { (-gamepad2.left_stick_y).toDouble() }
+        liftSubsystem.defaultCommand = LiftMoveCmd { (-gamepad2.left_stick_y).toDouble() }
 
         // lift positions
         superGamepad2.scheduleOnPress(Button.Y,
@@ -54,11 +55,11 @@ class PhobosTeleOp : PhobosOpMode() {
 
         // INTAKE
 
-        + IntakeArmPositionIncrementCmd { (-gamepad2.right_stick_y).toDouble() * 0.05 }
+        intakeArmSubsystem.defaultCommand = IntakeArmPositionIncrementCmd { (-gamepad2.right_stick_y).toDouble() * 0.005 }
 
         superGamepad2.toggleScheduleOn(Button.X,
-                IntakeTiltCmd(0.3),
-                IntakeZeroTiltCmd()
+                IntakeTiltCmd(0.7).endRightAway(),
+                IntakeZeroTiltCmd().endRightAway()
         )
 
         // TURRET
@@ -79,6 +80,11 @@ class PhobosTeleOp : PhobosOpMode() {
         + DeltaRunCmd {
             telemetry.addData("turret pos", hardware.turretMotor.currentPosition)
             telemetry.addData("turret target", turretSubsystem.controller.targetPosition)
+
+            telemetry.addData("lift power", liftSubsystem.power)
+            telemetry.addData("lift top pressed", hardware.sliderTopLimitSensor.isPressed)
+            telemetry.addData("lift bottom pressed", hardware.sliderBottomLimitSensor.isPressed)
+
             telemetry.update()
         }
     }

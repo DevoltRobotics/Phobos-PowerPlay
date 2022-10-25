@@ -45,7 +45,7 @@ class DeltaSequenceBuilder(private val block: DeltaSequenceBuilder.() -> Unit) {
         return this
     }
 
-    protected fun build(): DeltaSequentialCmd {
+    internal fun build(): DeltaSequentialCmd {
         block()
         return DeltaSequentialCmd(*commands.toTypedArray()).apply {
             require(*requirements.toTypedArray())

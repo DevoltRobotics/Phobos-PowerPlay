@@ -1,6 +1,7 @@
 package com.github.serivesmejia.deltacommander
 
 import com.github.serivesmejia.deltacommander.command.DeltaInstantCmd
+import com.github.serivesmejia.deltacommander.command.DeltaRunCmd
 import com.github.serivesmejia.deltacommander.command.DeltaWaitCmd
 import com.github.serivesmejia.deltacommander.command.DeltaWaitConditionCmd
 import com.github.serivesmejia.deltacommander.dsl.deltaSequence
@@ -113,6 +114,13 @@ fun <S : DeltaSubsystem> subsystem(clazz: KClass<S>): S {
     throw IllegalArgumentException("Unable to find subsystem ${clazz::class.java.name} in DeltaScheduler")
 }
 inline fun <reified S : DeltaSubsystem> subsystem() = subsystem(S::class)
+
+fun DeltaCommand.endRightAway() = deltaSequence {
+    - this@endRightAway.dontBlock()
+    - DeltaRunCmd {
+        this@endRightAway.requestFinish()
+    }
+}
 
 inline fun <reified C: DeltaCommand> C.stopOn(noinline condition: C.() -> Boolean): DeltaCommand {
     val command = this

@@ -1,11 +1,10 @@
 package org.firstinspires.ftc.phoboscode.command.intake
 
 import com.github.serivesmejia.deltacommander.DeltaCommand
-import com.github.serivesmejia.deltacommander.deltaScheduler
-import org.firstinspires.ftc.phoboscode.subsystem.IntakeSubsystem
+import org.firstinspires.ftc.phoboscode.subsystem.IntakeArmSubsystem
 
 open class IntakeArmPositionCmd(val position: Double) : DeltaCommand() {
-    val sub = require<IntakeSubsystem>()
+    val sub = require<IntakeArmSubsystem>()
 
     override fun run() {
         sub.armServo.position = position
@@ -15,7 +14,7 @@ open class IntakeArmPositionCmd(val position: Double) : DeltaCommand() {
 class IntakeArmPositionMiddleCmd : IntakeArmPositionCmd(0.5)
 
 class IntakeArmPositionIncrementCmd(val increment: () -> Double) : DeltaCommand() {
-    val sub = require<IntakeSubsystem>()
+    val sub = require<IntakeArmSubsystem>()
 
     constructor(increment: Double) : this({increment})
 
