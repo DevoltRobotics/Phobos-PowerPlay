@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.phoboscode.command.intake
 
 import com.github.serivesmejia.deltacommander.DeltaCommand
-import org.firstinspires.ftc.phoboscode.subsystem.IntakeSubsystem
+import org.firstinspires.ftc.phoboscode.subsystem.IntakeWheelsSubsystem
 
 open class IntakeWheelsMoveCmd(val power: Double) : DeltaCommand() {
-    val sub = require<IntakeSubsystem>()
+    val sub = require<IntakeWheelsSubsystem>()
 
     override fun run() {
         sub.leftServo.power = power
