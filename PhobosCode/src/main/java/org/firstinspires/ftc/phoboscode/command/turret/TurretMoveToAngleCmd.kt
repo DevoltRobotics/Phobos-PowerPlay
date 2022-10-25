@@ -7,6 +7,7 @@ import org.firstinspires.ftc.phoboscode.subsystem.TurretSubsystem
 class TurretMoveToAngleCmd(val angle: Double, val endOnTargetReached: Boolean = false) : DeltaCommand() {
 
     val sub = require<TurretSubsystem>()
+
     override fun init() {
         sub.controller.reset()
         sub.controller.targetPosition = Turret.ticksPerAngle * angle

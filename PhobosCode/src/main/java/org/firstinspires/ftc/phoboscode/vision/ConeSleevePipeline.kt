@@ -11,7 +11,7 @@ enum class SleevePattern { A, B, C }
 
 class ConeSleevePipeline : AprilTagDetectionPipeline() {
 
-    var lastPattern = SleevePattern.A
+    var lastPattern = SleevePattern.B
         private set
 
     override fun processFrame(input: Mat?): Mat {
@@ -35,6 +35,12 @@ class ConeSleevePipeline : AprilTagDetectionPipeline() {
 
         biggestDetection?.let {
             drawTextOutline(output, "Sleeve", it.corners[0], 12.0, 1.0)
+
+            lastPattern = when(it.id) {
+                1 -> SleevePattern.A
+                3 -> SleevePattern.C
+                else -> SleevePattern.B
+            }
         }
 
         return output

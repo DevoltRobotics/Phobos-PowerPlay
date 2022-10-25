@@ -22,12 +22,23 @@ fun main() {
 
                     waitSeconds(1.2)
 
-                    repeat(4) {
+                    repeat(3) {
                         lineToConstantHeading(Vector2d(-24.0, -11.5))
                         waitSeconds(1.2)
                         lineToConstantHeading(Vector2d(-54.0, -12.5))
                         waitSeconds(1.2)
                     }
+
+                    lineToConstantHeading(Vector2d(-24.0, -11.5))
+                    waitSeconds(1.2)
+
+                    val park = 1
+
+                    lineTo(Vector2d(-57.0, -11.5))
+
+                    //lineToSplineHeading(Pose2d(-35.0, -11.5, Math.toRadians(270.0)))
+
+                    //lineToSplineHeading(Pose2d(-12.0, -11.5, Math.toRadians(270.0)))
                 }.build()
             }
 

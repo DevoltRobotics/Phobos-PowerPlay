@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.phoboscode.auto
 
 import com.acmerobotics.dashboard.FtcDashboard
+import com.acmerobotics.roadrunner.geometry.Pose2d
 import org.firstinspires.ftc.phoboscode.PhobosOpMode
 import org.firstinspires.ftc.phoboscode.rr.trajectorysequence.TrajectorySequence
 import org.firstinspires.ftc.phoboscode.vision.ConeSleevePipeline
@@ -14,6 +15,8 @@ import org.openftc.easyopencv.OpenCvWebcam
 abstract class AutonomoBase(val useVision: Boolean = true) : PhobosOpMode() {
 
     val drive get() = hardware.drive
+
+    open val startPose = Pose2d()
 
     private var webcam: OpenCvWebcam? = null
     private val pipeline = ConeSleevePipeline()
@@ -44,6 +47,7 @@ abstract class AutonomoBase(val useVision: Boolean = true) : PhobosOpMode() {
     override fun begin() {
         webcam?.stopStreaming()
 
+        drive.poseEstimate = startPose
         drive.followTrajectorySequenceAsync(sequence(pipeline.lastPattern))
     }
 
