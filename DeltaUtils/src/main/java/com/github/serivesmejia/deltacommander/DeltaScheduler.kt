@@ -20,7 +20,7 @@ class DeltaScheduler internal constructor() {
     val commandsAmount get() = scheduledCommands.size
 
     //hashmap containing the required subsystems by specific commands
-    private val requirements: HashMap<DeltaSubsystem, MutableList<DeltaCommand>> = HashMap()
+    private val requirements = mutableMapOf<DeltaSubsystem, MutableList<DeltaCommand>>()
 
     //user events
     private val initEvents: ArrayList<DeltaSchedulerEvent> = ArrayList()
@@ -73,7 +73,7 @@ class DeltaScheduler internal constructor() {
                                         runningCmd.ending()
                                         runningCmd.endingCalled = true
                                     }
-                                    runningCmd.finishRequested = true
+                                    runningCmd.endRequested = true
 
                                     waitingCommands.add(runningCmd)
                                 }
@@ -91,7 +91,9 @@ class DeltaScheduler internal constructor() {
             //cancel all the commands that require a subsystem
             for(req in cmdReqs) {
                 if(requirements.containsKey(req)) {
-                    requirements[req]!!.forEach(this::stop)
+                    requirements[req]!!.onEach {
+                        end(it)
+                    }
                 }
             }
 
@@ -101,7 +103,7 @@ class DeltaScheduler internal constructor() {
     }
 
     private fun addCommand(cmd: DeltaCommand, isInterruptible: Boolean) {
-        cmd.finishRequested = false
+        cmd.endRequested = false
         cmd.endingCalled = false
         cmd.allowRequire = false
         cmd.hasRunOnce = false
@@ -164,7 +166,7 @@ class DeltaScheduler internal constructor() {
         queuedCommandsLoop@
         for(queuedCommand in commandScheduleQueue.toTypedArray()) {
             for(waitingCommand in queuedCommand.waitingCommands) {
-                if(!waitingCommand.isActive() && !waitingCommand.finishRequested)
+                if(!waitingCommand.isActive() && !waitingCommand.endRequested)
                     continue@queuedCommandsLoop
             }
 
@@ -178,8 +180,8 @@ class DeltaScheduler internal constructor() {
 
             for(evt in runEvents) { evt.run(cmd) } //execute the user events
 
-            if(cmd.isActive() && cmd.finishRequested) { //end and remove the command if it's finished
-                stop(cmd)
+            if((cmd.isActive() && cmd.endRequested)) { //end and remove the command if it's finished
+                end(cmd)
             }
         }
 
@@ -211,7 +213,7 @@ class DeltaScheduler internal constructor() {
             throw IllegalArgumentException("Default command \"${command.name}\" does not require its subsystem \"${subsystem.name}\"")
         }
 
-        if(command.finishRequested) {
+        if(command.endRequested) {
             throw IllegalArgumentException("Default command \"${command.name}\" is finished")
         }
 
@@ -233,7 +235,7 @@ class DeltaScheduler internal constructor() {
      * Stop one or more commands
      * @param cmds commands to be stopped
      */
-    fun stop(vararg cmds: DeltaCommand) {
+    fun end(vararg cmds: DeltaCommand) {
         for(cmd in cmds) {
             if(!scheduledCommands.containsKey(cmd)) continue
             if(!cmd.endingCalled) {
@@ -255,9 +257,9 @@ class DeltaScheduler internal constructor() {
     /**
      * Stop all the currently requested commands
      */
-    fun stopAll() {
+    fun endAll() {
         for((cmd, _) in scheduledCommands) {
-            stop(cmd)
+            end(cmd)
         }
     }
 

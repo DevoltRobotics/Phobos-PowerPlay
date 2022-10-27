@@ -6,7 +6,7 @@ class DeltaInstantCmd(private val callback: () -> Unit) : DeltaCommand() {
 
     override fun run() {
         callback()
-        requestFinish()
+        requestEnd()
     }
 
 }

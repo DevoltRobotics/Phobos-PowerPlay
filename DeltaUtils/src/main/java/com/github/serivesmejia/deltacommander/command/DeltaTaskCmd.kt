@@ -19,7 +19,7 @@ class DeltaTaskCmd<T>(
 
     override fun run() {
         task.run()
-        if(task.finished) requestFinish()
+        if(task.finished) requestEnd()
     }
 
     override fun end(interrupted: Boolean) {

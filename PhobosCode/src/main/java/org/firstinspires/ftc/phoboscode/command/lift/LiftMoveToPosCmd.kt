@@ -1,12 +1,10 @@
 package org.firstinspires.ftc.phoboscode.command.lift
 
-import com.acmerobotics.roadrunner.control.PIDFController
 import com.github.serivesmejia.deltacommander.DeltaCommand
-import com.github.serivesmejia.deltacommander.subsystem
 import org.firstinspires.ftc.phoboscode.subsystem.Lift
 import org.firstinspires.ftc.phoboscode.subsystem.LiftSubsystem
 
-open class LiftMoveToPosCmd(val position: Double) : DeltaCommand() {
+open class LiftMoveToPosCmd(val position: Double, val stopOnTarget: Boolean = false) : DeltaCommand() {
 
     val sub = require<LiftSubsystem>()
 
@@ -17,10 +15,19 @@ open class LiftMoveToPosCmd(val position: Double) : DeltaCommand() {
 
     override fun run() {
         sub.power = sub.controller.update(sub.leftMotor.currentPosition.toDouble())
+
+        if(stopOnTarget && !isActive()) {
+            requestEnd()
+        }
     }
 
+    override fun end(interrupted: Boolean) {
+        sub.power = 0.0
+    }
+
+    override fun isActive() = sub.controller.lastError < 10
 }
 
-class LiftMoveToHighCmd : LiftMoveToPosCmd(Lift.highPos.toDouble())
-class LiftMoveToMidCmd : LiftMoveToPosCmd(Lift.midPos.toDouble())
-class LiftMoveToLowCmd : LiftMoveToPosCmd(Lift.lowPos.toDouble())
+class LiftMoveToHighCmd(stopOnTarget: Boolean = true) : LiftMoveToPosCmd(Lift.highPos.toDouble(), stopOnTarget)
+class LiftMoveToMidCmd(stopOnTarget: Boolean = true) : LiftMoveToPosCmd(Lift.midPos.toDouble(), stopOnTarget)
+class LiftMoveToLowCmd(stopOnTarget: Boolean = true) : LiftMoveToPosCmd(Lift.lowPos.toDouble(), stopOnTarget)

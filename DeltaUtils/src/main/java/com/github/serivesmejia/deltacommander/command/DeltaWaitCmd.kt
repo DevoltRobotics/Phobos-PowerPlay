@@ -15,7 +15,7 @@ class DeltaWaitCmd(
 open class DeltaWaitConditionCmd(val condition: () -> Boolean): DeltaCommand() {
 
     override fun run() {
-        if(condition()) requestFinish()
+        if(condition()) requestEnd()
     }
 
 }

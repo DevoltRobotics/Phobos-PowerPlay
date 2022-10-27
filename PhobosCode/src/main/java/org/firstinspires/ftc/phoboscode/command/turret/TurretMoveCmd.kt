@@ -14,4 +14,8 @@ class TurretMoveCmd(val powerSupplier: () -> Double) : DeltaCommand() {
         sub.motor.power = powerSupplier()
     }
 
+    override fun end(interrupted: Boolean) {
+        sub.motor.power = 0.0
+    }
+
 }

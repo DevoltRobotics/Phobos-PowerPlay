@@ -57,7 +57,7 @@ abstract class DeltaSubsystem(addToScheduler: Boolean = true) {
         for(command in deltaScheduler.commands) {
             for(requirement in command.requirements) {
                 if(requirement == this && command != defaultCommand) {
-                    deltaScheduler.stop(command)
+                    deltaScheduler.end(command)
                 }
             }
         }
