@@ -17,8 +17,6 @@ class IntakeArmSubsystem(
 
     init {
         reset()
-
-        armServo.direction = Servo.Direction.REVERSE
     }
 
     override fun loop() {

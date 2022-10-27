@@ -58,7 +58,7 @@ class PhobosTeleOp : PhobosOpMode() {
         intakeArmSubsystem.defaultCommand = IntakeArmPositionIncrementCmd { (-gamepad2.right_stick_y).toDouble() * 0.005 }
 
         superGamepad2.toggleScheduleOn(Button.X,
-                IntakeTiltCmd(0.7).endRightAway(),
+                IntakeTiltCmd(0.3).endRightAway(),
                 IntakeZeroTiltCmd().endRightAway()
         )
 
