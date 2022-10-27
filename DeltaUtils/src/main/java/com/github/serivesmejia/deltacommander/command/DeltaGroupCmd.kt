@@ -50,7 +50,7 @@ open class DeltaGroupCmd(private val executionMode: ExecutionMode = ExecutionMod
                     if(currentCommand != null) currentCommandIndex++
 
                     if(currentCommandIndex >= commands.size) {
-                        requestFinish()
+                        requestEnd()
                         return
                     }
 
@@ -71,7 +71,7 @@ open class DeltaGroupCmd(private val executionMode: ExecutionMode = ExecutionMod
                 }
 
                 if(finishedCount >= commands.size) {
-                    requestFinish()
+                    requestEnd()
                 }
             }
         }
@@ -79,7 +79,7 @@ open class DeltaGroupCmd(private val executionMode: ExecutionMode = ExecutionMod
 
     override fun end(interrupted: Boolean) {
         for(cmd in commands) {
-            if(!cmd.finishRequested) cmd.end(interrupted)
+            if(!cmd.endRequested) cmd.end(interrupted)
         }
     }
 

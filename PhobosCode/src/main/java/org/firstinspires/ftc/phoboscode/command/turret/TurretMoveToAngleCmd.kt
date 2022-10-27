@@ -15,10 +15,17 @@ class TurretMoveToAngleCmd(val angle: Double, val endOnTargetReached: Boolean = 
 
     override fun run() {
         sub.motor.power = sub.controller.update(sub.motor.currentPosition.toDouble())
+
+        if(endOnTargetReached && !isActive()) {
+            requestEnd()
+        }
     }
 
-    override fun isActive() = if(endOnTargetReached) {
-        !sub.isOnTarget
-    } else true
+
+    override fun end(interrupted: Boolean) {
+        sub.motor.power = 0.0
+    }
+
+    override fun isActive() = !sub.isOnTarget
 
 }

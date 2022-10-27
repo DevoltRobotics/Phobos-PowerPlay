@@ -2,6 +2,7 @@ package org.firstinspires.ftc.phoboscode.teleop
 
 import com.github.serivesmejia.deltacommander.command.DeltaRunCmd
 import com.github.serivesmejia.deltacommander.endRightAway
+import com.github.serivesmejia.deltacommander.stopOn
 import com.github.serivesmejia.deltaevent.gamepad.button.Button
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.phoboscode.PhobosOpMode
@@ -45,17 +46,19 @@ class PhobosTeleOp : PhobosOpMode() {
         // lift positions
         superGamepad2.scheduleOnPress(Button.Y,
                 LiftMoveToHighCmd()
-        )
+        ) { !liftSubsystem.isBusy }
+
         superGamepad2.scheduleOnPress(Button.B,
                 LiftMoveToMidCmd()
-        )
+        ) { !liftSubsystem.isBusy }
+
         superGamepad2.scheduleOnPress(Button.A,
                 LiftMoveToLowCmd()
-        )
+        ) { !liftSubsystem.isBusy }
 
         // INTAKE
 
-        intakeArmSubsystem.defaultCommand = IntakeArmPositionIncrementCmd { (-gamepad2.right_stick_y).toDouble() * 0.005 }
+        intakeArmSubsystem.defaultCommand = IntakeArmPositionIncrementCmd { (-gamepad2.right_stick_y).toDouble() * 0.003 }
 
         superGamepad2.toggleScheduleOn(Button.X,
                 IntakeTiltCmd(0.3).endRightAway(),
@@ -68,18 +71,24 @@ class PhobosTeleOp : PhobosOpMode() {
 
         // turret positions
         superGamepad2.scheduleOnPress(Button.DPAD_UP,
-            TurretMoveToAngleCmd(0.0))
+            TurretMoveToAngleCmd(0.0)
+        )
 
         superGamepad2.scheduleOnPress(Button.DPAD_LEFT,
-            TurretMoveToAngleCmd(90.0))
+            TurretMoveToAngleCmd(90.0)
+        )
 
         superGamepad2.scheduleOnPress(Button.DPAD_RIGHT,
-            TurretMoveToAngleCmd(-90.0))
+            TurretMoveToAngleCmd(-90.0)
+        )
 
         // telemetry
         + DeltaRunCmd {
             telemetry.addData("turret pos", hardware.turretMotor.currentPosition)
             telemetry.addData("turret target", turretSubsystem.controller.targetPosition)
+
+            telemetry.addData("lift pos", hardware.sliderLeftMotor.currentPosition)
+            telemetry.addData("lift target", liftSubsystem.controller.targetPosition)
 
             telemetry.addData("lift power", liftSubsystem.power)
             telemetry.addData("lift top pressed", hardware.sliderTopLimitSensor.isPressed)

@@ -39,7 +39,7 @@ class DeltaSequenceBuilder(private val block: DeltaSequenceBuilder.() -> Unit) {
 
         - deltaSequence {
             - waitFor { command.hasRunOnce && condition(command) }
-            - DeltaInstantCmd(command::requestFinish)
+            - DeltaInstantCmd(command::requestEnd)
         }.dontBlock()
 
         return this

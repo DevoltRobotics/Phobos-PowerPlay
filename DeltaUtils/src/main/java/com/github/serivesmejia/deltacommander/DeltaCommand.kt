@@ -11,10 +11,10 @@ import kotlin.reflect.KClass
 
 abstract class DeltaCommand {
 
-    val name = this.javaClass.simpleName
+    open val name = this.javaClass.simpleName
     val requirements = mutableListOf<DeltaSubsystem>()
 
-    var finishRequested = false
+    var endRequested = false
         internal set
     internal var endingCalled = false
 
@@ -33,7 +33,7 @@ abstract class DeltaCommand {
 
     fun require(vararg reqs: DeltaSubsystem) {
         if(!allowRequire) {
-            throw IllegalStateException("Calling require() is not allowed on this point")
+            throw IllegalStateException("Calling require() is not allowed at this point")
         }
 
         reqs.forEach {
@@ -78,8 +78,8 @@ abstract class DeltaCommand {
         throw IllegalArgumentException("Unable to find subsystem $clazzName in DeltaScheduler")
     }
 
-    fun requestFinish() {
-        finishRequested = true
+    fun requestEnd() {
+        endRequested = true
     }
 
     fun schedule(isInterruptible: Boolean = true) = deltaScheduler.schedule(this, isInterruptible)
@@ -87,13 +87,13 @@ abstract class DeltaCommand {
     fun stopAfter(timeSecs: Double): DeltaCommand {
         + deltaSequence {
             - DeltaWaitCmd(timeSecs)
-            - DeltaInstantCmd(this@DeltaCommand::requestFinish)
+            - DeltaInstantCmd(this@DeltaCommand::requestEnd)
         }
 
         return this
     }
 
-    fun waitFor() = DeltaWaitConditionCmd(this::isScheduled)
+    fun await() = DeltaWaitConditionCmd(this::isScheduled)
 
     val isScheduled
         get() = deltaScheduler.commands.contains(this) || deltaScheduler.queuedCommands.contains(this)
@@ -118,7 +118,7 @@ inline fun <reified S : DeltaSubsystem> subsystem() = subsystem(S::class)
 fun DeltaCommand.endRightAway() = deltaSequence {
     - this@endRightAway.dontBlock()
     - DeltaRunCmd {
-        this@endRightAway.requestFinish()
+        this@endRightAway.requestEnd()
     }
 }
 
@@ -127,7 +127,7 @@ inline fun <reified C: DeltaCommand> C.stopOn(noinline condition: C.() -> Boolea
 
     + deltaSequence {
         - waitFor { command.hasRunOnce && condition(command) }
-        - DeltaInstantCmd(command::requestFinish)
+        - DeltaInstantCmd(command::requestEnd)
     }
 
     return this

@@ -122,10 +122,10 @@ class SuperGamepad (var gamepad: Gamepad) : Super {
 
                     if(toggleState) {
                         + toggleOnCmd
-                        toggleOffCmd.requestFinish()
+                        toggleOffCmd.requestEnd()
                     } else {
                         + toggleOffCmd
-                        toggleOnCmd.requestFinish()
+                        toggleOnCmd.requestEnd()
                     }
                 }
             }
