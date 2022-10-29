@@ -6,6 +6,7 @@ import com.github.serivesmejia.deltacommander.endRightAway
 import com.qualcomm.robotcore.hardware.CRServo
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.Servo
+import org.firstinspires.ftc.phoboscode.command.intake.IntakeArmAndTiltZeroCmd
 import org.firstinspires.ftc.phoboscode.command.intake.IntakeArmPositionMiddleCmd
 import org.firstinspires.ftc.phoboscode.command.intake.IntakeWheelsStopCmd
 import org.firstinspires.ftc.phoboscode.command.intake.IntakeZeroTiltCmd
@@ -16,17 +17,22 @@ class IntakeArmSubsystem(
 ) : DeltaSubsystem() {
 
     init {
-        reset()
+        armServo.direction = Servo.Direction.REVERSE
+
+        defaultCommand = IntakeArmAndTiltZeroCmd()
     }
 
     override fun loop() {
+        if(armServo.position >= 0.7) {
+            tiltServo.position = 0.9
+        } else if(tiltServo.position == 0.9) {
+            tiltServo.position = 0.5
+        }
     }
 
     fun reset() {
-        + deltaSequence {
-            - IntakeArmPositionMiddleCmd().endRightAway()
-            - IntakeZeroTiltCmd().endRightAway()
-        }
+        armServo.position = 0.5
+        tiltServo.position = 0.5
     }
 
 }

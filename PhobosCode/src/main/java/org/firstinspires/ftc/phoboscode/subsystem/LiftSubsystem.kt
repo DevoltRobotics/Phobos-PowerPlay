@@ -21,18 +21,20 @@ class LiftSubsystem(
     var power: Double
         get() = leftMotor.power
         set(value) {
-            if(bottomLimitSensor.isPressed && value < 0) {
-                leftMotor.power = Lift.F
-                rightMotor.power = Lift.F
-                return
-            } else if(topLimitSensor.isPressed && value > 0) {
-                leftMotor.power = Lift.F
-                rightMotor.power = Lift.F
-                return
+            var pow = value
+
+            if(pow < 0) {
+                if(bottomLimitSensor.isPressed) {
+                    pow = 0.0
+                } else {
+                    pow *= 0.7
+                }
+            } else if(topLimitSensor.isPressed && pow > 0) {
+                pow = 0.0
             }
 
-            leftMotor.power = value + (sign(value) * Lift.F)
-            rightMotor.power = value + (sign(value) * Lift.F)
+            leftMotor.power = pow + Lift.F
+            rightMotor.power = pow + Lift.F
         }
 
     init {
@@ -50,11 +52,11 @@ class LiftSubsystem(
 
 @Config
 object Lift {
-    @JvmField var pid = PIDCoefficients()
+    @JvmField var pid = PIDCoefficients(0.005, 0.0, 0.0)
 
-    @JvmField var F = 0.15
+    @JvmField var F = 0.08
 
-    @JvmField var highPos = 2400
+    @JvmField var highPos = 1200
     @JvmField var midPos = 1000
     @JvmField var lowPos = 400
 }

@@ -24,6 +24,8 @@ abstract class PhobosOpMode : DeltaOpMode() {
         intakeArmSubsystem = IntakeArmSubsystem(hardware.intakeArmServo, hardware.intakeTiltServo)
         intakeWheelsSubsystem = IntakeWheelsSubsystem(hardware.intakeLeftServo, hardware.intakeRightServo)
 
+        intakeArmSubsystem.reset()
+
         setup()
     }
 

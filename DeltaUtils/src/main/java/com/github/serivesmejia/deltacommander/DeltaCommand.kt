@@ -84,16 +84,21 @@ abstract class DeltaCommand {
 
     fun schedule(isInterruptible: Boolean = true) = deltaScheduler.schedule(this, isInterruptible)
 
-    fun stopAfter(timeSecs: Double): DeltaCommand {
-        + deltaSequence {
-            - DeltaWaitCmd(timeSecs)
-            - DeltaInstantCmd(this@DeltaCommand::requestEnd)
+    fun stopAfter(timeSecs: Double) = deltaSequence {
+        - this@DeltaCommand.dontBlock()
+        - DeltaWaitCmd(timeSecs)
+        - DeltaInstantCmd {
+            deltaScheduler.end(this@DeltaCommand)
         }
-
-        return this
     }
 
+
     fun await() = DeltaWaitConditionCmd(this::isScheduled)
+
+    fun then(callback: () -> Unit) = deltaSequence {
+        - this@DeltaCommand
+        - DeltaRunCmd(callback)
+    }
 
     val isScheduled
         get() = deltaScheduler.commands.contains(this) || deltaScheduler.queuedCommands.contains(this)

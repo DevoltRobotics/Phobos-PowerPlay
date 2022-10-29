@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.phoboscode.command.turret
 
 import com.github.serivesmejia.deltacommander.DeltaCommand
+import com.github.serivesmejia.deltacommander.deltaScheduler
 import org.firstinspires.ftc.phoboscode.subsystem.Turret
 import org.firstinspires.ftc.phoboscode.subsystem.TurretSubsystem
 
@@ -17,7 +18,7 @@ class TurretMoveToAngleCmd(val angle: Double, val endOnTargetReached: Boolean = 
         sub.motor.power = sub.controller.update(sub.motor.currentPosition.toDouble())
 
         if(endOnTargetReached && !isActive()) {
-            requestEnd()
+            deltaScheduler.end(this)
         }
     }
 

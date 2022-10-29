@@ -14,7 +14,7 @@ class TurretSubsystem(val motor: DcMotorEx) : DeltaSubsystem() {
 
     val controller = PIDFController(Turret.pid)
 
-    val isOnTarget get() = abs(controller.lastError) > 3 * Turret.ticksPerAngle
+    val isOnTarget get() = abs(controller.lastError) > 5 * Turret.ticksPerAngle
 
     init {
         motor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
