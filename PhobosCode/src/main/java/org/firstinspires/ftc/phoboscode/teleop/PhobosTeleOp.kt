@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.phoboscode.teleop
 
+import com.acmerobotics.roadrunner.geometry.Pose2d
+import com.github.serivesmejia.deltacommander.command.DeltaInstantCmd
 import com.github.serivesmejia.deltacommander.command.DeltaRunCmd
 import com.github.serivesmejia.deltacommander.deltaScheduler
+import com.github.serivesmejia.deltacommander.dsl.deltaSequence
 import com.github.serivesmejia.deltacommander.endRightAway
 import com.github.serivesmejia.deltacommander.stopOn
 import com.github.serivesmejia.deltaevent.gamepad.button.Button
@@ -26,18 +29,32 @@ class PhobosTeleOp : PhobosOpMode() {
         /* START A */
 
         // MECANUM
-        + RobotCentricMecanumCmd(gamepad1)
+        superGamepad1.scheduleOnPress(Button.DPAD_UP, DeltaInstantCmd {
+            hardware.drive.poseEstimate = Pose2d()
+        })
+
+        + FieldCentricMecanumCmd(gamepad1)
 
         // INTAKE
 
         superGamepad1.scheduleOn(Button.A,
                 IntakeWheelsAbsorbCmd(),
-                IntakeWheelsStopCmd()
+                IntakeWheelsHoldCmd()
         )
 
         superGamepad1.scheduleOn(Button.B,
                 IntakeWheelsReleaseCmd(),
-                IntakeWheelsStopCmd()
+                IntakeWheelsHoldCmd()
+        )
+
+        superGamepad1.scheduleOn(Button.RIGHT_BUMPER,
+            IntakeWheelsAbsorbCmd(),
+            IntakeWheelsHoldCmd()
+        )
+
+        superGamepad1.scheduleOn(Button.LEFT_BUMPER,
+            IntakeWheelsReleaseCmd(),
+            IntakeWheelsHoldCmd()
         )
 
         /* START B */
@@ -56,12 +73,17 @@ class PhobosTeleOp : PhobosOpMode() {
         )
 
         superGamepad2.scheduleOnPress(Button.A,
-                LiftMoveToLowCmd().stopAfter(3.0)
+            deltaSequence {
+               - LiftMoveToLowCmd().stopAfter(3.0).dontBlock()
+               - TurretMoveToAngleCmd(0.0, endOnTargetReached = true).dontBlock()
+               - IntakeZeroTiltCmd().endRightAway()
+               - IntakeArmPositionMiddleCmd().endRightAway()
+            }
         )
 
         // INTAKE
 
-        intakeArmSubsystem.defaultCommand = IntakeArmPositionIncrementCmd { (-gamepad2.right_stick_y).toDouble() * 0.003 }
+        intakeArmSubsystem.defaultCommand = IntakeArmPositionIncrementCmd { (-gamepad2.right_stick_y).toDouble() * 0.005 }
 
         superGamepad2.toggleScheduleOn(Button.B,
                 IntakeTiltCmd(0.7).endRightAway(),
@@ -102,8 +124,12 @@ class PhobosTeleOp : PhobosOpMode() {
             telemetry.addData("br", hardware.drive.rightRear.power)
             telemetry.addData("br pos", hardware.drive.rightRear.currentPosition)
 
-            val odoPos = (hardware.drive.localizer as StandardTrackingWheelLocalizer).getWheelPositions()
 
+            val localizer = (hardware.drive.localizer as StandardTrackingWheelLocalizer)
+            val odoPos = localizer.getWheelPositions()
+
+            telemetry.addData("leftEncoder pos", localizer.leftEncoder.currentPosition)
+            telemetry.addData("rightEncoder pos", localizer.rightEncoder.currentPosition)
             telemetry.addData("leftEncoder", odoPos[0])
             telemetry.addData("rightEncoder", odoPos[1])
 

@@ -17,7 +17,7 @@ class TurretMoveToAngleCmd(val angle: Double, val endOnTargetReached: Boolean = 
     override fun run() {
         sub.motor.power = sub.controller.update(sub.motor.currentPosition.toDouble())
 
-        if(endOnTargetReached && !isActive()) {
+        if(endOnTargetReached && !sub.isOnTarget) {
             deltaScheduler.end(this)
         }
     }
@@ -26,7 +26,5 @@ class TurretMoveToAngleCmd(val angle: Double, val endOnTargetReached: Boolean = 
     override fun end(interrupted: Boolean) {
         sub.motor.power = 0.0
     }
-
-    override fun isActive() = !sub.isOnTarget
 
 }

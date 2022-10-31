@@ -6,6 +6,7 @@ import com.github.serivesmejia.deltacommander.endRightAway
 import com.qualcomm.robotcore.hardware.CRServo
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.Servo
+import com.qualcomm.robotcore.util.Range
 import org.firstinspires.ftc.phoboscode.command.intake.IntakeArmAndTiltZeroCmd
 import org.firstinspires.ftc.phoboscode.command.intake.IntakeArmPositionMiddleCmd
 import org.firstinspires.ftc.phoboscode.command.intake.IntakeWheelsStopCmd
@@ -23,11 +24,13 @@ class IntakeArmSubsystem(
     }
 
     override fun loop() {
-        if(armServo.position >= 0.7) {
+        if(armServo.position >= 0.65) {
             tiltServo.position = 0.9
         } else if(tiltServo.position == 0.9) {
             tiltServo.position = 0.5
         }
+
+        armServo.position = Range.clip(armServo.position, 0.0, 0.7)
     }
 
     fun reset() {
