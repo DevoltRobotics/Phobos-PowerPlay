@@ -16,11 +16,7 @@ open class LiftMoveToPosCmd(val position: Double, val stopOnTarget: Boolean = fa
     }
 
     override fun run() {
-        sub.power = sub.controller.update(sub.leftMotor.currentPosition.toDouble())
-
-        if(stopOnTarget && sub.controller.lastError > 15) {
-            deltaScheduler.end(this)
-        }
+        sub.power = sub.controller.update(-sub.leftMotor.currentPosition.toDouble())
     }
 
     override fun end(interrupted: Boolean) {

@@ -48,6 +48,11 @@ class LiftSubsystem(
 
     }
 
+    fun reset() {
+        leftMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        leftMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+    }
+
 }
 
 @Config
@@ -56,7 +61,7 @@ object Lift {
 
     @JvmField var F = 0.08
 
-    @JvmField var highPos = 1200
-    @JvmField var midPos = 1000
-    @JvmField var lowPos = 400
+    @JvmField var highPos = 1900
+    @JvmField var midPos = 1700
+    @JvmField var lowPos = 1200
 }

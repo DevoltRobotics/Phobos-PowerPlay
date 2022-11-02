@@ -55,3 +55,7 @@ class DeltaSequenceBuilder(private val block: DeltaSequenceBuilder.() -> Unit) {
 }
 
 fun deltaSequence(block: DeltaSequenceBuilder.() -> Unit) = DeltaSequenceBuilder(block).build()
+
+fun deltaSequenceInstant(block: DeltaSequenceBuilder.() -> Unit) = DeltaInstantCmd {
+    + deltaSequence(block)
+}

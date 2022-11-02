@@ -11,6 +11,7 @@ open class IntakeArmPositionCmd(val position: Double) : DeltaCommand() {
     }
 }
 
+class IntakeArmPositionSaveCmd : IntakeArmPositionCmd(0.7)
 class IntakeArmPositionMiddleCmd : IntakeArmPositionCmd(0.5)
 
 class IntakeArmPositionIncrementCmd(val increment: () -> Double) : DeltaCommand() {

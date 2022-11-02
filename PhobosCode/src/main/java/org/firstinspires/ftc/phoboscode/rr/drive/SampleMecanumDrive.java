@@ -54,8 +54,8 @@ import static org.firstinspires.ftc.phoboscode.rr.drive.DriveConstants.kV;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(8, 1, 1);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(8, 1, 0);
 
     public static double LATERAL_MULTIPLIER = 1;
 
@@ -75,9 +75,13 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     private BNO055IMU imu;
     private VoltageSensor batteryVoltageSensor;
+    
+    public MecanumLocalizer mecanumLocalizer;
 
     public SampleMecanumDrive(HardwareMap hardwareMap) {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
+
+        mecanumLocalizer = (MecanumLocalizer) getLocalizer();
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
                 new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
@@ -210,6 +214,8 @@ public class SampleMecanumDrive extends MecanumDrive {
         updatePoseEstimate();
         DriveSignal signal = trajectorySequenceRunner.update(getPoseEstimate(), getPoseVelocity());
         if (signal != null) setDriveSignal(signal);
+
+        mecanumLocalizer.update();
     }
 
     public void waitForIdle() {
