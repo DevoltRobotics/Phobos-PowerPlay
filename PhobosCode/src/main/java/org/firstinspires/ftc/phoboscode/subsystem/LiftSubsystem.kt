@@ -27,7 +27,7 @@ class LiftSubsystem(
                 if(bottomLimitSensor.isPressed) {
                     pow = 0.0
                 } else {
-                    pow *= 0.7
+                    pow *= 0.4
                 }
             } else if(topLimitSensor.isPressed && pow > 0) {
                 pow = 0.0

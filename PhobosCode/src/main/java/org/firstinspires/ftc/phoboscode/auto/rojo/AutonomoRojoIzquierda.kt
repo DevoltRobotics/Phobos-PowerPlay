@@ -26,8 +26,8 @@ class AutonomoRojoIzquierda : AutonomoBase() {
 
         lineToConstantHeading(Vector2d(-35.0, -11.0))
 
+        UNSTABLE_addTemporalMarkerOffset(5.0) { + saveTurret() }
         splineToSplineHeading(Pose2d(-52.0, -11.0, Math.toRadians(180.0)), Math.toRadians(178.0))
-        //UNSTABLE_addTemporalMarkerOffset(0.0) { + saveTurret() }
 
         waitSeconds(2.0)
 
