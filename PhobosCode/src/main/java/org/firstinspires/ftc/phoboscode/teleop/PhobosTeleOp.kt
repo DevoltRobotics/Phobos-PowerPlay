@@ -162,7 +162,7 @@ class PhobosTeleOp : PhobosOpMode() {
             telemetry.addData("rightEncoder", odoPos[1])
 
             telemetry.addData("lift power", liftSubsystem.power)
-            telemetry.addData("lift top pressed", hardware.sliderTopLimitSensor.isPressed)
+            telemetry.addData("lift top red", liftSubsystem.lastTopRed)
             telemetry.addData("lift bottom pressed", hardware.sliderBottomLimitSensor.isPressed)
 
             telemetry.addData("arm", hardware.intakeArmServo.position)
