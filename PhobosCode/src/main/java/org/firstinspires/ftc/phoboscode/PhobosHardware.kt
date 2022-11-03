@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.phoboscode
 
 import com.github.serivesmejia.deltasimple.SimpleHardware
+import com.qualcomm.hardware.rev.RevColorSensorV3
 import com.qualcomm.hardware.rev.RevTouchSensor
 
 import com.qualcomm.robotcore.hardware.*
@@ -21,7 +22,7 @@ class PhobosHardware : SimpleHardware() {
     val sliderLeftMotor by hardware<DcMotorEx>("sl")
     val sliderRightMotor by hardware<DcMotorEx>("sr")
 
-    val sliderTopLimitSensor by hardware<RevTouchSensor>("st")
+    val sliderTopLimitSensor by hardware<RevColorSensorV3>("st")
     val sliderBottomLimitSensor by hardware<RevTouchSensor>("sb")
 
     override fun init() {
