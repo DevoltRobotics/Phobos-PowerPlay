@@ -46,6 +46,7 @@ abstract class AutonomoBase(val useVision: Boolean = true) : PhobosOpMode() {
 
     override fun begin() {
         liftSubsystem.reset()
+        turretSubsystem.reset()
 
         webcam?.stopStreaming()
 

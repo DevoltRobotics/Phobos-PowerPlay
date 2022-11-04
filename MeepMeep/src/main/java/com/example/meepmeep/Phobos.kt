@@ -16,11 +16,18 @@ fun main() {
             .setConstraints(60.0, 60.0, Math.toRadians(180.0), Math.toRadians(180.0), 17.5)
             .followTrajectorySequence { drive ->
                 drive.trajectorySequenceBuilder(Pose2d(-35.0, -58.0, Math.toRadians(90.0))).apply {
-                    lineToConstantHeading(Vector2d(-35.0, -23.0))
-                    waitSeconds(1.0)
-                    splineToSplineHeading(Pose2d(-52.0, -12.5, Math.toRadians(180.0)), Math.toRadians(178.0))
+                    lineToConstantHeading(Vector2d(-35.0, 8.0))
 
-                    waitSeconds(1.2)
+                    waitSeconds(3.0)
+
+                    //lineToConstantHeading(Vector2d(-35.0, -13.0))
+
+                    setReversed(true)
+                    lineToSplineHeading(Pose2d(-35.0, -6.0, Math.toRadians(180.0)))
+                    splineToConstantHeading(Vector2d(-52.0, -13.0), Math.toRadians(180.0))
+                    //turn(Math.toRadians(90.0))
+                    //lineToConstantHeading(Vector2d(-52.0, -13.0))
+                    setReversed(false)
 
                     repeat(3) {
                         lineToConstantHeading(Vector2d(-24.0, -11.5))

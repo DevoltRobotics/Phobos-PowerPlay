@@ -22,27 +22,31 @@ class AutonomoRojoIzquierda : AutonomoBase() {
             + IntakeArmPositionSaveCmd()
         }
         UNSTABLE_addTemporalMarkerOffset(1.0) { + prepareForPuttingCone(-90.0) }
-        lineToConstantHeading(Vector2d(-35.0, 7.8))
+        lineToConstantHeading(Vector2d(-34.5, 7.8))
 
-        UNSTABLE_addTemporalMarkerOffset(0.5) { + IntakeArmPositionMiddleCmd() }
-        UNSTABLE_addTemporalMarkerOffset(1.0) { + IntakeWheelsReleaseCmd() }
-        waitSeconds(3.0)
+        UNSTABLE_addTemporalMarkerOffset(0.8) { + IntakeArmPositionMiddleCmd() }
+        UNSTABLE_addTemporalMarkerOffset(1.8) { + IntakeWheelsReleaseCmd() }
+        waitSeconds(0.5)
+        lineToConstantHeading(Vector2d(-35.8, 7.8))
+        waitSeconds(1.0)
 
         UNSTABLE_addTemporalMarkerOffset(0.5) { + saveTurret() }
-        lineToConstantHeading(Vector2d(-35.0, -10.0))
 
-        splineToSplineHeading(Pose2d(-52.0, -11.0, Math.toRadians(180.0)), Math.toRadians(178.0))
+        setReversed(true)
+        lineToSplineHeading(Pose2d(-35.0, -8.0, Math.toRadians(180.0)))
+        splineToConstantHeading(Vector2d(-52.0, -10.0), Math.toRadians(180.0))
+        setReversed(false)
 
         waitSeconds(2.0)
 
         repeat(3) {
-            lineToConstantHeading(Vector2d(-24.0, -11.5))
+            lineToConstantHeading(Vector2d(-24.0, -10.0))
             waitSeconds(2.0)
-            lineToConstantHeading(Vector2d(-54.0, -12.5))
+            lineToConstantHeading(Vector2d(-54.0, -10.0))
             waitSeconds(2.0)
         }
 
-        lineToConstantHeading(Vector2d(-24.0, -11.5))
+        lineToConstantHeading(Vector2d(-24.0, -10.0))
         waitSeconds(2.0)
 
         when(sleevePattern) {
