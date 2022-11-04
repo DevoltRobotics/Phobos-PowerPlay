@@ -15,7 +15,7 @@ class TurretMoveToAngleCmd(val angle: Double, val endOnTargetReached: Boolean = 
     }
 
     override fun run() {
-        sub.motor.power = sub.controller.update(sub.motor.currentPosition.toDouble())
+        sub.motor.power = sub.controller.update(sub.motor.currentPosition.toDouble()) * 0.7
 
         if(endOnTargetReached && !sub.isOnTarget) {
             deltaScheduler.end(this)

@@ -18,15 +18,19 @@ class AutonomoRojoIzquierda : AutonomoBase() {
     override val startPose = Pose2d(-35.0, -58.0, Math.toRadians(90.0))
 
     override fun sequence(sleevePattern: SleevePattern) = drive.trajectorySequenceBuilder(startPose).apply {
-        UNSTABLE_addDisplacementMarkerOffset(0.0) { + prepareForPuttingCone(-90.0) }
-        lineToConstantHeading(Vector2d(-35.0, 1.0))
-        
-        UNSTABLE_addDisplacementMarkerOffset(0.0) { + putCone() }
-        waitSeconds(4.0)
+        UNSTABLE_addTemporalMarkerOffset(0.0) {
+            + IntakeArmPositionSaveCmd()
+        }
+        UNSTABLE_addTemporalMarkerOffset(1.0) { + prepareForPuttingCone(-90.0) }
+        lineToConstantHeading(Vector2d(-35.0, 7.8))
 
-        lineToConstantHeading(Vector2d(-35.0, -11.0))
+        UNSTABLE_addTemporalMarkerOffset(0.5) { + IntakeArmPositionMiddleCmd() }
+        UNSTABLE_addTemporalMarkerOffset(1.0) { + IntakeWheelsReleaseCmd() }
+        waitSeconds(3.0)
 
-        UNSTABLE_addTemporalMarkerOffset(5.0) { + saveTurret() }
+        UNSTABLE_addTemporalMarkerOffset(0.5) { + saveTurret() }
+        lineToConstantHeading(Vector2d(-35.0, -10.0))
+
         splineToSplineHeading(Pose2d(-52.0, -11.0, Math.toRadians(180.0)), Math.toRadians(178.0))
 
         waitSeconds(2.0)
@@ -57,10 +61,11 @@ class AutonomoRojoIzquierda : AutonomoBase() {
     }
 
     fun prepareForPuttingCone(turretAngle: Double) = deltaSequence {
-        - LiftMoveToHighCmd().dontBlock()
-        - IntakeArmPositionCmd(0.6).dontBlock()
+        - TurretMoveToAngleCmd(turretAngle).dontBlock()
 
-        - TurretMoveToAngleCmd(turretAngle)
+        - waitForSeconds(0.2)
+
+        - LiftMoveToHighCmd()
     }
 
     fun putCone() = deltaSequence {

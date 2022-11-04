@@ -38,6 +38,8 @@ class LiftSubsystem(
                 }
             } else if(lastTopRed >= 800 && pow > 0) {
                 pow = 0.0
+            } else {
+                pow *= 0.5
             }
 
             leftMotor.power = pow + Lift.F
@@ -64,11 +66,11 @@ class LiftSubsystem(
 
 @Config
 object Lift {
-    @JvmField var pid = PIDCoefficients(0.005, 0.0, 0.0)
+    @JvmField var pid = PIDCoefficients(0.003, 0.0, 0.0)
 
     @JvmField var F = 0.08
 
-    @JvmField var highPos = 1900
-    @JvmField var midPos = 1700
-    @JvmField var lowPos = 1200
+    @JvmField var highPos = 1600
+    @JvmField var midPos = 1100
+    @JvmField var lowPos = 780
 }
