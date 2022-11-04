@@ -40,13 +40,13 @@ class AutonomoRojoIzquierda : AutonomoBase() {
         waitSeconds(2.0)
 
         repeat(3) {
-            lineToConstantHeading(Vector2d(-24.0, -10.0))
+            lineToConstantHeading(Vector2d(-22.0, -10.0))
             waitSeconds(2.0)
             lineToConstantHeading(Vector2d(-54.0, -10.0))
             waitSeconds(2.0)
         }
 
-        lineToConstantHeading(Vector2d(-24.0, -10.0))
+        lineToConstantHeading(Vector2d(-22.0, -10.0))
         waitSeconds(2.0)
 
         when(sleevePattern) {
