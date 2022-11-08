@@ -26,14 +26,15 @@ class IntakeArmSubsystem(
     }
 
     override fun loop() {
-        if(armServo.position >= 0.65) {
+       if(armServo.position >= 0.65) {
             tiltServo.position = 0.9
             isTiltedForLimit = true
         } else if(isTiltedForLimit) {
             tiltServo.position = 0.5
+            isTiltedForLimit = false
         }
 
-        armServo.position = Range.clip(armServo.position, 0.0, 0.7)
+        armServo.position = Range.clip(armServo.position, 0.0, 0.8)
     }
 
     fun reset() {

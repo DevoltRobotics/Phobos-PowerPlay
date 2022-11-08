@@ -11,16 +11,58 @@ enum class SleevePattern { A, B, C }
 
 class ConeSleevePipeline : AprilTagDetectionPipeline() {
 
+    companion object {
+
+        val DECIMATION_HIGH = 3f
+        val DECIMATION_LOW = 2f
+        val THRESHOLD_HIGH_DECIMATION_RANGE_METERS = 1.0f
+        val THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4
+
+    }
+
+    private var numFramesWithoutDetection = 0
+
     var lastPattern = SleevePattern.B
         private set
 
     override fun processFrame(input: Mat?): Mat {
         val output = super.processFrame(input)
 
+        val detections = detectionsUpdate
+
+        // If there's been a new frame...
+        if(detections != null)
+        {
+            // If we don't see any tags
+            if(detections.size == 0)
+            {
+                numFramesWithoutDetection++;
+
+                // If we haven't seen a tag for a few frames, lower the decimation
+                // so we can hopefully pick one up if we're e.g. far back
+                if(numFramesWithoutDetection >= THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION)
+                {
+                    setDecimation(DECIMATION_LOW);
+                }
+            }
+            // We do see tags!
+            else
+            {
+                numFramesWithoutDetection = 0;
+
+                // If the target is within 1 meter, turn on high decimation to
+                // increase the frame rate
+                if(detections[0].pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS)
+                {
+                    setDecimation(DECIMATION_HIGH);
+                }
+            }
+        }
+
         var biggestDetection: AprilTagDetection? = null
         var biggestDist = 0.0
 
-        for(detection in latestDetections) {
+        for(detection in detections) {
             val cornerA = detection.corners[0].x
             val cornerB = detection.corners[1].x
             val dist = cornerB - cornerA

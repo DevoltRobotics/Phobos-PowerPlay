@@ -10,14 +10,12 @@ import com.github.serivesmejia.deltaevent.gamepad.button.Button
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.phoboscode.PhobosOpMode
 import org.firstinspires.ftc.phoboscode.command.intake.*
-import org.firstinspires.ftc.phoboscode.command.lift.LiftMoveCmd
-import org.firstinspires.ftc.phoboscode.command.lift.LiftMoveToHighCmd
-import org.firstinspires.ftc.phoboscode.command.lift.LiftMoveToMidCmd
-import org.firstinspires.ftc.phoboscode.command.lift.LiftMoveToPosCmd
+import org.firstinspires.ftc.phoboscode.command.lift.*
 import org.firstinspires.ftc.phoboscode.command.mecanum.FieldCentricMecanumCmd
 import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveCmd
 import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveToAngleCmd
 import org.firstinspires.ftc.phoboscode.rr.drive.StandardTrackingWheelLocalizer
+import kotlin.math.abs
 
 @TeleOp(name = "TeleOp")
 class PhobosTeleOp : PhobosOpMode() {
@@ -61,31 +59,41 @@ class PhobosTeleOp : PhobosOpMode() {
 
         // LIFT
 
-        liftSubsystem.defaultCommand = LiftMoveCmd { (-gamepad2.left_stick_y).toDouble() * 0.7 }
+        liftSubsystem.defaultCommand = LiftMoveCmd { (-gamepad2.left_stick_y).toDouble() * 0.9 }
 
-        + DeltaRunCmd {
-            if(gamepad2.left_stick_y < -0.3 || gamepad2.left_stick_y > 0.3) {
-                liftSubsystem.free()
-            }
-        }
+        superGamepad2.scheduleOnPress(Button.LEFT_STICK_Y, DeltaInstantCmd {
+            liftSubsystem.free()
+        })
 
         // lift positions
         superGamepad2.scheduleOnPress(Button.Y,
-                LiftMoveToHighCmd().stopAfter(3.0)
+            deltaSequenceInstant {
+                - IntakeArmPositionSaveCmd().endRightAway()
+                - waitForSeconds(0.5)
+                - LiftMoveToHighCmd()
+            }
         )
 
         superGamepad2.scheduleOnPress(Button.X,
-                LiftMoveToMidCmd().stopAfter(3.0)
+            deltaSequenceInstant {
+                - IntakeArmPositionSaveCmd().endRightAway()
+                - waitForSeconds(0.5)
+                - LiftMoveToMidCmd()
+            }
         )
 
 
         superGamepad2.scheduleOnPress(Button.A,
-            LiftMoveToPosCmd(0.0).stopAfter(3.0)
+            deltaSequenceInstant {
+                - IntakeArmPositionSaveCmd().endRightAway()
+                - waitForSeconds(0.5)
+                - LiftMoveDownCmd()
+            }
         )
 
         superGamepad2.scheduleOnPress(Button.DPAD_DOWN,
             deltaSequenceInstant {
-                - LiftMoveToPosCmd(0.0).dontBlock()
+                - LiftMoveDownCmd().dontBlock()
                 - TurretMoveToAngleCmd(0.0).dontBlock()
                 - IntakeZeroTiltCmd().endRightAway()
                 - IntakeArmPositionMiddleCmd().endRightAway()
@@ -105,11 +113,13 @@ class PhobosTeleOp : PhobosOpMode() {
 
         turretSubsystem.defaultCommand = TurretMoveCmd { (gamepad2.left_trigger - gamepad2.right_trigger).toDouble() * 0.7 }
 
-        + DeltaRunCmd {
-            if(gamepad2.right_trigger > 0.3 || gamepad2.left_trigger > 0.3) {
-                turretSubsystem.free()
-            }
-        }
+        superGamepad2.scheduleOnPress(Button.LEFT_TRIGGER, DeltaInstantCmd {
+            turretSubsystem.free()
+        })
+
+        superGamepad2.scheduleOnPress(Button.RIGHT_TRIGGER, DeltaInstantCmd {
+            turretSubsystem.free()
+        })
 
         // turret positions
         superGamepad2.scheduleOnPress(Button.DPAD_UP,
@@ -142,7 +152,7 @@ class PhobosTeleOp : PhobosOpMode() {
             telemetry.addData("turret target", turretSubsystem.controller.targetPosition)
 
             telemetry.addData("lift pos", hardware.sliderLeftMotor.currentPosition)
-            telemetry.addData("lift target", liftSubsystem.controller.targetPosition)
+            telemetry.addData("lift target", liftSubsystem.liftController.targetPosition)
 
             telemetry.addData("fl", hardware.drive.leftFront.power)
             telemetry.addData("fl pos", hardware.drive.leftFront.currentPosition)

@@ -22,12 +22,12 @@ fun main() {
 
                     //lineToConstantHeading(Vector2d(-35.0, -13.0))
 
+                    lineToSplineHeading(Pose2d(-35.0, -8.7, Math.toRadians(0.0)))
+
                     setReversed(true)
-                    lineToSplineHeading(Pose2d(-35.0, -6.0, Math.toRadians(180.0)))
-                    splineToConstantHeading(Vector2d(-52.0, -13.0), Math.toRadians(180.0))
-                    //turn(Math.toRadians(90.0))
-                    //lineToConstantHeading(Vector2d(-52.0, -13.0))
+                    splineToConstantHeading(Vector2d(-57.0, -8.9), Math.toRadians(180.0))
                     setReversed(false)
+                    waitSeconds(5000.0)
 
                     repeat(3) {
                         lineToConstantHeading(Vector2d(-24.0, -11.5))

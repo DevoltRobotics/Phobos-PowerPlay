@@ -297,6 +297,11 @@ public class SampleMecanumDrive extends MecanumDrive {
         rightFront.setPower(v3);
     }
 
+    public void relocalizeWithIMU() {
+        Pose2d poseEstimate = getPoseEstimate();
+        setPoseEstimate(new Pose2d(poseEstimate.getX(), poseEstimate.getY(), mecanumLocalizer.getPoseEstimate().getHeading()));
+    }
+
     @Override
     public double getRawExternalHeading() {
         return imu.getAngularOrientation().firstAngle;

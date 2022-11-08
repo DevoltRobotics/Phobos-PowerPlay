@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.phoboscode.command.lift
 
 import com.github.serivesmejia.deltacommander.DeltaCommand
-import com.github.serivesmejia.deltacommander.deltaScheduler
-import com.github.serivesmejia.deltacommander.dsl.deltaSequence
 import org.firstinspires.ftc.phoboscode.subsystem.Lift
 import org.firstinspires.ftc.phoboscode.subsystem.LiftSubsystem
 
@@ -10,13 +8,17 @@ open class LiftMoveToPosCmd(val position: Double, val stopOnTarget: Boolean = fa
 
     val sub = require<LiftSubsystem>()
 
+    var controller = sub.liftController
+
     override fun init() {
-        sub.controller.reset()
-        sub.controller.targetPosition = position
+        if(-sub.leftMotor.currentPosition + position < 0) controller = sub.downwardsController
+
+        controller.reset()
+        controller.targetPosition = position
     }
 
     override fun run() {
-        sub.power = sub.controller.update(-sub.leftMotor.currentPosition.toDouble())
+        sub.power = controller.update(-sub.leftMotor.currentPosition.toDouble())
     }
 
     override fun end(interrupted: Boolean) {

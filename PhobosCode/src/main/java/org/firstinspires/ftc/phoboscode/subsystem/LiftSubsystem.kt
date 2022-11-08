@@ -7,8 +7,6 @@ import com.github.serivesmejia.deltacommander.DeltaSubsystem
 import com.qualcomm.hardware.rev.RevColorSensorV3
 import com.qualcomm.hardware.rev.RevTouchSensor
 import com.qualcomm.robotcore.hardware.*
-import org.firstinspires.ftc.phoboscode.command.lift.LiftMoveCmd
-import kotlin.math.sign
 
 class LiftSubsystem(
         val leftMotor: DcMotorEx,
@@ -17,7 +15,8 @@ class LiftSubsystem(
         val bottomLimitSensor: RevTouchSensor
 ) : DeltaSubsystem() {
 
-    val controller = PIDFController(Lift.pid)
+    val liftController = PIDFController(Lift.liftPid)
+    val downwardsController = PIDFController(Lift.downwardsPid)
 
     var lastTopRed = 0
         private set
@@ -34,16 +33,17 @@ class LiftSubsystem(
                     pow = 0.0
                     reset()
                 } else {
-                    pow *= 0.4
+                    pow *= 0.1
                 }
             } else if(lastTopRed >= 800 && pow > 0) {
                 pow = 0.0
             } else {
-                pow *= 0.5
+                pow *= 0.8
+                pow += Lift.F
             }
 
-            leftMotor.power = pow + Lift.F
-            rightMotor.power = pow + Lift.F
+            leftMotor.power = pow
+            rightMotor.power = pow
         }
 
     init {
@@ -66,11 +66,13 @@ class LiftSubsystem(
 
 @Config
 object Lift {
-    @JvmField var pid = PIDCoefficients(0.003, 0.0, 0.0)
+    @JvmField var moveDownPower = -0.0003
+    @JvmField var liftPid = PIDCoefficients(0.002, 0.0005, 0.0003)
+    @JvmField var downwardsPid = PIDCoefficients(0.000000001, 0.0, 0.0)
 
     @JvmField var F = 0.08
 
-    @JvmField var highPos = 1600
+    @JvmField var highPos = 1450
     @JvmField var midPos = 1100
     @JvmField var lowPos = 780
 }

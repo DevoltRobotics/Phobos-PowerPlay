@@ -14,3 +14,4 @@ open class IntakeTiltCmd(val position: Double) : DeltaCommand() {
 }
 
 class IntakeZeroTiltCmd : IntakeTiltCmd(0.5)
+class IntakeSaveTiltCmd : IntakeTiltCmd(0.9)

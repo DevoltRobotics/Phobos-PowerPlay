@@ -23,11 +23,11 @@ abstract class AutonomoBase(val useVision: Boolean = true) : PhobosOpMode() {
 
     override fun setup() {
         if (useVision) {
-            val cameraMonitorViewId = hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)
-            webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName::class.java, "Webcam 1"), cameraMonitorViewId)
+            //val cameraMonitorViewId = hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)
+            //webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName::class.java, "Webcam 1"), cameraMonitorViewId)
 
             // OR...  Do Not Activate the Camera Monitor View
-            //webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
+            webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName::class.java,"Webcam 1"));
 
             webcam!!.setPipeline(pipeline)
 
@@ -44,14 +44,28 @@ abstract class AutonomoBase(val useVision: Boolean = true) : PhobosOpMode() {
         }
     }
 
+    override fun initializeUpdate() {
+        telemetry.addData("position", pipeline.lastPattern)
+        telemetry.update()
+    }
+
     override fun begin() {
         liftSubsystem.reset()
         turretSubsystem.reset()
 
-        webcam?.stopStreaming()
+        webcam?.closeCameraDeviceAsync {  }
 
         drive.poseEstimate = startPose
+        drive.mecanumLocalizer.poseEstimate = startPose
         drive.followTrajectorySequenceAsync(sequence(pipeline.lastPattern))
+    }
+
+    override fun runUpdate() {
+        super.runUpdate()
+
+        if(!drive.isBusy) {
+            requestOpModeStop()
+        }
     }
 
     abstract fun sequence(sleevePattern: SleevePattern): TrajectorySequence
