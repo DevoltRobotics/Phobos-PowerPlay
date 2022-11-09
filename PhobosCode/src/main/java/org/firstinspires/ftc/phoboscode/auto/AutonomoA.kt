@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.github.serivesmejia.deltacommander.dsl.deltaSequence
 import com.github.serivesmejia.deltacommander.endRightAway
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import org.firstinspires.ftc.phoboscode.Alliance
 import org.firstinspires.ftc.phoboscode.command.intake.*
 import org.firstinspires.ftc.phoboscode.command.lift.LiftMoveDownCmd
 import org.firstinspires.ftc.phoboscode.command.lift.LiftMoveToHighCmd
@@ -19,8 +20,9 @@ import org.firstinspires.ftc.phoboscode.vision.SleevePattern.*
 
 @Autonomous(name = "R - Full Izquierda", group = "rojo")
 abstract class AutonomoA(
+    alliance: Alliance,
     val cycles: Int = 2
-) : AutonomoBase() {
+) : AutonomoBase(alliance) {
 
     override val startPose = Pose2d(-35.0, -58.0, Math.toRadians(90.0))
 
@@ -30,7 +32,7 @@ abstract class AutonomoA(
         }
 
         // prepare for putting preload cone
-        UNSTABLE_addTemporalMarkerOffset(1.0) { + prepareForPuttingCone(-90.0) }
+        UNSTABLE_addTemporalMarkerOffset(0.8) { + prepareForPuttingCone(-90.0) }
         lineToConstantHeading(Vector2d(-35.0, 5.0))
 
         // put it
@@ -69,7 +71,7 @@ abstract class AutonomoA(
         UNSTABLE_addTemporalMarkerOffset(1.0) {
             + IntakeTiltCmd(0.5).endRightAway()
         }
-        lineToConstantHeading(Vector2d(-53.8, -9.2), SampleMecanumDrive.getVelocityConstraint(20.0, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(60.0))
+        lineToConstantHeading(Vector2d(-54.5, -9.2), SampleMecanumDrive.getVelocityConstraint(20.0, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(60.0))
         waitSeconds(1.5)
 
         repeat(cycles - 1) {
@@ -90,21 +92,21 @@ abstract class AutonomoA(
             UNSTABLE_addTemporalMarkerOffset(0.8) {
                 + IntakeTiltCmd(0.5).endRightAway()
             }
-            lineToConstantHeading(Vector2d(-53.8, -9.2), SampleMecanumDrive.getVelocityConstraint(20.0, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(60.0))
+            lineToConstantHeading(Vector2d(-54.5, -9.2), SampleMecanumDrive.getVelocityConstraint(20.0, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(60.0))
             waitSeconds(1.0)
         }
 
         putOnHigh()
 
-        lineToConstantHeading(Vector2d(-25.0, 5.0))
+        //lineToConstantHeading(Vector2d(-25.0, 5.0))
 
-        park(sleevePattern)
+        //park(sleevePattern)
     }.build()
 
     fun prepareForPuttingCone(turretAngle: Double, liftPos: Int = Lift.highPos) = deltaSequence {
         - TurretMoveToAngleCmd(turretAngle).dontBlock()
 
-        - waitForSeconds(0.6)
+        - waitForSeconds(0.1)
 
         - LiftMoveToPosCmd(liftPos.toDouble()).dontBlock()
     }
@@ -150,22 +152,22 @@ abstract class AutonomoA(
         UNSTABLE_addTemporalMarkerOffset(0.0) {
             + IntakeArmPositionSaveCmd()
         }
-        UNSTABLE_addTemporalMarkerOffset(1.0) {
+        UNSTABLE_addTemporalMarkerOffset(0.0) {
             + prepareForPuttingCone(-90.0, Lift.highPos + 40)
         }
-        lineToLinearHeading(Pose2d(-20.8, -12.0, Math.toRadians(180.0)))
+        lineToLinearHeading(Pose2d(-22.5, -12.0, Math.toRadians(180.0)))
 
-        UNSTABLE_addTemporalMarkerOffset(1.5) {
+        UNSTABLE_addTemporalMarkerOffset(0.5) {
             + IntakeArmPositionMiddleCmd()
         }
-        UNSTABLE_addTemporalMarkerOffset(1.8) {
+        UNSTABLE_addTemporalMarkerOffset(1.0) {
             + IntakeWheelsReleaseCmd()
         }
-        UNSTABLE_addTemporalMarkerOffset(2.3) {
+        UNSTABLE_addTemporalMarkerOffset(2.0) {
             + saveTurret(endingLiftPos)
             drive.relocalizeWithIMU()
         }
-        waitSeconds(2.5)
+        waitSeconds(2.0)
     }
 
 }

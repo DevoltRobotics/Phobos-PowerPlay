@@ -14,6 +14,8 @@ import org.firstinspires.ftc.phoboscode.command.lift.*
 import org.firstinspires.ftc.phoboscode.command.mecanum.FieldCentricMecanumCmd
 import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveCmd
 import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveToAngleCmd
+import org.firstinspires.ftc.phoboscode.lastKnownAlliance
+import org.firstinspires.ftc.phoboscode.lastKnownPose
 import org.firstinspires.ftc.phoboscode.rr.drive.StandardTrackingWheelLocalizer
 import kotlin.math.abs
 
@@ -21,6 +23,8 @@ import kotlin.math.abs
 class PhobosTeleOp : PhobosOpMode() {
 
     override fun setup() {
+        hardware.drive.poseEstimate = lastKnownPose.plus(Pose2d(0.0, 0.0, lastKnownAlliance.angleOffset))
+
         intakeArmSubsystem.reset()
         liftSubsystem.reset()
 

@@ -2,7 +2,10 @@ package org.firstinspires.ftc.phoboscode.auto
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.roadrunner.geometry.Pose2d
+import org.firstinspires.ftc.phoboscode.Alliance
 import org.firstinspires.ftc.phoboscode.PhobosOpMode
+import org.firstinspires.ftc.phoboscode.lastKnownAlliance
+import org.firstinspires.ftc.phoboscode.lastKnownPose
 import org.firstinspires.ftc.phoboscode.rr.trajectorysequence.TrajectorySequence
 import org.firstinspires.ftc.phoboscode.vision.ConeSleevePipeline
 import org.firstinspires.ftc.phoboscode.vision.SleevePattern
@@ -12,7 +15,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory
 import org.openftc.easyopencv.OpenCvCameraRotation
 import org.openftc.easyopencv.OpenCvWebcam
 
-abstract class AutonomoBase(val useVision: Boolean = true) : PhobosOpMode() {
+abstract class AutonomoBase(val alliance: Alliance, val useVision: Boolean = true) : PhobosOpMode() {
 
     val drive get() = hardware.drive
 
@@ -69,6 +72,9 @@ abstract class AutonomoBase(val useVision: Boolean = true) : PhobosOpMode() {
         if(!drive.isBusy) {
             requestOpModeStop()
         }
+
+        lastKnownAlliance = alliance
+        lastKnownPose = drive.poseEstimate
     }
 
     abstract fun sequence(sleevePattern: SleevePattern): TrajectorySequence
