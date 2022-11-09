@@ -63,6 +63,9 @@ abstract class AutonomoBase(val useVision: Boolean = true) : PhobosOpMode() {
     override fun runUpdate() {
         super.runUpdate()
 
+        telemetry.addData("lift target", liftSubsystem.liftController.targetPosition)
+        telemetry.update()
+
         if(!drive.isBusy) {
             requestOpModeStop()
         }
