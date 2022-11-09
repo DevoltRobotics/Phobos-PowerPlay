@@ -31,10 +31,8 @@ class LiftMoveDownCmd : DeltaCommand() {
 
     override fun run() {
         if(!sub.bottomLimitSensor.isPressed) {
-            val perc = Range.clip(1.2 - (timer.seconds() / 1.1), 0.0, 1.0)
-
-            sub.leftMotor.power = Lift.moveDownPower * perc
-            sub.rightMotor.power = Lift.moveDownPower * perc
+            sub.leftMotor.power = Lift.moveDownPower
+            sub.rightMotor.power = Lift.moveDownPower
         } else {
             sub.power = 0.0
         }
