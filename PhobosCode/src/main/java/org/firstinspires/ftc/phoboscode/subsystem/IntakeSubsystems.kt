@@ -34,7 +34,7 @@ class IntakeArmSubsystem(
             isTiltedForLimit = false
         }
 
-        armServo.position = Range.clip(armServo.position, 0.0, 0.8)
+        //armServo.position = Range.clip(armServo.position, 0.0, 0.8)
     }
 
     fun reset() {
