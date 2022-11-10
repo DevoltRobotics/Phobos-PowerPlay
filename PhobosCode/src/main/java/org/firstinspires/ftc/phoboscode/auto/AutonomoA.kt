@@ -49,7 +49,24 @@ abstract class AutonomoA(
 
         // just park here when we won`t be doing any cycles
         if(cycles == 0) {
-            park(sleevePattern)
+            when(sleevePattern) {
+                A -> {
+                    lineToSplineHeading(Pose2d(-35.0, -33.0, Math.toRadians(0.0)))
+
+                    setReversed(true)
+                    splineToConstantHeading(Vector2d(-58.0, -35.0), Math.toRadians(180.0))
+                    setReversed(false)
+                }
+                B -> {
+                    lineToLinearHeading(Pose2d(-35.0, -35.0, Math.toRadians(0.0)))
+                }
+                C -> {
+                    lineToSplineHeading(Pose2d(-35.0, -33.0, Math.toRadians(0.0)))
+                    lineToConstantHeading(Vector2d(-11.5, -35.0))
+
+                    turn(Math.toRadians(-90.0))
+                }
+            }
 
             return@apply
         }
@@ -98,9 +115,17 @@ abstract class AutonomoA(
 
         putOnHigh()
 
-        //lineToConstantHeading(Vector2d(-25.0, 5.0))
-
-        //park(sleevePattern)
+        when(sleevePattern) {
+            A -> {
+                lineToLinearHeading(Pose2d(-55.0, -12.0, Math.toRadians(180.0)))
+            }
+            B -> {
+                lineToLinearHeading(Pose2d(-35.0, -12.0, Math.toRadians(180.0)))
+            }
+            C -> { 
+                lineToLinearHeading(Pose2d(-12.0, -12.0, Math.toRadians(270.0)))
+            }
+        }
     }.build()
 
     fun prepareForPuttingCone(turretAngle: Double, liftPos: Int = Lift.highPos) = deltaSequence {
@@ -127,27 +152,6 @@ abstract class AutonomoA(
         - TurretMoveToAngleCmd(0.0)
     }
 
-    fun TrajectorySequenceBuilder.park(sleevePattern: SleevePattern) {
-        when(sleevePattern) {
-            A -> {
-                lineToSplineHeading(Pose2d(-35.0, -33.0, Math.toRadians(0.0)))
-
-                setReversed(true)
-                splineToConstantHeading(Vector2d(-58.0, -35.0), Math.toRadians(180.0))
-                setReversed(false)
-            }
-            B -> {
-                lineToLinearHeading(Pose2d(-35.0, -35.0, Math.toRadians(0.0)))
-            }
-            C -> {
-                lineToSplineHeading(Pose2d(-35.0, -33.0, Math.toRadians(0.0)))
-                lineToConstantHeading(Vector2d(-11.5, -35.0))
-
-                turn(Math.toRadians(-90.0))
-            }
-        }
-    }
-
     fun TrajectorySequenceBuilder.putOnHigh(endingLiftPos: Double? = null) {
         UNSTABLE_addTemporalMarkerOffset(0.0) {
             + IntakeArmPositionSaveCmd()
@@ -167,7 +171,7 @@ abstract class AutonomoA(
             + saveTurret(endingLiftPos)
             drive.relocalizeWithIMU()
         }
-        waitSeconds(2.0)
+        waitSeconds(1.5)
     }
 
 }
