@@ -86,7 +86,6 @@ class PhobosTeleOp : PhobosOpMode() {
             }
         )
 
-
         superGamepad2.scheduleOnPress(Button.A,
             deltaSequenceInstant {
                 - IntakeArmPositionSaveCmd().endRightAway()
