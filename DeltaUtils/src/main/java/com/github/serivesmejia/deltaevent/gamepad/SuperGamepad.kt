@@ -212,18 +212,18 @@ class SuperGamepad (var gamepad: Gamepad) : Super {
         if (gamepad.left_bumper) pressedButtons.add(Button.LEFT_BUMPER)
         if (gamepad.left_stick_button) pressedButtons.add(Button.LEFT_STICK_BUTTON)
         if (gamepad.right_stick_button) pressedButtons.add(Button.RIGHT_STICK_BUTTON)
-        if (gamepad.right_trigger > 0.2) pressedButtons.add(Button.RIGHT_TRIGGER)
-        if (gamepad.left_trigger > 0.2) pressedButtons.add(Button.LEFT_TRIGGER)
+        if (gamepad.right_trigger > 0.5) pressedButtons.add(Button.RIGHT_TRIGGER)
+        if (gamepad.left_trigger > 0.5) pressedButtons.add(Button.LEFT_TRIGGER)
 
-        if(gamepad.left_stick_y > 0.2) pressedButtons.add(Button.LEFT_STICK_Y)
-        if(gamepad.left_stick_y < -0.2) pressedButtons.add(Button.LEFT_STICK_Y)
-        if(gamepad.left_stick_x > 0.2) pressedButtons.add(Button.LEFT_STICK_X)
-        if(gamepad.left_stick_x < -0.2) pressedButtons.add(Button.LEFT_STICK_X)
+        if(gamepad.left_stick_y > 0.5) pressedButtons.add(Button.LEFT_STICK_Y)
+        if(gamepad.left_stick_y < -0.5) pressedButtons.add(Button.LEFT_STICK_Y)
+        if(gamepad.left_stick_x > 0.5) pressedButtons.add(Button.LEFT_STICK_X)
+        if(gamepad.left_stick_x < -0.5) pressedButtons.add(Button.LEFT_STICK_X)
 
-        if(gamepad.right_stick_y > 0.2) pressedButtons.add(Button.RIGHT_STICK_Y)
-        if(gamepad.right_stick_y < -0.2) pressedButtons.add(Button.RIGHT_STICK_Y)
-        if(gamepad.right_stick_x > 0.2) pressedButtons.add(Button.RIGHT_STICK_X)
-        if(gamepad.right_stick_x < -0.2) pressedButtons.add(Button.RIGHT_STICK_X)
+        if(gamepad.right_stick_y > 0.5) pressedButtons.add(Button.RIGHT_STICK_Y)
+        if(gamepad.right_stick_y < -0.5) pressedButtons.add(Button.RIGHT_STICK_Y)
+        if(gamepad.right_stick_x > 0.5) pressedButtons.add(Button.RIGHT_STICK_X)
+        if(gamepad.right_stick_x < -0.5) pressedButtons.add(Button.RIGHT_STICK_X)
     }
 
     private fun buttonIsPressed(btt: Button): Boolean {

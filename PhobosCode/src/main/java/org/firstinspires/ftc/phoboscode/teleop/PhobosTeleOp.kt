@@ -74,7 +74,7 @@ class PhobosTeleOp : PhobosOpMode() {
             deltaSequenceInstant {
                 - IntakeArmPositionSaveCmd().endRightAway()
                 - waitForSeconds(0.5)
-                - LiftMoveToHighCmd()
+                - LiftMoveToHighCmd().dontBlock()
             }
         )
 
@@ -82,7 +82,7 @@ class PhobosTeleOp : PhobosOpMode() {
             deltaSequenceInstant {
                 - IntakeArmPositionSaveCmd().endRightAway()
                 - waitForSeconds(0.5)
-                - LiftMoveToMidCmd()
+                - LiftMoveToMidCmd().dontBlock()
             }
         )
 
@@ -90,7 +90,7 @@ class PhobosTeleOp : PhobosOpMode() {
             deltaSequenceInstant {
                 - IntakeArmPositionSaveCmd().endRightAway()
                 - waitForSeconds(0.5)
-                - LiftMoveDownCmd()
+                - LiftMoveDownCmd().dontBlock()
             }
         )
 
@@ -105,7 +105,7 @@ class PhobosTeleOp : PhobosOpMode() {
 
         // INTAKE
 
-        intakeArmSubsystem.defaultCommand = IntakeArmPositionIncrementCmd { (-gamepad2.right_stick_y).toDouble() * 0.02 }
+        intakeArmSubsystem.defaultCommand = IntakeArmPositionIncrementCmd { (-gamepad2.right_stick_y).toDouble() * 0.015 }
 
         superGamepad2.toggleScheduleOn(Button.B,
                 IntakeTiltCmd(0.7).endRightAway(),
