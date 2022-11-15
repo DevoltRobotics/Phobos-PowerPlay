@@ -33,12 +33,12 @@ class LiftSubsystem(
                     pow = 0.0
                     reset()
                 } else {
-                    pow *= 0.1
+                    pow *= 0.2
                 }
             } else if(lastTopRed >= 800 && pow > 0) {
                 pow = 0.0
             } else {
-                pow *= 0.8
+                pow *= 0.9
                 pow += Lift.F
             }
 
@@ -72,7 +72,7 @@ object Lift {
 
     @JvmField var F = 0.08
 
-    @JvmField var highPos = 1410
+    @JvmField var highPos = 1350
     @JvmField var midPos = 1100
     @JvmField var lowPos = 780
 }

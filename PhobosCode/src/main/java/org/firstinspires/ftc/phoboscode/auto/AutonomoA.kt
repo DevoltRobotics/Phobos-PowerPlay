@@ -33,12 +33,12 @@ abstract class AutonomoA(
 
         // prepare for putting preload cone
         UNSTABLE_addTemporalMarkerOffset(0.8) { + prepareForPuttingCone(-90.0) }
-        lineToConstantHeading(Vector2d(-35.0, 5.0))
+        lineToConstantHeading(Vector2d(-35.0, 6.0))
 
         // put it
         UNSTABLE_addTemporalMarkerOffset(0.4) { + IntakeArmPositionMiddleCmd() }
         UNSTABLE_addTemporalMarkerOffset(0.9) { + IntakeWheelsReleaseCmd() }
-        lineToConstantHeading(Vector2d(-34.0, 5.0))
+        lineToConstantHeading(Vector2d(-40.0, 6.0))
         waitSeconds(1.2)
 
         UNSTABLE_addTemporalMarkerOffset(0.0) {
@@ -49,6 +49,7 @@ abstract class AutonomoA(
 
         // just park here when we won`t be doing any cycles
         if(cycles == 0) {
+            // park
             when(sleevePattern) {
                 A -> {
                     lineToSplineHeading(Pose2d(-35.0, -33.0, Math.toRadians(0.0)))
@@ -88,7 +89,7 @@ abstract class AutonomoA(
         UNSTABLE_addTemporalMarkerOffset(1.0) {
             + IntakeTiltCmd(0.5).endRightAway()
         }
-        lineToConstantHeading(Vector2d(-54.5, -9.2), SampleMecanumDrive.getVelocityConstraint(20.0, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(60.0))
+        lineToConstantHeading(Vector2d(-54.5, 6.0), SampleMecanumDrive.getVelocityConstraint(20.0, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(60.0))
         waitSeconds(1.5)
 
         repeat(cycles - 1) {
@@ -98,7 +99,7 @@ abstract class AutonomoA(
                 + IntakeWheelsAbsorbCmd()
             }
 
-            lineToLinearHeading(Pose2d(-53.0, -9.2, Math.toRadians(180.0)))
+            lineToLinearHeading(Pose2d(-37.0, -6.0, Math.toRadians(180.0)))
             UNSTABLE_addTemporalMarkerOffset(0.0) {
                 + deltaSequence {
                     - IntakeArmPositionCmd(0.35).dontBlock()
@@ -109,7 +110,7 @@ abstract class AutonomoA(
             UNSTABLE_addTemporalMarkerOffset(0.8) {
                 + IntakeTiltCmd(0.5).endRightAway()
             }
-            lineToConstantHeading(Vector2d(-54.5, -9.2), SampleMecanumDrive.getVelocityConstraint(20.0, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(60.0))
+            lineToConstantHeading(Vector2d(-36.5, -6.0), SampleMecanumDrive.getVelocityConstraint(20.0, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(60.0))
             waitSeconds(1.0)
         }
 
@@ -159,7 +160,7 @@ abstract class AutonomoA(
         UNSTABLE_addTemporalMarkerOffset(0.0) {
             + prepareForPuttingCone(-90.0, Lift.highPos + 40)
         }
-        lineToLinearHeading(Pose2d(-22.5, -12.0, Math.toRadians(180.0)))
+        lineToLinearHeading(Pose2d(-22.5, -10.0, Math.toRadians(180.0)))
 
         UNSTABLE_addTemporalMarkerOffset(0.5) {
             + IntakeArmPositionMiddleCmd()
@@ -171,7 +172,7 @@ abstract class AutonomoA(
             + saveTurret(endingLiftPos)
             drive.relocalizeWithIMU()
         }
-        waitSeconds(1.5)
+        waitSeconds(2.0)
     }
 
 }

@@ -63,7 +63,7 @@ class PhobosTeleOp : PhobosOpMode() {
 
         // LIFT
 
-        liftSubsystem.defaultCommand = LiftMoveCmd { (-gamepad2.left_stick_y).toDouble() * 0.9 }
+        liftSubsystem.defaultCommand = LiftMoveCmd { (-gamepad2.left_stick_y).toDouble()  }
 
         superGamepad2.scheduleOnPress(Button.LEFT_STICK_Y, DeltaInstantCmd {
             liftSubsystem.free()
@@ -105,7 +105,7 @@ class PhobosTeleOp : PhobosOpMode() {
 
         // INTAKE
 
-        intakeArmSubsystem.defaultCommand = IntakeArmPositionIncrementCmd { (-gamepad2.right_stick_y).toDouble() * 0.01 }
+        intakeArmSubsystem.defaultCommand = IntakeArmPositionIncrementCmd { (-gamepad2.right_stick_y).toDouble() * 0.02 }
 
         superGamepad2.toggleScheduleOn(Button.B,
                 IntakeTiltCmd(0.7).endRightAway(),
@@ -114,7 +114,7 @@ class PhobosTeleOp : PhobosOpMode() {
 
         // TURRET
 
-        turretSubsystem.defaultCommand = TurretMoveCmd { (gamepad2.left_trigger - gamepad2.right_trigger).toDouble() * 0.7 }
+        turretSubsystem.defaultCommand = TurretMoveCmd { (gamepad2.left_trigger - gamepad2.right_trigger).toDouble() * 0.65 }
 
         superGamepad2.scheduleOnPress(Button.LEFT_TRIGGER, DeltaInstantCmd {
             turretSubsystem.free()

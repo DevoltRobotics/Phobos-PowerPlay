@@ -32,7 +32,7 @@ abstract class AutonomoB(
         }
 
         // prepare for putting preload cone
-        UNSTABLE_addTemporalMarkerOffset(0.8) { + prepareForPuttingCone(-90.0) }
+        UNSTABLE_addTemporalMarkerOffset(0.8) { + prepareForPuttingCone(90.0) }
         lineToConstantHeading(Vector2d(35.0, 5.0))
 
         // put it
@@ -161,7 +161,7 @@ abstract class AutonomoB(
             + IntakeArmPositionSaveCmd()
         }
         UNSTABLE_addTemporalMarkerOffset(0.0) {
-            + prepareForPuttingCone(-90.0, Lift.highPos + 40)
+            + prepareForPuttingCone(90.0, Lift.highPos + 40)
         }
         lineToLinearHeading(Pose2d(22.5, -12.0, Math.toRadians(0.0)))
 
