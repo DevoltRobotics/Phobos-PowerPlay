@@ -65,31 +65,33 @@ class PhobosTeleOp : PhobosOpMode() {
 
         liftSubsystem.defaultCommand = LiftMoveCmd { (-gamepad2.left_stick_y).toDouble()  }
 
-        superGamepad2.scheduleOnPress(Button.LEFT_STICK_Y, DeltaInstantCmd {
-              //liftSubsystem.free()
-        })
+        + DeltaRunCmd {
+            if(abs(gamepad2.left_stick_y) > 0.5) {
+                liftSubsystem.free()
+            }
+        }
 
         // lift positions
         superGamepad2.scheduleOnPress(Button.Y,
             deltaSequenceInstant {
-                - IntakeArmPositionSaveCmd().endRightAway()
-                - waitForSeconds(0.5)
+                - IntakeArmPositionSaveCmd().endRightAway().dontBlock()
+                - waitForSeconds(0.2)
                 - LiftMoveToHighCmd().dontBlock()
             }
         )
 
         superGamepad2.scheduleOnPress(Button.X,
             deltaSequenceInstant {
-                - IntakeArmPositionSaveCmd().endRightAway()
-                - waitForSeconds(0.5)
+                - IntakeArmPositionSaveCmd().endRightAway().dontBlock()
+                - waitForSeconds(0.2)
                 - LiftMoveToMidCmd().dontBlock()
             }
         )
 
         superGamepad2.scheduleOnPress(Button.A,
             deltaSequenceInstant {
-                - IntakeArmPositionSaveCmd().endRightAway()
-                - waitForSeconds(0.5)
+                - IntakeArmPositionSaveCmd().endRightAway().dontBlock()
+                - waitForSeconds(0.2)
                 - LiftMoveDownCmd().dontBlock()
             }
         )
@@ -116,35 +118,33 @@ class PhobosTeleOp : PhobosOpMode() {
 
         turretSubsystem.defaultCommand = TurretMoveCmd { (gamepad2.left_trigger - gamepad2.right_trigger).toDouble() * 0.65 }
 
-        superGamepad2.scheduleOnPress(Button.LEFT_TRIGGER, DeltaInstantCmd {
-            turretSubsystem.free()
-        })
-
-        superGamepad2.scheduleOnPress(Button.RIGHT_TRIGGER, DeltaInstantCmd {
-            turretSubsystem.free()
-        })
+        + DeltaRunCmd {
+            if(gamepad2.left_trigger - gamepad2.right_trigger >= 0.5) {
+                turretSubsystem.free()
+            }
+        }
 
         // turret positions
         superGamepad2.scheduleOnPress(Button.DPAD_UP,
             deltaSequenceInstant {
-                - IntakeArmPositionSaveCmd().endRightAway()
-                - waitForSeconds(0.5)
+                - IntakeArmPositionSaveCmd().endRightAway().dontBlock()
+                - waitForSeconds(0.2)
                 - TurretMoveToAngleCmd(0.0).dontBlock()
             }
         )
 
         superGamepad2.scheduleOnPress(Button.DPAD_LEFT,
             deltaSequenceInstant {
-                - IntakeArmPositionSaveCmd().endRightAway()
-                - waitForSeconds(0.5)
+                - IntakeArmPositionSaveCmd().endRightAway().dontBlock()
+                - waitForSeconds(0.2)
                 - TurretMoveToAngleCmd(90.0).dontBlock()
             }
         )
 
         superGamepad2.scheduleOnPress(Button.DPAD_RIGHT,
             deltaSequenceInstant {
-                - IntakeArmPositionSaveCmd().endRightAway()
-                - waitForSeconds(0.5)
+                - IntakeArmPositionSaveCmd().endRightAway().dontBlock()
+                - waitForSeconds(0.2)
                 - TurretMoveToAngleCmd(-90.0).dontBlock()
             }
         )

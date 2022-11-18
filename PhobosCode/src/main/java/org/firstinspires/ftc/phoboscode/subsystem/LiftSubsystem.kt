@@ -72,7 +72,7 @@ object Lift {
 
     @JvmField var F = 0.08
 
-    @JvmField var highPos = 1350
+    @JvmField var highPos = 1400
     @JvmField var midPos = 1100
     @JvmField var lowPos = 780
 }
