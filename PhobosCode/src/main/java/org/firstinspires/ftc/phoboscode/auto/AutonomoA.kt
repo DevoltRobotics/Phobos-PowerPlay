@@ -32,18 +32,17 @@ abstract class AutonomoA(
         }
 
         // prepare for putting preload cone
-        UNSTABLE_addTemporalMarkerOffset(0.8) { + prepareForPuttingCone(-90.0) }
+        UNSTABLE_addTemporalMarkerOffset(2.0) { + prepareForPuttingCone(-90.0) }
         lineToConstantHeading(Vector2d(-35.0, 6.0))
 
         // put it
         UNSTABLE_addTemporalMarkerOffset(0.4) { + IntakeArmPositionMiddleCmd() }
         UNSTABLE_addTemporalMarkerOffset(0.9) { + IntakeWheelsReleaseCmd() }
-        lineToConstantHeading(Vector2d(-40.0, 6.0))
+        lineToConstantHeading(Vector2d(-39.0, 6.0))
         waitSeconds(1.2)
 
         UNSTABLE_addTemporalMarkerOffset(0.0) {
             + saveTurret(400.0)
-            drive.relocalizeWithIMU()
         }
         waitSeconds(0.9)
 
@@ -170,7 +169,6 @@ abstract class AutonomoA(
         }
         UNSTABLE_addTemporalMarkerOffset(2.0) {
             + saveTurret(endingLiftPos)
-            drive.relocalizeWithIMU()
         }
         waitSeconds(2.0)
     }

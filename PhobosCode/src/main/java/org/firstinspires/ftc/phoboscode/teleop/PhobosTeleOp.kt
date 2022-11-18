@@ -66,7 +66,7 @@ class PhobosTeleOp : PhobosOpMode() {
         liftSubsystem.defaultCommand = LiftMoveCmd { (-gamepad2.left_stick_y).toDouble()  }
 
         superGamepad2.scheduleOnPress(Button.LEFT_STICK_Y, DeltaInstantCmd {
-            liftSubsystem.free()
+              //liftSubsystem.free()
         })
 
         // lift positions
