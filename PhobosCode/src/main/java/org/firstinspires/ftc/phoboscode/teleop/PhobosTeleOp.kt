@@ -19,7 +19,7 @@ import org.firstinspires.ftc.phoboscode.lastKnownPose
 import org.firstinspires.ftc.phoboscode.rr.drive.StandardTrackingWheelLocalizer
 import kotlin.math.abs
 
-@TeleOp(name = "TeleOp")
+@TeleOp(name = "Nacho Libre")
 class PhobosTeleOp : PhobosOpMode() {
 
     override fun setup() {

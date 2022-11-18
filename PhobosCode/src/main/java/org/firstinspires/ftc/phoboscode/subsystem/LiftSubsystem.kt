@@ -67,12 +67,12 @@ class LiftSubsystem(
 @Config
 object Lift {
     @JvmField var moveDownPower = -0.0004
-    @JvmField var liftPid = PIDCoefficients(0.002, 0.0005, 0.0003)
+    @JvmField var liftPid = PIDCoefficients(0.0021, 0.0005, 0.0003)
     @JvmField var downwardsPid = PIDCoefficients(0.000000001, 0.0, 0.0)
 
     @JvmField var F = 0.08
 
-    @JvmField var highPos = 1400
+    @JvmField var highPos = 1450
     @JvmField var midPos = 1100
     @JvmField var lowPos = 780
 }
