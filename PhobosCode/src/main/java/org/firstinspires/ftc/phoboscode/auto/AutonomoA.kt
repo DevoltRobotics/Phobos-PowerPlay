@@ -41,7 +41,7 @@ abstract class AutonomoA(
         lineToConstantHeading(Vector2d(-40.0, 5.5))
         waitSeconds(1.2)
 
-        var liftHeight = 340.0
+        var liftHeight = 300.0
 
         UNSTABLE_addTemporalMarkerOffset(0.0) {
             + saveTurret(liftHeight)
@@ -73,21 +73,24 @@ abstract class AutonomoA(
             return@apply
         }
 
-        UNSTABLE_addTemporalMarkerOffset(1.4) {
+        UNSTABLE_addTemporalMarkerOffset(2.4) {
             + IntakeWheelsAbsorbCmd()
+
+            drive.relocalizeWithIMU()
         }
 
-        lineToSplineHeading(Pose2d(-35.0, -8.5, Math.toRadians(180.0)))
+        lineToConstantHeading(Vector2d(-35.0, -8.0))
+        turn(Math.toRadians(90.0), Math.toRadians(180.0), Math.toRadians(180.0))
 
         UNSTABLE_addTemporalMarkerOffset(0.5) {
             + deltaSequence {
-                - IntakeArmPositionCmd(0.5).dontBlock()
-                - waitForSeconds(0.1)
+                - IntakeArmPositionCmd(0.47).dontBlock()
+                - waitForSeconds(0.3)
                 - IntakeTiltCmd(0.52).dontBlock()
             }
         }
 
-        lineToLinearHeading(Pose2d(-57.0, -8.5, Math.toRadians(180.0)))
+        lineToLinearHeading(Pose2d(-59.0, -8.0, Math.toRadians(180.0)))
         waitSeconds(1.0)
 
         repeat(cycles - 1) {
@@ -99,31 +102,31 @@ abstract class AutonomoA(
                 + IntakeWheelsAbsorbCmd()
             }
 
-            UNSTABLE_addTemporalMarkerOffset(1.5) {
+            UNSTABLE_addTemporalMarkerOffset(1.8) {
                 + deltaSequence {
                     - IntakeArmPositionCmd(0.5).dontBlock()
-                    - waitForSeconds(0.1)
+                    - waitForSeconds(0.3)
                     - IntakeTiltCmd(0.52).dontBlock()
                 }
             }
 
-            lineToLinearHeading(Pose2d(-55.0, -7.8, Math.toRadians(180.0)))
+            lineToLinearHeading(Pose2d(-55.0, -8.0, Math.toRadians(180.0)))
 
-            lineToLinearHeading(Pose2d(-57.5, -7.8, Math.toRadians(180.0)), SampleMecanumDrive.getVelocityConstraint(20.0, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(60.0))
-            waitSeconds(1.0)
+            lineToLinearHeading(Pose2d(-59.0, -8.0, Math.toRadians(180.0)), SampleMecanumDrive.getVelocityConstraint(20.0, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(60.0))
+            waitSeconds(0.8)
         }
 
         putOnHigh()
 
         when(sleevePattern) {
             A -> {
-                lineToLinearHeading(Pose2d(-55.0, -12.0, Math.toRadians(180.0)))
+                lineToLinearHeading(Pose2d(-56.0, -10.0, Math.toRadians(180.0)))
             }
             B -> {
-                lineToLinearHeading(Pose2d(-35.0, -12.0, Math.toRadians(180.0)))
+                lineToLinearHeading(Pose2d(-35.0, -10.0, Math.toRadians(180.0)))
             }
             C -> { 
-                lineToLinearHeading(Pose2d(-12.0, -12.0, Math.toRadians(270.0)))
+                lineToLinearHeading(Pose2d(-12.0, -10.0, Math.toRadians(270.0)))
             }
         }
     }.build()
@@ -156,24 +159,25 @@ abstract class AutonomoA(
     fun TrajectorySequenceBuilder.putOnHigh(endingLiftPos: Double? = null) {
         UNSTABLE_addTemporalMarkerOffset(0.0) {
             + IntakeArmPositionSaveCmd()
+            + IntakeWheelsHoldCmd()
         }
         UNSTABLE_addTemporalMarkerOffset(0.5) {
             + prepareForPuttingCone(-90.0, Lift.highPos + 40)
         }
 
-        UNSTABLE_addTemporalMarkerOffset(2.5) {
+        UNSTABLE_addTemporalMarkerOffset(1.6) {
             + IntakeArmPositionMiddleCmd()
         }
-        lineToLinearHeading(Pose2d(-24.5, -7.5, Math.toRadians(180.0)))
+        lineToLinearHeading(Pose2d(-26.0, -8.4, Math.toRadians(180.0)))
 
-        UNSTABLE_addTemporalMarkerOffset(1.0) {
+        UNSTABLE_addTemporalMarkerOffset(0.9) {
             + IntakeWheelsReleaseCmd()
         }
-        UNSTABLE_addTemporalMarkerOffset(2.0) {
+        UNSTABLE_addTemporalMarkerOffset(1.4) {
             + saveTurret(endingLiftPos)
             drive.relocalizeWithIMU()
         }
-        waitSeconds(2.0)
+        waitSeconds(1.6)
     }
 
 }
