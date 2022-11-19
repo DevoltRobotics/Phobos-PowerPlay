@@ -34,7 +34,7 @@ abstract class AutonomoBase(val alliance: Alliance, val useVision: Boolean = tru
 
             webcam!!.setPipeline(pipeline)
 
-            webcam!!.setMillisecondsPermissionTimeout(2500) // Timeout for obtaining permission is configurable. Set before opening.
+            webcam!!.setMillisecondsPermissionTimeout(4000) // Timeout for obtaining permission is configurable. Set before opening.
 
             webcam!!.openCameraDeviceAsync(object : AsyncCameraOpenListener {
                 override fun onOpened() {
