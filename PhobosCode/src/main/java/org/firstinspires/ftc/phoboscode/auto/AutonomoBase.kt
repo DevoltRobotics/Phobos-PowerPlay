@@ -67,6 +67,7 @@ abstract class AutonomoBase(val alliance: Alliance, val useVision: Boolean = tru
         super.runUpdate()
 
         telemetry.addData("lift target", liftSubsystem.liftController.targetPosition)
+        telemetry.addData("lift current", liftSubsystem.leftMotor.currentPosition)
         telemetry.update()
 
         if(!drive.isBusy) {
