@@ -31,7 +31,6 @@ class LiftSubsystem(
             if(pow < 0) {
                 if(bottomLimitSensor.isPressed) {
                     pow = 0.0
-                    reset()
                 } else {
                     pow *= 0.2
                 }
@@ -72,7 +71,7 @@ object Lift {
 
     @JvmField var F = 0.08
 
-    @JvmField var highPos = 1450
+    @JvmField var highPos = 1400
     @JvmField var midPos = 1100
     @JvmField var lowPos = 780
 }
