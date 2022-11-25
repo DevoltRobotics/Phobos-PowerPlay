@@ -28,8 +28,9 @@ fun main() {
 
                     waitSeconds(0.9)
 
-                    splineToSplineHeading(Pose2d(-35.0, -7.6, Math.toRadians(90.0)), Math.toRadians(0.0))
-                    splineTo(Vector2d(-50.0, -7.6), Math.toRadians(90.0))
+                    lineToConstantHeading(Vector2d(-35.5, -6.8))
+                    splineToConstantHeading(Vector2d(-59.5, -8.6), Math.toRadians(300.0))
+                    //splineTo(Vector2d(-50.0, -7.6), Math.toRadians(90.0))
                 }.build()
             }
 

@@ -40,7 +40,7 @@ abstract class AutonomoA(
         lineToConstantHeading(Vector2d(-38.5, 6.0))
         waitSeconds(1.2)
 
-        var liftHeight = 380.0
+        var liftHeight = 390.0
 
         UNSTABLE_addTemporalMarkerOffset(0.0) {
             + IntakeArmPositionSaveCmd()
@@ -86,9 +86,9 @@ abstract class AutonomoA(
             drive.relocalizeWithIMU()
         }
 
-        lineToConstantHeading(Vector2d(-35.0, -7.6))
+        lineToSplineHeading(Pose2d(-35.5, -7.6, Math.toRadians(90.0)))
 
-        UNSTABLE_addTemporalMarkerOffset(0.3) {
+        UNSTABLE_addTemporalMarkerOffset(0.6) {
             + deltaSequence {
                 - IntakeArmPositionCmd(0.47).dontBlock()
                 - waitForSeconds(0.3)
@@ -96,7 +96,7 @@ abstract class AutonomoA(
             }
         }
 
-        lineToLinearHeading(Pose2d(-57.8, -7.7, Math.toRadians(90.0)))
+        lineToSplineHeading(Pose2d(-58.5, -7.6, Math.toRadians(90.0)))
         waitSeconds(1.0)
 
         repeat(cycles - 1) {
@@ -118,7 +118,7 @@ abstract class AutonomoA(
                 }
             }
 
-            lineToLinearHeading(Pose2d(-57.5, -7.7, Math.toRadians(90.0)), SampleMecanumDrive.getVelocityConstraint(20.0, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(60.0))
+            lineToLinearHeading(Pose2d(-59.5, -7.6, Math.toRadians(90.0)), SampleMecanumDrive.getVelocityConstraint(20.0, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(60.0))
             waitSeconds(0.8)
         }
 
@@ -158,7 +158,7 @@ abstract class AutonomoA(
         }
 
         UNSTABLE_addTemporalMarkerOffset(1.8) {
-            + IntakeArmPositionCmd(0.6)
+            + IntakeArmPositionCmd(0.57)
         }
         lineToLinearHeading(Pose2d(-25.5, -7.9, Math.toRadians(90.0)))
 
