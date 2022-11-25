@@ -18,7 +18,6 @@ class TurretSubsystem(val motor: DcMotorEx) : DeltaSubsystem() {
 
     init {
         motor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        defaultCommand = TurretMoveToAngleCmd(0.0)
     }
 
     override fun loop() {

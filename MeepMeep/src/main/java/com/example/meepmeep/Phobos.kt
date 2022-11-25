@@ -20,36 +20,16 @@ fun main() {
             .setConstraints(60.0, 60.0, Math.toRadians(180.0), Math.toRadians(180.0), 17.5)
             .followTrajectorySequence { drive ->
                 drive.trajectorySequenceBuilder(Pose2d(-35.0, -58.0, Math.toRadians(90.0))).apply {
-                    lineToConstantHeading(Vector2d(-35.0, 8.0))
+                    // prepare for putting preload cone
+                    lineToConstantHeading(Vector2d(-35.0, 6.0))
 
-                    waitSeconds(3.0)
-
-                    //lineToConstantHeading(Vector2d(-35.0, -13.0))
-
-                    lineToSplineHeading(Pose2d(-35.0, -8.7, Math.toRadians(0.0)))
-
-                    setReversed(true)
-                    splineToConstantHeading(Vector2d(-57.0, -8.9), Math.toRadians(180.0))
-                    setReversed(false)
-                    waitSeconds(5000.0)
-
-                    repeat(3) {
-                        lineToConstantHeading(Vector2d(-24.0, -11.5))
-                        waitSeconds(1.2)
-                        lineToConstantHeading(Vector2d(-54.0, -12.5))
-                        waitSeconds(1.2)
-                    }
-
-                    lineToConstantHeading(Vector2d(-24.0, -11.5))
+                    lineToConstantHeading(Vector2d(-38.5, 6.0))
                     waitSeconds(1.2)
 
-                    val park = 1
+                    waitSeconds(0.9)
 
-                    lineTo(Vector2d(-57.0, -11.5))
-
-                    //lineToSplineHeading(Pose2d(-35.0, -11.5, Math.toRadians(270.0)))
-
-                    //lineToSplineHeading(Pose2d(-12.0, -11.5, Math.toRadians(270.0)))
+                    splineToSplineHeading(Pose2d(-35.0, -7.6, Math.toRadians(90.0)), Math.toRadians(0.0))
+                    splineTo(Vector2d(-50.0, -7.6), Math.toRadians(90.0))
                 }.build()
             }
 
@@ -65,7 +45,7 @@ fun main() {
             .setDarkMode(true)
             .setBackgroundAlpha(0.95f) // Add both of our declared bot entities
             .addEntity(myFirstBot)
-            .addEntity(mySecondBot)
+            //.addEntity(mySecondBot)
             .start()
 }
 

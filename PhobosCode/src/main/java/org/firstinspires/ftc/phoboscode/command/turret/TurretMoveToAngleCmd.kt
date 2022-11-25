@@ -9,6 +9,15 @@ class TurretMoveToAngleCmd(val angle: Double, val endOnTargetReached: Boolean = 
 
     val sub = require<TurretSubsystem>()
 
+    init {
+        try {
+            throw Exception()
+        } catch (ex: Exception) {
+            println("target angle: $angle")
+            ex.printStackTrace()
+        }
+    }
+
     override fun init() {
         sub.controller.reset()
         sub.controller.targetPosition = Turret.ticksPerAngle * angle

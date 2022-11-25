@@ -32,18 +32,18 @@ abstract class AutonomoB(
 
         // prepare for putting preload cone
         UNSTABLE_addTemporalMarkerOffset(1.0) { + prepareForPuttingCone(90.0) }
-        lineToConstantHeading(Vector2d(35.0, 5.5))
+        lineToConstantHeading(Vector2d(35.0, 5.0))
 
         // put it
         UNSTABLE_addTemporalMarkerOffset(0.5) { + IntakeArmPositionMiddleCmd() }
         UNSTABLE_addTemporalMarkerOffset(0.9) { + IntakeWheelsReleaseCmd() }
-        lineToConstantHeading(Vector2d(38.5, 5.5))
+        lineToConstantHeading(Vector2d(40.0, 5.0))
         waitSeconds(1.2)
 
         var liftHeight = 300.0
 
         UNSTABLE_addTemporalMarkerOffset(0.0) {
-            + saveTurret(liftHeight)
+            + saveTurret(liftPos = liftHeight)
         }
         waitSeconds(0.9)
 
@@ -79,7 +79,6 @@ abstract class AutonomoB(
         }
 
         lineToConstantHeading(Vector2d(35.0, -7.5))
-        turn(Math.toRadians(90.0), Math.toRadians(180.0), Math.toRadians(0.0))
 
         UNSTABLE_addTemporalMarkerOffset(0.5) {
             + deltaSequence {
@@ -89,13 +88,13 @@ abstract class AutonomoB(
             }
         }
 
-        lineToLinearHeading(Pose2d(59.0, -7.5, Math.toRadians(0.0)))
+        lineToLinearHeading(Pose2d(59.0, -7.5, Math.toRadians(90.0)))
         waitSeconds(1.0)
 
         repeat(cycles - 1) {
             liftHeight -= 40
 
-            putOnHigh(liftHeight)
+            putOnHigh(endingLiftPos = liftHeight)
 
             UNSTABLE_addTemporalMarkerOffset(1.4) {
                 + IntakeWheelsAbsorbCmd()
@@ -109,13 +108,13 @@ abstract class AutonomoB(
                 }
             }
 
-            lineToLinearHeading(Pose2d(55.0, -7.9, Math.toRadians(0.0)))
+            lineToLinearHeading(Pose2d(55.0, -7.9, Math.toRadians(90.0)))
 
-            lineToLinearHeading(Pose2d(59.0, -7.9, Math.toRadians(0.0)), SampleMecanumDrive.getVelocityConstraint(20.0, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(60.0))
+            lineToLinearHeading(Pose2d(59.0, -7.9, Math.toRadians(90.0)), SampleMecanumDrive.getVelocityConstraint(20.0, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(60.0))
             waitSeconds(0.8)
         }
 
-        putOnHigh()
+        putOnHigh(endingTurretAngle = 0.0)
 
         when(sleevePattern) {
             A -> {
@@ -140,7 +139,7 @@ abstract class AutonomoB(
         - LiftMoveToPosCmd(liftPos.toDouble()).dontBlock()
     }
 
-    fun saveTurret(liftPos: Double? = null) = deltaSequence {
+    fun saveTurret(turretAngle: Double = 90.0, liftPos: Double? = null) = deltaSequence {
         - IntakeArmPositionSaveCmd().dontBlock()
         - waitForSeconds(0.1)
         - IntakeSaveTiltCmd().dontBlock()
@@ -154,28 +153,27 @@ abstract class AutonomoB(
 
         - waitForSeconds(0.2)
 
-        - TurretMoveToAngleCmd(0.0)
+        - TurretMoveToAngleCmd(turretAngle)
     }
 
-    fun TrajectorySequenceBuilder.putOnHigh(endingLiftPos: Double? = null) {
+    fun TrajectorySequenceBuilder.putOnHigh(endingTurretAngle: Double = 90.0, endingLiftPos: Double? = null) {
         UNSTABLE_addTemporalMarkerOffset(0.0) {
             + IntakeArmPositionSaveCmd()
             + IntakeWheelsHoldCmd()
-        }
-        UNSTABLE_addTemporalMarkerOffset(0.5) {
-            + prepareForPuttingCone(90.0, Lift.highPos + 40)
+
+            + prepareForPuttingCone(0.0, Lift.highPos + 40)
         }
 
         UNSTABLE_addTemporalMarkerOffset(1.8) {
             + IntakeArmPositionMiddleCmd()
         }
-        lineToLinearHeading(Pose2d(25.8, -8.5, Math.toRadians(180.0)))
+        lineToLinearHeading(Pose2d(25.0, -8.7, Math.toRadians(90.0)))
 
         UNSTABLE_addTemporalMarkerOffset(1.0) {
             + IntakeWheelsReleaseCmd()
         }
         UNSTABLE_addTemporalMarkerOffset(1.4) {
-            + saveTurret(endingLiftPos)
+            + saveTurret(turretAngle = endingTurretAngle, liftPos = endingLiftPos)
             drive.relocalizeWithIMU()
         }
         waitSeconds(1.6)
