@@ -20,7 +20,7 @@ import org.firstinspires.ftc.phoboscode.vision.SleevePattern.*
 
 abstract class AutonomoA(
     alliance: Alliance,
-    val cycles: Int = 2
+    val cycles: Int = 3
 ) : AutonomoBase(alliance) {
 
     override val startPose = Pose2d(-35.0, -58.0, Math.toRadians(90.0))
@@ -31,14 +31,12 @@ abstract class AutonomoA(
         }
 
         // prepare for putting preload cone
-        UNSTABLE_addTemporalMarkerOffset(1.0) { + prepareForPuttingCone(-90.0) }
-        lineToConstantHeading(Vector2d(-35.0, 6.0))
+        UNSTABLE_addTemporalMarkerOffset(0.8) { + prepareForPuttingCone(-90.0) }
+        lineToConstantHeading(Vector2d(-35.5, 5.5))
 
-        // put it
-        UNSTABLE_addTemporalMarkerOffset(0.5) { + IntakeArmPositionMiddleCmd() }
-        UNSTABLE_addTemporalMarkerOffset(0.9) { + IntakeWheelsReleaseCmd() }
-        lineToConstantHeading(Vector2d(-38.5, 6.0))
-        waitSeconds(1.2)
+        UNSTABLE_addTemporalMarkerOffset(0.0) { + IntakeArmPositionCmd(0.56) }
+        UNSTABLE_addTemporalMarkerOffset(0.5) { + IntakeWheelsReleaseCmd() }
+        waitSeconds(0.9)
 
         var liftHeight = 390.0
 
@@ -53,7 +51,7 @@ abstract class AutonomoA(
             + TurretMoveToAngleCmd(90.0)
         }
 
-        waitSeconds(0.9)
+        waitSeconds(0.5)
 
         // just park here when we won`t be doing any cycles
         if(cycles == 0) {
@@ -80,15 +78,10 @@ abstract class AutonomoA(
             return@apply
         }
 
-        UNSTABLE_addTemporalMarkerOffset(2.4) {
-            + IntakeWheelsAbsorbCmd()
 
-            drive.relocalizeWithIMU()
-        }
+        lineToSplineHeading(Pose2d(-37.0, -7.3, Math.toRadians(90.0)))
 
-        lineToSplineHeading(Pose2d(-35.5, -7.6, Math.toRadians(90.0)))
-
-        UNSTABLE_addTemporalMarkerOffset(0.6) {
+        UNSTABLE_addTemporalMarkerOffset(0.7) {
             + deltaSequence {
                 - IntakeArmPositionCmd(0.47).dontBlock()
                 - waitForSeconds(0.3)
@@ -96,21 +89,30 @@ abstract class AutonomoA(
             }
         }
 
-        lineToSplineHeading(Pose2d(-58.5, -7.6, Math.toRadians(90.0)))
-        waitSeconds(1.0)
+        UNSTABLE_addTemporalMarkerOffset(0.9) {
+            + IntakeWheelsAbsorbCmd()
+        }
+
+        UNSTABLE_addTemporalMarkerOffset(1.0) {
+            + IntakeArmPositionCmd(0.44)
+        }
+
+        lineToSplineHeading(Pose2d(-56.5, -7.3, Math.toRadians(90.0)))
+
+        waitSeconds(0.6)
+
+        var grabY = -7.3
 
         repeat(cycles - 1) {
             liftHeight -= 50
 
             putOnHigh(90.0, liftHeight)
 
-            UNSTABLE_addTemporalMarkerOffset(1.4) {
+            UNSTABLE_addTemporalMarkerOffset(0.8) {
                 + IntakeWheelsAbsorbCmd()
             }
 
-            lineToLinearHeading(Pose2d(-55.0, -7.6, Math.toRadians(90.0)))
-
-            UNSTABLE_addTemporalMarkerOffset(0.0) {
+            UNSTABLE_addTemporalMarkerOffset(1.0) {
                 + deltaSequence {
                     - IntakeArmPositionCmd(0.46).dontBlock()
                     - waitForSeconds(0.3)
@@ -118,21 +120,28 @@ abstract class AutonomoA(
                 }
             }
 
-            lineToLinearHeading(Pose2d(-59.5, -7.6, Math.toRadians(90.0)), SampleMecanumDrive.getVelocityConstraint(20.0, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(60.0))
-            waitSeconds(0.8)
+            UNSTABLE_addTemporalMarkerOffset(1.4) {
+                + IntakeArmPositionCmd(0.44)
+            }
+
+            lineToSplineHeading(Pose2d(-56.5, grabY, Math.toRadians(90.0)))
+
+            waitSeconds(0.5)
+
+            grabY -= 0.2
         }
 
-        putOnHigh(endingTurretAngle = 0.0)
+        putOnHigh(endingLiftPos = 0.0, endingTurretAngle = 0.0)
 
         when(sleevePattern) {
             A -> {
-                lineToLinearHeading(Pose2d(-56.0, -10.0, Math.toRadians(90.0)))
+                lineToLinearHeading(Pose2d(-56.0, -7.3, Math.toRadians(90.0)))
             }
             B -> {
-                lineToLinearHeading(Pose2d(-35.0, -10.0, Math.toRadians(90.0)))
+                lineToLinearHeading(Pose2d(-35.0, -7.3, Math.toRadians(90.0)))
             }
             C -> { 
-                lineToLinearHeading(Pose2d(-12.0, -10.0, Math.toRadians(90.0)))
+                lineToLinearHeading(Pose2d(-12.0, -7.3, Math.toRadians(90.0)))
             }
         }
 
@@ -147,32 +156,28 @@ abstract class AutonomoA(
         - LiftMoveToPosCmd(liftPos.toDouble()).dontBlock()
     }
 
-
     fun TrajectorySequenceBuilder.putOnHigh(endingTurretAngle: Double, endingLiftPos: Double? = null) {
         UNSTABLE_addTemporalMarkerOffset(0.0) {
             + IntakeArmPositionSaveCmd()
             + IntakeWheelsHoldCmd()
         }
-        UNSTABLE_addTemporalMarkerOffset(0.5) {
+        UNSTABLE_addTemporalMarkerOffset(0.3) {
             + prepareForPuttingCone(0.0, Lift.highPos + 40)
         }
 
-        UNSTABLE_addTemporalMarkerOffset(1.8) {
+        UNSTABLE_addTemporalMarkerOffset(1.5) {
             + IntakeArmPositionCmd(0.57)
         }
-        lineToLinearHeading(Pose2d(-25.5, -7.9, Math.toRadians(90.0)))
+        lineToLinearHeading(Pose2d(-23.5, -6.3, Math.toRadians(90.0)))
 
-        UNSTABLE_addTemporalMarkerOffset(1.0) {
+        UNSTABLE_addTemporalMarkerOffset(0.5) {
             + IntakeWheelsReleaseCmd()
         }
-        UNSTABLE_addTemporalMarkerOffset(1.4) {
-            drive.relocalizeWithIMU()
-        }
 
-        UNSTABLE_addTemporalMarkerOffset(1.4) {
+        UNSTABLE_addTemporalMarkerOffset(1.0) {
             + IntakeArmPositionSaveCmd()
         }
-        UNSTABLE_addTemporalMarkerOffset(1.5) {
+        UNSTABLE_addTemporalMarkerOffset(1.2) {
             + IntakeSaveTiltCmd()
             + IntakeWheelsStopCmd()
 
@@ -180,7 +185,7 @@ abstract class AutonomoA(
             + TurretMoveToAngleCmd(endingTurretAngle)
         }
 
-        waitSeconds(1.6)
+        waitSeconds(1.2)
     }
 
 }
