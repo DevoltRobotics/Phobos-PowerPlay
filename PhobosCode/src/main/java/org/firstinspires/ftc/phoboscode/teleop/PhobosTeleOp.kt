@@ -32,7 +32,7 @@ class PhobosTeleOp : PhobosOpMode() {
 
         // MECANUM
         superGamepad1.scheduleOnPress(Button.DPAD_UP, DeltaInstantCmd {
-            hardware.drive.mecanumLocalizer.poseEstimate = Pose2d()
+            hardware.drive.poseEstimate = Pose2d()
         })
 
         + FieldCentricMecanumCmd(gamepad1)
@@ -165,14 +165,6 @@ class PhobosTeleOp : PhobosOpMode() {
             telemetry.addData("bl pos", hardware.drive.leftRear.currentPosition)
             telemetry.addData("br", hardware.drive.rightRear.power)
             telemetry.addData("br pos", hardware.drive.rightRear.currentPosition)
-
-            val localizer = (hardware.drive.localizer as StandardTrackingWheelLocalizer)
-            val odoPos = localizer.getWheelPositions()
-
-            telemetry.addData("leftEncoder pos", localizer.leftEncoder.currentPosition)
-            telemetry.addData("rightEncoder pos", localizer.rightEncoder.currentPosition)
-            telemetry.addData("leftEncoder", odoPos[0])
-            telemetry.addData("rightEncoder", odoPos[1])
 
             telemetry.addData("lift power", liftSubsystem.power)
             telemetry.addData("lift top red", liftSubsystem.lastTopRed)

@@ -128,7 +128,7 @@ abstract class AutonomoA(
 
             waitSeconds(0.5)
 
-            grabY -= 0.2
+            grabY -= 0.1
         }
 
         putOnHigh(endingLiftPos = 0.0, endingTurretAngle = 0.0)
@@ -141,7 +141,7 @@ abstract class AutonomoA(
                 lineToLinearHeading(Pose2d(-35.0, -7.3, Math.toRadians(90.0)))
             }
             C -> { 
-                lineToLinearHeading(Pose2d(-12.0, -7.3, Math.toRadians(90.0)))
+                lineToLinearHeading(Pose2d(-14.0, -7.3, Math.toRadians(90.0)))
             }
         }
 

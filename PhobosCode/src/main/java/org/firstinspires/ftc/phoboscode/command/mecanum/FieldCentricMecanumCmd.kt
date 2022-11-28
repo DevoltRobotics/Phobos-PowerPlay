@@ -20,7 +20,7 @@ class FieldCentricMecanumCmd(val gamepad: Gamepad, val applyTurboWithTriggers: B
             1.0 - (triggerValue * 0.6)
         } else 1.0
 
-        val pose = sub.drive.mecanumLocalizer.poseEstimate
+        val pose = sub.drive.localizer.poseEstimate
 
         val input = Vector2d(
             (-gamepad.left_stick_y).toDouble() * 0.7 * turbo,

@@ -59,7 +59,6 @@ abstract class AutonomoBase(val alliance: Alliance, val useVision: Boolean = tru
         webcam?.closeCameraDeviceAsync {  }
 
         drive.poseEstimate = startPose
-        drive.mecanumLocalizer.poseEstimate = startPose
         drive.followTrajectorySequenceAsync(sequence(pipeline.lastPattern))
     }
 
