@@ -56,7 +56,7 @@ abstract class AutonomoBase(val alliance: Alliance, val useVision: Boolean = tru
         liftSubsystem.reset()
         turretSubsystem.reset()
 
-        webcam?.closeCameraDeviceAsync {  }
+        webcam?.stopStreaming()
 
         drive.poseEstimate = startPose
         drive.followTrajectorySequenceAsync(sequence(pipeline.lastPattern))
