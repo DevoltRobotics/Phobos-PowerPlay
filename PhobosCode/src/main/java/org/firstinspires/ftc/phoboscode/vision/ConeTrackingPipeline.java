@@ -6,13 +6,13 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-import com.acmerobotics.dashboard.config.Config;
+//import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.util.Range;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Config
+//@Config
 public class ConeTrackingPipeline extends OpenCvPipeline {
 
     public Scalar lowerRed = new Scalar(0, 0, 0);
@@ -37,7 +37,7 @@ public class ConeTrackingPipeline extends OpenCvPipeline {
 
     int framesDiscardingDelta = 0;
 	
-	public int maxFramesHistoricalData = 5;
+	public int maxFramesHistoricalData = 10;
 
     public double weightingDifferenceThreshold = 10;
     public double discardingDifferenceThreshold = 20;
@@ -48,10 +48,9 @@ public class ConeTrackingPipeline extends OpenCvPipeline {
 	public double minRectRatio = 0.1;
 	public double maxRectRatio = 0.9;
 
-	public static double angleRatio = 35d;
-	public static double ratioToAngleSensitivity = 4.7;
+	public static double centerXOffset = 0d;
 
-	private double lastTurretAngle = 0.0;
+	private double lastErrorFromCenter = 0d;
 
     @Override
     public Mat processFrame(Mat input) {
@@ -63,12 +62,9 @@ public class ConeTrackingPipeline extends OpenCvPipeline {
 
         Rect biggestRect = null;
 		
-		double rectRatio = 0.0;
+		double rectRatio;
 		
-		ArrayList<Rect> candidates = new ArrayList<>();
-		
-		double imageXCenter = input.cols() / 2d;
-		double imageYCenter = input.rows() / 2d;
+		double imageXCenter = input.cols() / 2d + centerXOffset;
 
         for(MatOfPoint points : contours) {
             Rect rect = Imgproc.boundingRect(points);
@@ -82,6 +78,15 @@ public class ConeTrackingPipeline extends OpenCvPipeline {
 					if(currentXDistanceFromCenter < xDistanceFromCenter) {
 						continue;
 					}
+
+					if(lastRect != null) {
+						int xDelta = Math.abs(rect.x - lastRect.x);
+						int biggestXDelta = Math.abs(rect.x - biggestRect.x);
+
+						if(rect.area() < lastRect.area() && biggestXDelta >= xDelta) {
+							continue;
+						}
+					}
 				}
 				
 				rectRatio = (double)rect.width / rect.height;
@@ -93,8 +98,6 @@ public class ConeTrackingPipeline extends OpenCvPipeline {
         }
 	
         if(biggestRect != null) {
-			rectRatio = (double)biggestRect.width / biggestRect.height;
-			
 			if(lastRect != null) {
 				int deltaSums = 0;
 				
@@ -163,34 +166,9 @@ public class ConeTrackingPipeline extends OpenCvPipeline {
 		framesDiscardingDelta++;
 		
 		if(biggestRect != null) {
-			double imgXCenter = input.cols() / 2d;
 			double rectXCenter = biggestRect.x + biggestRect.width / 2d;
-			
-			double widthRatio = (double)input.cols() / biggestRect.width;
-			double heightRatio = (double)input.cols() / biggestRect.width;
-			
-			double sensitivity;
-			
-			if(widthRatio >= heightRatio) {
-				sensitivity = widthRatio / ratioToAngleSensitivity;
-			} else {
-				sensitivity = heightRatio / ratioToAngleSensitivity;
-			}
-			
-			//double inPerPixel = 4d / biggestRect.width;
-			
-			//double x = (rectXCenter - imgXCenter) * inPerPixel;
-			//double distance = ((double)input.cols() / biggestRect.width) * inPerPixel * 40;
-			
-			double turretAngle = ((rectXCenter - imgXCenter) / imgXCenter) * angleRatio * sensitivity; //Range.clip(Math.toDegrees(Math.atan2(x, distance)), -45, 45);
 
-			setLastTurretAngle(turretAngle);
-
-			//telemetry.addData("in per pixel", inPerPixel);
-			//telemetry.addData("cone x inches", x);
-			//telemetry.addData("cone distance inches", distance);
-			//telemetry.addData("distance sensitivity", sensitivity);
-			//telemetry.addData("turret angle", turretAngle);
+			setLastErrorFromCenter(rectXCenter - imageXCenter);
 		}
 		
 		//telemetry.update();
@@ -202,16 +180,16 @@ public class ConeTrackingPipeline extends OpenCvPipeline {
 		}
     }
 
-	private synchronized void setLastTurretAngle(double angle) {
-		lastTurretAngle = angle;
+	private synchronized void setLastErrorFromCenter(double error) {
+		lastErrorFromCenter = error;
 	}
 
-	public synchronized double getLastTurretAngle() {
-		return lastTurretAngle;
+	public synchronized double getLastErrorFromCenter() {
+		return lastErrorFromCenter;
 	}
 
     private int calcAvgHistCurr(int historic, int current) {
-		return (int) (((double) ((historic * historicWeight) + (current * currentWeight))) / (historicWeight + currentWeight));
+		return (int) (( (historic * historicWeight) + (current * currentWeight) ) / (historicWeight + currentWeight) );
     }
 
     private Mat cvtMat = new Mat();

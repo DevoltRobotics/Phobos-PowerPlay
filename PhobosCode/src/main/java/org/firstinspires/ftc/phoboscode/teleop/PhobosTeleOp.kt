@@ -181,6 +181,7 @@ class PhobosTeleOp : PhobosOpMode() {
 
         // telemetry
         + DeltaRunCmd {
+            telemetry.addData("turret angle", turretSubsystem.angle)
             telemetry.addData("turret pos", hardware.turretMotor.currentPosition)
             telemetry.addData("turret target", turretSubsystem.controller.targetPosition)
 
