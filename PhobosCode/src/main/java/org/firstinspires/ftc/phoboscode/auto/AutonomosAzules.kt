@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.phoboscode.auto.azul
+package org.firstinspires.ftc.phoboscode.auto
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import org.firstinspires.ftc.phoboscode.Alliance

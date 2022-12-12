@@ -32,7 +32,7 @@ abstract class AutonomoB(
 
         // prepare for putting preload cone
         UNSTABLE_addTemporalMarkerOffset(0.8) { + prepareForPuttingCone(90.0) }
-        lineToConstantHeading(Vector2d(35.5, 5.0))
+        lineToConstantHeading(Vector2d(35.5, 4.2)) // TODO: Preload cone score position
 
         UNSTABLE_addTemporalMarkerOffset(0.0) { + IntakeArmPositionCmd(0.56) }
         UNSTABLE_addTemporalMarkerOffset(0.5) { + IntakeWheelsReleaseCmd() }
@@ -78,8 +78,10 @@ abstract class AutonomoB(
             return@apply
         }
 
+        val grabX = 56.5 // TODO: Grab coordinates
+        var grabY = -6.3
 
-        lineToSplineHeading(Pose2d(37.0, -7.3, Math.toRadians(90.0)))
+        lineToSplineHeading(Pose2d(37.0, grabY, Math.toRadians(90.0)))
 
         UNSTABLE_addTemporalMarkerOffset(0.7) {
             + deltaSequence {
@@ -97,11 +99,9 @@ abstract class AutonomoB(
             + IntakeArmPositionCmd(0.44)
         }
 
-        lineToSplineHeading(Pose2d(54.5, -7.3, Math.toRadians(90.0)))
+        lineToSplineHeading(Pose2d(grabX, grabY, Math.toRadians(90.0)))
 
         waitSeconds(0.6)
-
-        var grabY = -7.3
 
         repeat(cycles - 1) {
             liftHeight -= 50
@@ -124,7 +124,7 @@ abstract class AutonomoB(
                 + IntakeArmPositionCmd(0.44)
             }
 
-            lineToSplineHeading(Pose2d(55.5, grabY, Math.toRadians(90.0)))
+            lineToSplineHeading(Pose2d(grabX, grabY, Math.toRadians(90.0)))
 
             waitSeconds(0.5)
 
@@ -135,13 +135,13 @@ abstract class AutonomoB(
 
         when(sleevePattern) {
             A -> {
-                lineToLinearHeading(Pose2d(56.0, -7.3, Math.toRadians(90.0)))
+                lineToLinearHeading(Pose2d(12.0, -7.3, Math.toRadians(90.0)))
             }
             B -> {
                 lineToLinearHeading(Pose2d(35.0, -7.3, Math.toRadians(90.0)))
             }
             C -> {
-                lineToLinearHeading(Pose2d(12.0, -7.3, Math.toRadians(90.0)))
+                lineToLinearHeading(Pose2d(56.0, -7.3, Math.toRadians(90.0)))
             }
         }
 
@@ -161,14 +161,14 @@ abstract class AutonomoB(
             + IntakeArmPositionSaveCmd()
             + IntakeWheelsHoldCmd()
         }
-        UNSTABLE_addTemporalMarkerOffset(0.3) {
+        UNSTABLE_addTemporalMarkerOffset(0.2) { // TODO: tiempo para que se mueva la torreta
             + prepareForPuttingCone(0.0, Lift.highPos + 40)
         }
 
         UNSTABLE_addTemporalMarkerOffset(1.5) {
-            + IntakeArmPositionCmd(0.57)
+            + IntakeArmPositionCmd(0.57) // TODO: score position of intake arm
         }
-        lineToLinearHeading(Pose2d(21.5, -6.3, Math.toRadians(90.0)))
+        lineToLinearHeading(Pose2d(20.0, -7.6, Math.toRadians(90.0))) // TODO: high pole coordinates
 
         UNSTABLE_addTemporalMarkerOffset(0.5) {
             + IntakeWheelsReleaseCmd()

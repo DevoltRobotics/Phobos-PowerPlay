@@ -32,13 +32,13 @@ abstract class AutonomoA(
 
         // prepare for putting preload cone
         UNSTABLE_addTemporalMarkerOffset(0.8) { + prepareForPuttingCone(-90.0) }
-        lineToConstantHeading(Vector2d(-35.5, 5.5))
+        lineToConstantHeading(Vector2d(-35.5, 6.5)) // TODO: Preload cone score position
 
         UNSTABLE_addTemporalMarkerOffset(0.0) { + IntakeArmPositionCmd(0.56) }
         UNSTABLE_addTemporalMarkerOffset(0.5) { + IntakeWheelsReleaseCmd() }
         waitSeconds(0.9)
 
-        var liftHeight = 390.0
+        var liftHeight = 380.0
 
         UNSTABLE_addTemporalMarkerOffset(0.0) {
             + IntakeArmPositionSaveCmd()
@@ -78,8 +78,10 @@ abstract class AutonomoA(
             return@apply
         }
 
+        val grabX = -55.5 // TODO: Grab coordinates
+        var grabY = -7.3
 
-        lineToSplineHeading(Pose2d(-37.0, -7.3, Math.toRadians(90.0)))
+        lineToSplineHeading(Pose2d(-37.0, grabY, Math.toRadians(90.0)))
 
         UNSTABLE_addTemporalMarkerOffset(0.7) {
             + deltaSequence {
@@ -97,11 +99,9 @@ abstract class AutonomoA(
             + IntakeArmPositionCmd(0.44)
         }
 
-        lineToSplineHeading(Pose2d(-56.5, -7.3, Math.toRadians(90.0)))
+        lineToSplineHeading(Pose2d(grabX, grabY, Math.toRadians(90.0)))
 
         waitSeconds(0.6)
-
-        var grabY = -7.3
 
         repeat(cycles - 1) {
             liftHeight -= 50
@@ -124,7 +124,7 @@ abstract class AutonomoA(
                 + IntakeArmPositionCmd(0.44)
             }
 
-            lineToSplineHeading(Pose2d(-56.5, grabY, Math.toRadians(90.0)))
+            lineToSplineHeading(Pose2d(grabX, grabY, Math.toRadians(90.0)))
 
             waitSeconds(0.5)
 
@@ -168,7 +168,7 @@ abstract class AutonomoA(
         UNSTABLE_addTemporalMarkerOffset(1.5) {
             + IntakeArmPositionCmd(0.57)
         }
-        lineToLinearHeading(Pose2d(-23.5, -6.3, Math.toRadians(90.0)))
+        lineToLinearHeading(Pose2d(-23.5, -6.3, Math.toRadians(90.0))) //TODO: tubo high
 
         UNSTABLE_addTemporalMarkerOffset(0.5) {
             + IntakeWheelsReleaseCmd()
