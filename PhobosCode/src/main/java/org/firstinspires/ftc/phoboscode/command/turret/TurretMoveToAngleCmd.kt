@@ -5,7 +5,7 @@ import com.github.serivesmejia.deltacommander.deltaScheduler
 import org.firstinspires.ftc.phoboscode.subsystem.Turret
 import org.firstinspires.ftc.phoboscode.subsystem.TurretSubsystem
 
-class TurretMoveToAngleCmd(val angle: Double, val endOnTargetReached: Boolean = false) : DeltaCommand() {
+open class TurretMoveToAngleCmd(var angle: Double, val endOnTargetReached: Boolean = false) : DeltaCommand() {
 
     val sub = require<TurretSubsystem>()
 
@@ -24,6 +24,7 @@ class TurretMoveToAngleCmd(val angle: Double, val endOnTargetReached: Boolean = 
     }
 
     override fun run() {
+        sub.controller.targetPosition = Turret.ticksPerAngle * angle
         sub.motor.power = sub.controller.update(sub.motor.currentPosition.toDouble()) * 0.7
 
         if(endOnTargetReached && !sub.isOnTarget) {

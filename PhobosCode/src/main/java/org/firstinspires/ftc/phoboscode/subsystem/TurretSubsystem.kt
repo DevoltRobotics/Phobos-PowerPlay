@@ -13,6 +13,9 @@ import kotlin.math.abs
 class TurretSubsystem(val motor: DcMotorEx) : DeltaSubsystem() {
 
     val controller = PIDFController(Turret.pid)
+    val trackingController = PIDFController(Turret.trackingPid)
+
+    val angle get() = motor.currentPosition / Turret.ticksPerAngle
 
     val isOnTarget get() = abs(controller.lastError) > 5 * Turret.ticksPerAngle
 
@@ -34,6 +37,7 @@ class TurretSubsystem(val motor: DcMotorEx) : DeltaSubsystem() {
 @Config
 object Turret {
     @JvmField var pid = PIDCoefficients(0.005, 0.0, 0.0)
+    @JvmField var trackingPid = PIDCoefficients(0.005, 0.0, 0.0)
 
     val ticksPerRev = 1120
     val gearRatio = 119.0 / 32

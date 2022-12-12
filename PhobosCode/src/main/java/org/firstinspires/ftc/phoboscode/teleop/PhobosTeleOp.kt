@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.phoboscode.teleop
 
+import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.github.serivesmejia.deltacommander.command.DeltaInstantCmd
 import com.github.serivesmejia.deltacommander.command.DeltaRunCmd
@@ -12,17 +13,41 @@ import org.firstinspires.ftc.phoboscode.PhobosOpMode
 import org.firstinspires.ftc.phoboscode.command.intake.*
 import org.firstinspires.ftc.phoboscode.command.lift.*
 import org.firstinspires.ftc.phoboscode.command.mecanum.FieldCentricMecanumCmd
+import org.firstinspires.ftc.phoboscode.command.turret.TurretConeTrackingCmd
 import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveCmd
 import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveToAngleCmd
 import org.firstinspires.ftc.phoboscode.lastKnownAlliance
 import org.firstinspires.ftc.phoboscode.lastKnownPose
 import org.firstinspires.ftc.phoboscode.rr.drive.StandardTrackingWheelLocalizer
+import org.firstinspires.ftc.phoboscode.vision.ConeTrackingPipeline
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
+import org.openftc.easyopencv.OpenCvCamera
+import org.openftc.easyopencv.OpenCvCameraFactory
+import org.openftc.easyopencv.OpenCvCameraRotation
 import kotlin.math.abs
 
 @TeleOp(name = "Nacho Libre")
 class PhobosTeleOp : PhobosOpMode() {
 
+    val coneTrackingPipeline = ConeTrackingPipeline()
+
     override fun setup() {
+        // OR...  Do Not Activate the Camera Monitor View
+        val webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName::class.java,"Webcam 1"));
+
+        webcam.setPipeline(coneTrackingPipeline)
+
+        webcam.setMillisecondsPermissionTimeout(4000) // Timeout for obtaining permission is configurable. Set before opening.
+
+        webcam.openCameraDeviceAsync(object : OpenCvCamera.AsyncCameraOpenListener {
+            override fun onOpened() {
+                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT)
+                FtcDashboard.getInstance().startCameraStream(webcam, 0.0)
+            }
+
+            override fun onError(errorCode: Int) { }
+        })
+
         hardware.drive.poseEstimate = lastKnownPose.plus(Pose2d(0.0, 0.0, lastKnownAlliance.angleOffset))
 
         intakeArmSubsystem.reset()
@@ -109,10 +134,10 @@ class PhobosTeleOp : PhobosOpMode() {
 
         intakeArmSubsystem.defaultCommand = IntakeArmPositionIncrementCmd { (-gamepad2.right_stick_y).toDouble() * 0.015 }
 
-        superGamepad2.toggleScheduleOn(Button.B,
-                IntakeTiltCmd(0.7).endRightAway(),
-                IntakeZeroTiltCmd().endRightAway()
-        )
+        //superGamepad2.toggleScheduleOn(Button.B,
+        //        IntakeTiltCmd(0.7).endRightAway(),
+        //        IntakeZeroTiltCmd().endRightAway()
+        //)
 
         // TURRET
 
@@ -123,6 +148,11 @@ class PhobosTeleOp : PhobosOpMode() {
                 turretSubsystem.free()
             }
         }
+
+        superGamepad2.toggleScheduleOn(Button.B,
+            TurretMoveCmd(0.0),
+            TurretConeTrackingCmd(coneTrackingPipeline)
+        )
 
         // turret positions
         superGamepad2.scheduleOnPress(Button.DPAD_UP,
@@ -151,6 +181,7 @@ class PhobosTeleOp : PhobosOpMode() {
 
         // telemetry
         + DeltaRunCmd {
+            telemetry.addData("turret angle", turretSubsystem.angle)
             telemetry.addData("turret pos", hardware.turretMotor.currentPosition)
             telemetry.addData("turret target", turretSubsystem.controller.targetPosition)
 
