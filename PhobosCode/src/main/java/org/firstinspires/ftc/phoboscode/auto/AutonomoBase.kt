@@ -25,6 +25,8 @@ abstract class AutonomoBase(val alliance: Alliance, val useVision: Boolean = tru
     private val pipeline = ConeSleevePipeline()
 
     override fun setup() {
+        hardware.odometryRetractServo.position = 1.0
+
         if (useVision) {
             //val cameraMonitorViewId = hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)
             //webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName::class.java, "Webcam 1"), cameraMonitorViewId)

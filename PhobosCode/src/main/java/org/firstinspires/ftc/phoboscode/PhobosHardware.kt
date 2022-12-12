@@ -25,12 +25,16 @@ class PhobosHardware : SimpleHardware() {
     val sliderTopLimitSensor by hardware<RevColorSensorV3>("st")
     val sliderBottomLimitSensor by hardware<RevTouchSensor>("sb")
 
+    val odometryRetractServo by hardware<Servo>("or")
+
     override fun init() {
         // squeezing out extra degrees from gobilda servos
         (intakeArmServo as ServoImplEx).pwmRange = PwmControl.PwmRange(500.0, 2500.0)
 
         (intakeLeftServo as CRServoImplEx).pwmRange = PwmControl.PwmRange(500.0, 2500.0)
         (intakeRightServo as CRServoImplEx).pwmRange = PwmControl.PwmRange(500.0, 2500.0)
+
+        (odometryRetractServo as ServoImplEx).pwmRange = PwmControl.PwmRange(500.0, 2500.0)
     }
 
 }

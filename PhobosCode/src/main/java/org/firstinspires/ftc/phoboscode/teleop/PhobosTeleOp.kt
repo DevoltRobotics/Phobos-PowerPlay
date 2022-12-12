@@ -32,6 +32,9 @@ class PhobosTeleOp : PhobosOpMode() {
     val coneTrackingPipeline = ConeTrackingPipeline()
 
     override fun setup() {
+        // retract odo
+        hardware.odometryRetractServo.position = 0.0
+
         // OR...  Do Not Activate the Camera Monitor View
         val webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName::class.java,"Webcam 1"));
 
