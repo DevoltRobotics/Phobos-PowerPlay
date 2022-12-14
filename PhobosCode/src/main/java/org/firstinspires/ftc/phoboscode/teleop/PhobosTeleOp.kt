@@ -33,7 +33,7 @@ class PhobosTeleOp : PhobosOpMode() {
 
     override fun setup() {
         // retract odo
-        hardware.odometryRetractServo.position = 0.0
+        hardware.odometryRetractServo.position = 1.0
 
         // OR...  Do Not Activate the Camera Monitor View
         val webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName::class.java,"Webcam 1"));
@@ -147,7 +147,7 @@ class PhobosTeleOp : PhobosOpMode() {
         turretSubsystem.defaultCommand = TurretMoveCmd { (gamepad2.left_trigger - gamepad2.right_trigger).toDouble() * 0.65 }
 
         + DeltaRunCmd {
-            if(gamepad2.left_trigger - gamepad2.right_trigger >= 0.5) {
+            if(abs(gamepad2.left_trigger - gamepad2.right_trigger) >= 0.5) {
                 turretSubsystem.free()
             }
         }

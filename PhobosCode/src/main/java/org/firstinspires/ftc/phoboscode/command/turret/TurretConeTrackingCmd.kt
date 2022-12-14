@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.phoboscode.command.turret
 
 import com.github.serivesmejia.deltacommander.DeltaCommand
+import com.qualcomm.robotcore.util.ElapsedTime
 import com.qualcomm.robotcore.util.Range
 import org.firstinspires.ftc.phoboscode.subsystem.Turret
 import org.firstinspires.ftc.phoboscode.subsystem.TurretSubsystem
 import org.firstinspires.ftc.phoboscode.vision.ConeTrackingPipeline
+import kotlin.math.abs
+import kotlin.math.sign
 
 class TurretConeTrackingCmd(
     val pipeline: ConeTrackingPipeline
@@ -12,22 +15,19 @@ class TurretConeTrackingCmd(
 
     val sub = require<TurretSubsystem>()
 
-    private var lastPower = 0.0
+    private val deltaTimer = ElapsedTime()
 
     override fun run() {
-        val angle = sub.motor.currentPosition / Turret.ticksPerAngle
-        val power = sub.trackingController.update(pipeline.lastErrorFromCenter) * 0.7
-        val deltaPower = power - lastPower
-
         sub.trackingController.targetPosition = 0.0
 
-        sub.motor.power = if((angle >= -45.0 || deltaPower >= 0.1) || (angle <= 45.0 || deltaPower <= -0.1)) {
-            power
-        } else {
-            0.0
-        }
+        sub.controller.targetPosition = Range.clip(
+            (sub.controller.targetPosition / Turret.ticksPerAngle) - sub.trackingController.update(pipeline.lastErrorFromCenter) * Turret.maxDegreesPerSecond * deltaTimer.seconds(),
+            -45.0, 45.0
+        ) * Turret.ticksPerAngle
 
-        lastPower = power
+        sub.motor.power = sub.controller.update(sub.motor.currentPosition.toDouble())
+
+        deltaTimer.reset()
     }
 
 }

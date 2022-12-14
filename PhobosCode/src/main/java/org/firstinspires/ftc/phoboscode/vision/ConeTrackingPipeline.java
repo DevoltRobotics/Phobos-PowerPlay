@@ -37,10 +37,10 @@ public class ConeTrackingPipeline extends OpenCvPipeline {
 
     int framesDiscardingDelta = 0;
 	
-	public int maxFramesHistoricalData = 10;
+	public int maxFramesHistoricalData = 5;
 
     public double weightingDifferenceThreshold = 10;
-    public double discardingDifferenceThreshold = 20;
+    public double discardingDifferenceThreshold = 25;
   
     public double historicWeight = 0.3;
     public double currentWeight = 0.7;

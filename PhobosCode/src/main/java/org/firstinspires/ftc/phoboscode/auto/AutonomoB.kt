@@ -81,11 +81,9 @@ abstract class AutonomoB(
         val grabX = 56.5 // TODO: Grab coordinates
         var grabY = -6.3
 
-        lineToSplineHeading(Pose2d(37.0, grabY, Math.toRadians(90.0)))
-
-        UNSTABLE_addTemporalMarkerOffset(0.7) {
+        UNSTABLE_addTemporalMarkerOffset(0.2) {
             + deltaSequence {
-                - IntakeArmPositionCmd(0.47).dontBlock()
+                - IntakeArmPositionCmd(0.55).dontBlock()
                 - waitForSeconds(0.3)
                 - IntakeTiltCmd(0.58).dontBlock()
             }
@@ -95,13 +93,15 @@ abstract class AutonomoB(
             + IntakeWheelsAbsorbCmd()
         }
 
-        UNSTABLE_addTemporalMarkerOffset(1.0) {
+        UNSTABLE_addTemporalMarkerOffset(1.6) {
             + IntakeArmPositionCmd(0.44)
         }
 
-        lineToSplineHeading(Pose2d(grabX, grabY, Math.toRadians(90.0)))
+        setReversed(true)
+        splineToConstantHeading(Vector2d(grabX, grabY), Math.toRadians(90.0))
+        setReversed(false)
 
-        waitSeconds(0.6)
+        waitSeconds(0.8)
 
         repeat(cycles - 1) {
             liftHeight -= 50
