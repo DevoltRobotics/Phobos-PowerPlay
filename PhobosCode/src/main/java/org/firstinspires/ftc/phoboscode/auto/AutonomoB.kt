@@ -20,7 +20,7 @@ import org.firstinspires.ftc.phoboscode.vision.SleevePattern.*
 
 abstract class AutonomoB(
     alliance: Alliance,
-    val cycles: Int = 3
+    val cycles: Int = 4
 ) : AutonomoBase(alliance) {
 
     override val startPose = Pose2d(35.0, -58.0, Math.toRadians(90.0))
@@ -35,16 +35,13 @@ abstract class AutonomoB(
         lineToConstantHeading(Vector2d(35.5, 4.2)) // TODO: Preload cone score position
 
         UNSTABLE_addTemporalMarkerOffset(0.0) { + IntakeArmPositionCmd(0.56) }
-        UNSTABLE_addTemporalMarkerOffset(0.5) { + IntakeWheelsReleaseCmd() }
+        UNSTABLE_addTemporalMarkerOffset(0.2) { + IntakeWheelsReleaseCmd() }
         waitSeconds(0.9)
 
-        var liftHeight = 390.0
+        var liftHeight = 590.0
 
-        UNSTABLE_addTemporalMarkerOffset(0.0) {
+        UNSTABLE_addTemporalMarkerOffset(0.2) {
             + IntakeArmPositionSaveCmd()
-        }
-        UNSTABLE_addTemporalMarkerOffset(0.1) {
-            + IntakeSaveTiltCmd()
             + IntakeWheelsStopCmd()
 
             + LiftMoveToPosCmd(liftHeight)
@@ -78,8 +75,11 @@ abstract class AutonomoB(
             return@apply
         }
 
-        val grabX = 56.5 // TODO: Grab coordinates
-        var grabY = -6.3
+        val grabX = 56.8 // TODO: Grab coordinates
+        var grabY = -5.9
+
+        setReversed(true)
+        splineToConstantHeading(Vector2d(45.0, grabY), Math.toRadians(0.0))
 
         UNSTABLE_addTemporalMarkerOffset(0.2) {
             + deltaSequence {
@@ -89,19 +89,18 @@ abstract class AutonomoB(
             }
         }
 
-        UNSTABLE_addTemporalMarkerOffset(0.9) {
+        UNSTABLE_addTemporalMarkerOffset(0.3) {
             + IntakeWheelsAbsorbCmd()
         }
 
-        UNSTABLE_addTemporalMarkerOffset(1.6) {
+        UNSTABLE_addTemporalMarkerOffset(0.4) {
             + IntakeArmPositionCmd(0.44)
         }
 
-        setReversed(true)
-        splineToConstantHeading(Vector2d(grabX, grabY), Math.toRadians(90.0))
+        lineToConstantHeading(Vector2d(grabX, grabY))
         setReversed(false)
 
-        waitSeconds(0.8)
+        waitSeconds(0.7)
 
         repeat(cycles - 1) {
             liftHeight -= 50
@@ -113,20 +112,16 @@ abstract class AutonomoB(
             }
 
             UNSTABLE_addTemporalMarkerOffset(1.0) {
-                + deltaSequence {
-                    - IntakeArmPositionCmd(0.46).dontBlock()
-                    - waitForSeconds(0.3)
-                    - IntakeTiltCmd(0.53).dontBlock()
-                }
+                + IntakeArmPositionCmd(0.46)
             }
 
-            UNSTABLE_addTemporalMarkerOffset(1.4) {
+            UNSTABLE_addTemporalMarkerOffset(1.3) {
                 + IntakeArmPositionCmd(0.44)
             }
 
             lineToSplineHeading(Pose2d(grabX, grabY, Math.toRadians(90.0)))
 
-            waitSeconds(0.5)
+            waitSeconds(0.4)
 
             grabY -= 0.2
         }
@@ -162,22 +157,22 @@ abstract class AutonomoB(
             + IntakeWheelsHoldCmd()
         }
         UNSTABLE_addTemporalMarkerOffset(0.2) { // TODO: tiempo para que se mueva la torreta
-            + prepareForPuttingCone(0.0, Lift.highPos + 40)
+            + prepareForPuttingCone(40.0, Lift.highPos + 40)
         }
 
         UNSTABLE_addTemporalMarkerOffset(1.5) {
             + IntakeArmPositionCmd(0.57) // TODO: score position of intake arm
         }
-        lineToLinearHeading(Pose2d(20.0, -7.6, Math.toRadians(90.0))) // TODO: high pole coordinates
+        lineToLinearHeading(Pose2d(30.0, -6.8, Math.toRadians(90.0))) // TODO: high pole coordinates
 
-        UNSTABLE_addTemporalMarkerOffset(0.5) {
+        UNSTABLE_addTemporalMarkerOffset(0.4) {
             + IntakeWheelsReleaseCmd()
         }
 
         UNSTABLE_addTemporalMarkerOffset(1.0) {
             + IntakeArmPositionSaveCmd()
         }
-        UNSTABLE_addTemporalMarkerOffset(1.2) {
+        UNSTABLE_addTemporalMarkerOffset(1.0) {
             + IntakeSaveTiltCmd()
             + IntakeWheelsStopCmd()
 
@@ -185,7 +180,7 @@ abstract class AutonomoB(
             + TurretMoveToAngleCmd(endingTurretAngle)
         }
 
-        waitSeconds(1.2)
+        waitSeconds(0.8)
     }
 
 

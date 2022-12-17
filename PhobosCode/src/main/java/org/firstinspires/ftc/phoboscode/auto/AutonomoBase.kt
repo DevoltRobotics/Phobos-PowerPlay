@@ -25,7 +25,7 @@ abstract class AutonomoBase(val alliance: Alliance, val useVision: Boolean = tru
     private val pipeline = ConeSleevePipeline()
 
     override fun setup() {
-        hardware.odometryRetractServo.position = 1.0
+        hardware.odometryRetractServo.position = 0.8
 
         if (useVision) {
             //val cameraMonitorViewId = hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)
@@ -57,8 +57,6 @@ abstract class AutonomoBase(val alliance: Alliance, val useVision: Boolean = tru
     override fun begin() {
         liftSubsystem.reset()
         turretSubsystem.reset()
-
-        webcam?.stopStreaming()
 
         drive.poseEstimate = startPose
         drive.followTrajectorySequenceAsync(sequence(pipeline.lastPattern))

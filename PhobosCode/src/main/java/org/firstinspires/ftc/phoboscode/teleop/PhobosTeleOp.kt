@@ -21,6 +21,7 @@ import org.firstinspires.ftc.phoboscode.lastKnownPose
 import org.firstinspires.ftc.phoboscode.rr.drive.StandardTrackingWheelLocalizer
 import org.firstinspires.ftc.phoboscode.vision.ConeTrackingPipeline
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.FocusControl
 import org.openftc.easyopencv.OpenCvCamera
 import org.openftc.easyopencv.OpenCvCameraFactory
 import org.openftc.easyopencv.OpenCvCameraRotation
@@ -33,7 +34,7 @@ class PhobosTeleOp : PhobosOpMode() {
 
     override fun setup() {
         // retract odo
-        hardware.odometryRetractServo.position = 1.0
+        hardware.odometryRetractServo.position = 0.0
 
         // OR...  Do Not Activate the Camera Monitor View
         val webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName::class.java,"Webcam 1"));
@@ -46,6 +47,10 @@ class PhobosTeleOp : PhobosOpMode() {
             override fun onOpened() {
                 webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT)
                 FtcDashboard.getInstance().startCameraStream(webcam, 0.0)
+
+                webcam.focusControl.mode = FocusControl.Mode.Fixed;
+
+                webcam.focusControl.focusLength = 1.0;
             }
 
             override fun onError(errorCode: Int) { }
