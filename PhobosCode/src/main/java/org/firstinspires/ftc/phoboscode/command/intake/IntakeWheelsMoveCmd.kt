@@ -15,4 +15,4 @@ open class IntakeWheelsMoveCmd(val power: Double) : DeltaCommand() {
 class IntakeWheelsAbsorbCmd : IntakeWheelsMoveCmd(1.0)
 class IntakeWheelsReleaseCmd : IntakeWheelsMoveCmd(-1.0)
 class IntakeWheelsStopCmd : IntakeWheelsMoveCmd(0.0)
-class IntakeWheelsHoldCmd : IntakeWheelsMoveCmd(0.1)
+class IntakeWheelsHoldCmd : IntakeWheelsMoveCmd(0.08)
