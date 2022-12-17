@@ -38,7 +38,7 @@ abstract class AutonomoB(
         UNSTABLE_addTemporalMarkerOffset(0.2) { + IntakeWheelsReleaseCmd() }
         waitSeconds(0.9)
 
-        var liftHeight = 590.0
+        var liftHeight = 490.0
 
         UNSTABLE_addTemporalMarkerOffset(0.2) {
             + IntakeArmPositionSaveCmd()
@@ -75,8 +75,8 @@ abstract class AutonomoB(
             return@apply
         }
 
-        val grabX = 57.2 // TODO: Grab coordinates
-        var grabY = -5.9
+        val grabX = 56.9 // TODO: Grab coordinates
+        var grabY = -7.0
 
         setReversed(true)
         splineToConstantHeading(Vector2d(45.0, grabY), Math.toRadians(0.0))
@@ -157,13 +157,13 @@ abstract class AutonomoB(
             + IntakeWheelsHoldCmd()
         }
         UNSTABLE_addTemporalMarkerOffset(0.2) { // TODO: tiempo para que se mueva la torreta
-            + prepareForPuttingCone(40.0, Lift.highPos + 40)
+            + prepareForPuttingCone(44.0, Lift.highPos + 40)
         }
 
         UNSTABLE_addTemporalMarkerOffset(1.2) {
             + IntakeArmPositionCmd(0.57) // TODO: score position of intake arm
         }
-        lineToLinearHeading(Pose2d(30.0, -6.8, Math.toRadians(90.0))) // TODO: high pole coordinates
+        lineToLinearHeading(Pose2d(28.5, -7.0, Math.toRadians(90.0))) // TODO: high pole coordinates
 
         UNSTABLE_addTemporalMarkerOffset(0.4) {
             + IntakeWheelsReleaseCmd()
