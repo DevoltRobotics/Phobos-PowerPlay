@@ -75,7 +75,7 @@ abstract class AutonomoB(
             return@apply
         }
 
-        val grabX = 56.8 // TODO: Grab coordinates
+        val grabX = 57.2 // TODO: Grab coordinates
         var grabY = -5.9
 
         setReversed(true)
@@ -160,7 +160,7 @@ abstract class AutonomoB(
             + prepareForPuttingCone(40.0, Lift.highPos + 40)
         }
 
-        UNSTABLE_addTemporalMarkerOffset(1.5) {
+        UNSTABLE_addTemporalMarkerOffset(1.2) {
             + IntakeArmPositionCmd(0.57) // TODO: score position of intake arm
         }
         lineToLinearHeading(Pose2d(30.0, -6.8, Math.toRadians(90.0))) // TODO: high pole coordinates
@@ -169,11 +169,8 @@ abstract class AutonomoB(
             + IntakeWheelsReleaseCmd()
         }
 
-        UNSTABLE_addTemporalMarkerOffset(1.0) {
+        UNSTABLE_addTemporalMarkerOffset(0.8) {
             + IntakeArmPositionSaveCmd()
-        }
-        UNSTABLE_addTemporalMarkerOffset(1.0) {
-            + IntakeSaveTiltCmd()
             + IntakeWheelsStopCmd()
 
             + LiftMoveToPosCmd(endingLiftPos ?: Lift.lowPos.toDouble())
