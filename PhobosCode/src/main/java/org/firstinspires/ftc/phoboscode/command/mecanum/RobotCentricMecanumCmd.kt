@@ -27,7 +27,8 @@ class RobotCentricMecanumCmd(val gamepad: Gamepad, val applyTurboWithTriggers: B
 
         sub.drive.setWeightedDrivePower(
             Pose2d(
-                input.x, input.y,
+                (-gamepad.left_stick_y).toDouble() * 0.7 * turbo,
+                (-gamepad.left_stick_x).toDouble() * 0.7 * turbo,
                 (-gamepad.right_stick_x).toDouble() * 0.7 * turbo
             )
         )
