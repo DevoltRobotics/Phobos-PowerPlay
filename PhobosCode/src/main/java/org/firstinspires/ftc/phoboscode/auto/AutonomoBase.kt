@@ -25,7 +25,8 @@ abstract class AutonomoBase(val alliance: Alliance, val useVision: Boolean = tru
     private val pipeline = ConeSleevePipeline()
 
     override fun setup() {
-        hardware.odometryRetractServo.position = 0.8
+        // #freeodo
+        hardware.odometryRetractServo.position = 0.0
 
         if (useVision) {
             //val cameraMonitorViewId = hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)

@@ -20,7 +20,7 @@ import org.firstinspires.ftc.phoboscode.vision.SleevePattern.*
 
 abstract class AutonomoA(
     alliance: Alliance,
-    val cycles: Int = 3
+    val cycles: Int = 5
 ) : AutonomoBase(alliance) {
 
     override val startPose = Pose2d(-35.0, -58.0, Math.toRadians(90.0))
@@ -31,27 +31,22 @@ abstract class AutonomoA(
         }
 
         // prepare for putting preload cone
-        UNSTABLE_addTemporalMarkerOffset(0.8) { + prepareForPuttingCone(-90.0) }
-        lineToConstantHeading(Vector2d(-35.5, 6.5)) // TODO: Preload cone score position
+        UNSTABLE_addTemporalMarkerOffset(0.55) { + prepareForPuttingCone(-85.0, Lift.highPos - 20) }
+        UNSTABLE_addTemporalMarkerOffset(1.8) { + IntakeArmPositionCmd(0.52) }
+        lineToConstantHeading(Vector2d(-35.5, 2.9)) // TODO: Preload cone score position
 
-        UNSTABLE_addTemporalMarkerOffset(0.0) { + IntakeArmPositionCmd(0.56) }
-        UNSTABLE_addTemporalMarkerOffset(0.5) { + IntakeWheelsReleaseCmd() }
-        waitSeconds(0.9)
+        UNSTABLE_addTemporalMarkerOffset(0.001) { + IntakeWheelsReleaseCmd() }
+        waitSeconds(0.22)
 
-        var liftHeight = 380.0
+        var liftHeight = 490.0 // TODO: altura de los rieles
 
-        UNSTABLE_addTemporalMarkerOffset(0.0) {
-            + IntakeArmPositionSaveCmd()
-        }
         UNSTABLE_addTemporalMarkerOffset(0.1) {
-            + IntakeSaveTiltCmd()
+            + IntakeArmPositionSaveCmd()
             + IntakeWheelsStopCmd()
 
-            + LiftMoveToPosCmd(liftHeight)
+            + LiftMoveToPosCmd(liftHeight + 180)
             + TurretMoveToAngleCmd(90.0)
         }
-
-        waitSeconds(0.5)
 
         // just park here when we won`t be doing any cycles
         if(cycles == 0) {
@@ -69,7 +64,7 @@ abstract class AutonomoA(
                 }
                 C -> {
                     lineToSplineHeading(Pose2d(-35.0, -33.0, Math.toRadians(0.0)))
-                    lineToConstantHeading(Vector2d(-11.5, -35.0))
+                    lineToConstantHeading(Vector2d(11.5, -35.0))
 
                     turn(Math.toRadians(-90.0))
                 }
@@ -78,33 +73,28 @@ abstract class AutonomoA(
             return@apply
         }
 
-        val grabX = -55.5 // TODO: Grab coordinates
-        var grabY = -7.3
+        val grabX = -57.5 // TODO: Grab coordinates
+        var grabY = -6.1
 
-        lineToSplineHeading(Pose2d(-37.0, grabY, Math.toRadians(90.0)))
+        setReversed(true)
+        splineToConstantHeading(Vector2d(-45.0, grabY), Math.toRadians(180.0))
 
-        UNSTABLE_addTemporalMarkerOffset(0.7) {
-            + deltaSequence {
-                - IntakeArmPositionCmd(0.47).dontBlock()
-                - waitForSeconds(0.3)
-                - IntakeTiltCmd(0.58).dontBlock()
-            }
-        }
-
-        UNSTABLE_addTemporalMarkerOffset(0.9) {
+        UNSTABLE_addTemporalMarkerOffset(0.2) {
+            + IntakeArmPositionCmd(0.46)
             + IntakeWheelsAbsorbCmd()
         }
 
-        UNSTABLE_addTemporalMarkerOffset(1.0) {
+        UNSTABLE_addTemporalMarkerOffset(0.4) {
             + IntakeArmPositionCmd(0.44)
         }
 
-        lineToSplineHeading(Pose2d(grabX, grabY, Math.toRadians(90.0)))
+        lineToConstantHeading(Vector2d(grabX, grabY))
+        setReversed(false)
 
-        waitSeconds(0.6)
+        waitSeconds(0.7)
 
         repeat(cycles - 1) {
-            liftHeight -= 50
+            liftHeight -= 100
 
             putOnHigh(90.0, liftHeight)
 
@@ -113,20 +103,16 @@ abstract class AutonomoA(
             }
 
             UNSTABLE_addTemporalMarkerOffset(1.0) {
-                + deltaSequence {
-                    - IntakeArmPositionCmd(0.46).dontBlock()
-                    - waitForSeconds(0.3)
-                    - IntakeTiltCmd(0.53).dontBlock()
-                }
+                + IntakeArmPositionCmd(0.46)
             }
 
-            UNSTABLE_addTemporalMarkerOffset(1.4) {
-                + IntakeArmPositionCmd(0.44)
+            UNSTABLE_addTemporalMarkerOffset(1.3) {
+                + IntakeArmPositionCmd(0.45)
             }
 
             lineToSplineHeading(Pose2d(grabX, grabY, Math.toRadians(90.0)))
 
-            waitSeconds(0.5)
+            waitSeconds(0.3)
 
             grabY -= 0.1
         }
@@ -135,13 +121,13 @@ abstract class AutonomoA(
 
         when(sleevePattern) {
             A -> {
-                lineToLinearHeading(Pose2d(-56.0, -7.3, Math.toRadians(90.0)))
+                lineToLinearHeading(Pose2d(-11.0, -7.7, Math.toRadians(90.0)))
             }
             B -> {
-                lineToLinearHeading(Pose2d(-35.0, -7.3, Math.toRadians(90.0)))
+                lineToLinearHeading(Pose2d(-36.0, -7.3, Math.toRadians(90.0)))
             }
-            C -> { 
-                lineToLinearHeading(Pose2d(-14.0, -7.3, Math.toRadians(90.0)))
+            C -> {
+                lineToLinearHeading(Pose2d(-60.0, -7.3, Math.toRadians(90.0)))
             }
         }
 
@@ -149,11 +135,11 @@ abstract class AutonomoA(
     }.build()
 
     fun prepareForPuttingCone(turretAngle: Double, liftPos: Int = Lift.highPos) = deltaSequence {
-        - TurretMoveToAngleCmd(turretAngle).dontBlock()
+        - LiftMoveToPosCmd(liftPos.toDouble()).dontBlock()
 
         - waitForSeconds(0.1)
 
-        - LiftMoveToPosCmd(liftPos.toDouble()).dontBlock()
+        - TurretMoveToAngleCmd(turretAngle).dontBlock()
     }
 
     fun TrajectorySequenceBuilder.putOnHigh(endingTurretAngle: Double, endingLiftPos: Double? = null) {
@@ -161,31 +147,31 @@ abstract class AutonomoA(
             + IntakeArmPositionSaveCmd()
             + IntakeWheelsHoldCmd()
         }
-        UNSTABLE_addTemporalMarkerOffset(0.3) {
-            + prepareForPuttingCone(0.0, Lift.highPos + 40)
+        UNSTABLE_addTemporalMarkerOffset(0.2) { // TODO: tiempo para que se mueva la torreta
+            + prepareForPuttingCone(-39.0, Lift.highPos)
         }
 
-        UNSTABLE_addTemporalMarkerOffset(1.5) {
-            + IntakeArmPositionCmd(0.57)
+        UNSTABLE_addTemporalMarkerOffset(1.2) {
+            + IntakeArmPositionCmd(0.52) // TODO: score position of intake arm
         }
-        lineToLinearHeading(Pose2d(-23.5, -6.3, Math.toRadians(90.0))) //TODO: tubo high
+        lineToConstantHeading(Vector2d(-29.0, -5.3)) // TODO: high pole coordinates
 
-        UNSTABLE_addTemporalMarkerOffset(0.5) {
+        UNSTABLE_addTemporalMarkerOffset(0.03) {
             + IntakeWheelsReleaseCmd()
         }
 
-        UNSTABLE_addTemporalMarkerOffset(1.0) {
+        UNSTABLE_addTemporalMarkerOffset(0.2) {
             + IntakeArmPositionSaveCmd()
-        }
-        UNSTABLE_addTemporalMarkerOffset(1.2) {
-            + IntakeSaveTiltCmd()
-            + IntakeWheelsStopCmd()
 
             + LiftMoveToPosCmd(endingLiftPos ?: Lift.lowPos.toDouble())
             + TurretMoveToAngleCmd(endingTurretAngle)
         }
 
-        waitSeconds(1.2)
+        UNSTABLE_addTemporalMarkerOffset(0.3) {
+            + IntakeWheelsStopCmd()
+        }
+
+        waitSeconds(0.27)
     }
 
 }
