@@ -26,7 +26,7 @@ abstract class AutonomoBase(val alliance: Alliance, val useVision: Boolean = tru
 
     override fun setup() {
         // #freeodo
-        hardware.odometryRetractServo.position = 0.0
+        hardware.odometryRetractServo.position = 0.8
 
         if (useVision) {
             //val cameraMonitorViewId = hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)
