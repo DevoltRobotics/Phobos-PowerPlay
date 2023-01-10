@@ -28,6 +28,8 @@ abstract class AutonomoBase(val alliance: Alliance, val useVision: Boolean = tru
         // #freeodo
         hardware.odometryRetractServo.position = 0.8
 
+        liftSubsystem.liftTurbo = 0.6
+
         if (useVision) {
             //val cameraMonitorViewId = hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)
             //webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName::class.java, "Webcam 1"), cameraMonitorViewId)

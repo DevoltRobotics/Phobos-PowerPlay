@@ -18,6 +18,8 @@ class LiftSubsystem(
     val liftController = PIDFController(Lift.liftPid)
     val downwardsController = PIDFController(Lift.downwardsPid)
 
+    var liftTurbo = 0.9
+
     var lastTopRed = 0
         private set
 
@@ -37,7 +39,7 @@ class LiftSubsystem(
             } else if(lastTopRed >= 800 && pow > 0) {
                 pow = 0.0
             } else {
-                pow *= 0.9
+                pow *= liftTurbo
                 pow += Lift.F
             }
 
@@ -70,8 +72,7 @@ object Lift {
     @JvmField var downwardsPid = PIDCoefficients(0.000000001, 0.0, 0.0)
 
     @JvmField var F = 0.08
-
-    @JvmField var highPos = 1385
+    @JvmField var highPos = 1460
     @JvmField var midPos = 1100
     @JvmField var lowPos = 780
 }

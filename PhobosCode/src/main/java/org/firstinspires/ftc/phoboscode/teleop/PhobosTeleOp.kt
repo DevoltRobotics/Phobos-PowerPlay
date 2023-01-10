@@ -134,13 +134,14 @@ class PhobosTeleOp : PhobosOpMode() {
                 - LiftMoveDownCmd().dontBlock()
                 - TurretMoveToAngleCmd(0.0).dontBlock()
                 - IntakeZeroTiltCmd().endRightAway()
+                - waitForSeconds(0.5)
                 - IntakeArmPositionMiddleCmd().endRightAway()
             }
         )
 
         // INTAKE
 
-        intakeArmSubsystem.defaultCommand = IntakeArmPositionIncrementCmd { (-gamepad2.right_stick_y).toDouble() * 0.015 }
+        intakeArmSubsystem.defaultCommand = IntakeArmPositionIncrementCmd { (-gamepad2.right_stick_y).toDouble() * 0.025 }
 
         //superGamepad2.toggleScheduleOn(Button.B,
         //        IntakeTiltCmd(0.7).endRightAway(),
@@ -192,6 +193,8 @@ class PhobosTeleOp : PhobosOpMode() {
             telemetry.addData("turret angle", turretSubsystem.angle)
             telemetry.addData("turret pos", hardware.turretMotor.currentPosition)
             telemetry.addData("turret target", turretSubsystem.controller.targetPosition)
+            telemetry.addData("turret velocity", hardware.turretMotor.velocity)
+            telemetry.addData("turret target velocity ", turretSubsystem.controller.targetVelocity)
 
             telemetry.addData("lift pos", hardware.sliderLeftMotor.currentPosition)
             telemetry.addData("lift target", liftSubsystem.liftController.targetPosition)

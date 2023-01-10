@@ -12,7 +12,8 @@ import kotlin.math.abs
 
 class TurretSubsystem(val motor: DcMotorEx) : DeltaSubsystem() {
 
-    val controller = PIDFController(Turret.pid)
+    var controller = createController()
+        private set
     val trackingController = PIDFController(Turret.trackingPid)
 
     val angle get() = motor.currentPosition / Turret.ticksPerAngle
@@ -31,18 +32,28 @@ class TurretSubsystem(val motor: DcMotorEx) : DeltaSubsystem() {
         motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
     }
 
+    fun createController() = PIDFController(Turret.pid, Turret.kV, Turret.kA)
+
+    fun recreateController() {
+        controller = createController()
+    }
+
 }
 
 
 @Config
 object Turret {
-    @JvmField var pid = PIDCoefficients(0.003, 0.0, 0.0)
+    @JvmField var pid = PIDCoefficients(0.002, 0.0001, 0.0001)
     @JvmField var trackingPid = PIDCoefficients(0.005, 0.0, 0.0)
 
     val ticksPerRev = 1120
     val gearRatio = 119.0 / 32
 
-    @JvmField var maxDegreesPerSecond = 90.0
+    @JvmField var kV = 0.0003
+    @JvmField var kA = 0.00001
+
+    @JvmField var maxDegreesPerSecond = 400.0
+    @JvmField var maxDegreesPerSecondPerSecond = 360.0
 
     val ticksPerAngle = (ticksPerRev * gearRatio) / 360.0
 }
