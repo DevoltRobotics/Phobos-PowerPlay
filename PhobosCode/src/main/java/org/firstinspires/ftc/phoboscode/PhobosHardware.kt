@@ -17,6 +17,8 @@ class PhobosHardware : SimpleHardware() {
     val intakeArmServo by hardware<Servo>("ia")
     val intakeTiltServo by hardware<Servo>("it")
 
+    val intakeUltrasonic by hardware<AnalogInput>("iu")
+
     val turretMotor by hardware<DcMotorEx>("tr")
 
     val sliderLeftMotor by hardware<DcMotorEx>("sl")

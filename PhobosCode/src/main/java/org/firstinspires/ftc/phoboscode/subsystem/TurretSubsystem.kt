@@ -6,8 +6,6 @@ import com.acmerobotics.roadrunner.control.PIDFController
 import com.github.serivesmejia.deltacommander.DeltaSubsystem
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
-import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveCmd
-import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveToAngleCmd
 import kotlin.math.abs
 
 class TurretSubsystem(val motor: DcMotorEx) : DeltaSubsystem() {
@@ -32,7 +30,7 @@ class TurretSubsystem(val motor: DcMotorEx) : DeltaSubsystem() {
         motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
     }
 
-    fun createController() = PIDFController(Turret.pid, Turret.kV, Turret.kA)
+    fun createController() = PIDFController(Turret.pid, Turret.kV, Turret.kA, kStatic = Turret.kStatic);
 
     fun recreateController() {
         controller = createController()
@@ -51,6 +49,7 @@ object Turret {
 
     @JvmField var kV = 0.0003
     @JvmField var kA = 0.00001
+    @JvmField var kStatic = 0.1
 
     @JvmField var maxDegreesPerSecond = 400.0
     @JvmField var maxDegreesPerSecondPerSecond = 360.0

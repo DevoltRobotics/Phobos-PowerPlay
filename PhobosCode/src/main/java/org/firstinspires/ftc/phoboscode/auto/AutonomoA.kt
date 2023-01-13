@@ -31,9 +31,9 @@ abstract class AutonomoA(
         }
 
         // prepare for putting preload cone
-        UNSTABLE_addTemporalMarkerOffset(0.55) { + prepareForPuttingCone(-90.0, Lift.highPos - 150) }
+        UNSTABLE_addTemporalMarkerOffset(0.55) { + prepareForPuttingCone(-80.0, Lift.highPos - 150) }
         UNSTABLE_addTemporalMarkerOffset(1.75) {
-            + IntakeArmAndTiltCmd(0.65, 0.58)
+            + IntakeArmAndTiltCmd(0.65, 0.52)
         }
         lineToConstantHeading(Vector2d(-35.7, 2.9)) // TODO: Preload cone score position
 
@@ -150,7 +150,7 @@ abstract class AutonomoA(
         - TurretMoveToAngleCmd(turretAngle).dontBlock()
     }
 
-    private var putOnHighX = -28.15
+    private var putOnHighX = -28.2
 
     fun TrajectorySequenceBuilder.putOnHigh(endingTurretAngle: Double, endingLiftPos: Double? = null) {
         UNSTABLE_addTemporalMarkerOffset(0.0) {
@@ -158,13 +158,13 @@ abstract class AutonomoA(
             + IntakeWheelsHoldCmd()
         }
         UNSTABLE_addTemporalMarkerOffset(0.2) { // TODO: tiempo para que se mueva la torreta
-            + prepareForPuttingCone(-35.0, Lift.highPos - 40)
+            + prepareForPuttingCone(-18.0, Lift.highPos - 40) // TODO: Angulo de la torreta para poner
         }
 
         UNSTABLE_addTemporalMarkerOffset(1.3) {
             + IntakeArmAndTiltCmd(0.53, 0.62) // TODO: score position of intake arm
         }
-        lineToConstantHeading(Vector2d(putOnHighX, -6.28)) // TODO: high pole coordinates
+        lineToConstantHeading(Vector2d(putOnHighX, -6.7)) // TODO: high pole coordinates
 
         UNSTABLE_addTemporalMarkerOffset(0.0005) {
             + IntakeWheelsReleaseCmd()
