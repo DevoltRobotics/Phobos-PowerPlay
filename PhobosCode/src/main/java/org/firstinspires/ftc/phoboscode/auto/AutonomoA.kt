@@ -31,9 +31,9 @@ abstract class AutonomoA(
         }
 
         // prepare for putting preload cone
-        UNSTABLE_addTemporalMarkerOffset(0.55) { + prepareForPuttingCone(-80.0, Lift.highPos - 150) }
-        UNSTABLE_addTemporalMarkerOffset(1.75) {
-            + IntakeArmAndTiltCmd(0.65, 0.52)
+        UNSTABLE_addTemporalMarkerOffset(0.55) { + prepareForPuttingCone(-90.0, Lift.highPos - 130) }
+        UNSTABLE_addTemporalMarkerOffset(1.79) {
+            + IntakeArmAndTiltCmd(0.69, 0.48)
         }
         lineToConstantHeading(Vector2d(-35.7, 2.9)) // TODO: Preload cone score position
 
@@ -46,8 +46,8 @@ abstract class AutonomoA(
             + IntakeArmPositionSaveCmd()
             + IntakeWheelsStopCmd()
 
-            + LiftMoveToPosCmd(liftHeight + 365)
-            + TurretMoveToAngleCmd(95.0)
+            + LiftMoveToPosCmd(liftHeight + 380)
+            + TurretMoveToAngleCmd(90.0)
         }
 
         // just park here when we won`t be doing any cycles
@@ -88,6 +88,10 @@ abstract class AutonomoA(
 
         UNSTABLE_addTemporalMarkerOffset(0.4) {
             + IntakeArmPositionCmd(0.4)
+        }
+
+        UNSTABLE_addTemporalMarkerOffset(1.0) {
+            + IntakeArmPositionCmd(0.55)
         }
 
         lineToConstantHeading(Vector2d(grabX, grabY))
@@ -158,11 +162,11 @@ abstract class AutonomoA(
             + IntakeWheelsHoldCmd()
         }
         UNSTABLE_addTemporalMarkerOffset(0.2) { // TODO: tiempo para que se mueva la torreta
-            + prepareForPuttingCone(-18.0, Lift.highPos - 40) // TODO: Angulo de la torreta para poner
+            + prepareForPuttingCone(-22.0, Lift.highPos - 40) // TODO: Angulo de la torreta para poner
         }
 
         UNSTABLE_addTemporalMarkerOffset(1.3) {
-            + IntakeArmAndTiltCmd(0.53, 0.62) // TODO: score position of intake arm
+            + IntakeArmAndTiltCmd(0.53, 0.45) // TODO: score position of intake arm
         }
         lineToConstantHeading(Vector2d(putOnHighX, -6.7)) // TODO: high pole coordinates
 
@@ -183,7 +187,7 @@ abstract class AutonomoA(
 
         waitSeconds(0.27)
 
-        putOnHighX += 0.04
+        putOnHighX += 0.09
     }
 
 }
