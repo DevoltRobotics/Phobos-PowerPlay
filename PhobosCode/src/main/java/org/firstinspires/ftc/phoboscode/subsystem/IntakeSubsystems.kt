@@ -17,6 +17,8 @@ class IntakeArmSubsystem(
         val tiltServo: Servo
 ) : DeltaSubsystem() {
 
+    var tiltSaveThreshold = 0.7
+
     private var isTiltedForLimit = false
 
     init {
@@ -26,7 +28,7 @@ class IntakeArmSubsystem(
     }
 
     override fun loop() {
-       if(armServo.position >= 0.7) {
+       if(armServo.position >= tiltSaveThreshold) {
             tiltServo.position = 0.9
             isTiltedForLimit = true
         } else if(isTiltedForLimit) {

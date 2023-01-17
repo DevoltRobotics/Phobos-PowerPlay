@@ -29,6 +29,7 @@ abstract class AutonomoBase(val alliance: Alliance, val useVision: Boolean = tru
         hardware.odometryRetractServo.position = 0.8
 
         liftSubsystem.liftTurbo = 0.6
+        intakeArmSubsystem.tiltSaveThreshold = 0.75
 
         if (useVision) {
             //val cameraMonitorViewId = hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)
@@ -80,7 +81,6 @@ abstract class AutonomoBase(val alliance: Alliance, val useVision: Boolean = tru
         }
 
         lastKnownAlliance = alliance
-        lastKnownPose = drive.poseEstimate
     }
 
     abstract fun sequence(sleevePattern: SleevePattern): TrajectorySequence

@@ -28,7 +28,7 @@ abstract class PhobosOpMode : DeltaOpMode() {
     }
 
     override fun runUpdate() {
-        hardware.drive.update()
+        lastKnownPose = hardware.drive.poseEstimate
     }
 
     abstract fun setup()

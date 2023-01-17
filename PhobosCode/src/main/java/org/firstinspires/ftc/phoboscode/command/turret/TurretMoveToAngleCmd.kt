@@ -36,7 +36,7 @@ open class TurretMoveToAngleCmd(var angle: Double, val endOnTargetReached: Boole
         sub.controller.targetVelocity = state.v
         sub.controller.targetAcceleration = state.a
 
-        sub.motor.power = sub.controller.update(sub.motor.currentPosition.toDouble(), sub.motor.velocity)
+        sub.motor.power = sub.controller.update(sub.motor.currentPosition.toDouble(), sub.motor.velocity) * 0.85
 
         if(endOnTargetReached && !sub.isOnTarget) {
             deltaScheduler.end(this)
