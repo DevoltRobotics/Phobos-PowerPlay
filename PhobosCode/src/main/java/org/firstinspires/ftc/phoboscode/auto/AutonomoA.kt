@@ -28,7 +28,7 @@ abstract class AutonomoA(
         }
 
         // prepare for putting preload cone
-        UNSTABLE_addTemporalMarkerOffset(0.3) { + prepareForPuttingCone(-50.0, Lift.highPos - 140) }
+        UNSTABLE_addTemporalMarkerOffset(0.3) { + prepareForPuttingCone(-50.0, Lift.highPos - 160) }
         UNSTABLE_addTemporalMarkerOffset(1.2) {
             + TurretMoveToAngleCmd(-90.0)
         }
@@ -85,18 +85,18 @@ abstract class AutonomoA(
         var grabY = -6.3
 
         setReversed(true)
-        splineToConstantHeading(Vector2d(-45.0, grabY), Math.toRadians(180.0))
+        splineToConstantHeading(Vector2d(-42.0, grabY), Math.toRadians(180.0))
 
         UNSTABLE_addTemporalMarkerOffset(0.2) {
             + IntakeArmAndZeroTiltCmd(0.43)
             + IntakeWheelsAbsorbCmd()
         }
 
-        UNSTABLE_addTemporalMarkerOffset(0.4) {
+        UNSTABLE_addTemporalMarkerOffset(1.5) {
             + IntakeArmPositionCmd(0.4)
         }
 
-        UNSTABLE_addTemporalMarkerOffset(1.0) {
+        UNSTABLE_addTemporalMarkerOffset(1.7) {
             + IntakeArmPositionCmd(0.55)
         }
 
@@ -138,13 +138,13 @@ abstract class AutonomoA(
 
         when(sleevePattern) {
             A -> {
-                lineToLinearHeading(Pose2d(-11.0, -7.7, Math.toRadians(90.0)))
+                lineToLinearHeading(Pose2d(-60.0, -7.3, Math.toRadians(90.0)))
             }
             B -> {
                 lineToLinearHeading(Pose2d(-34.5, -7.3, Math.toRadians(90.0)))
             }
             C -> {
-                lineToLinearHeading(Pose2d(-60.0, -7.3, Math.toRadians(90.0)))
+                lineToLinearHeading(Pose2d(-11.0, -7.7, Math.toRadians(90.0)))
             }
         }
 
