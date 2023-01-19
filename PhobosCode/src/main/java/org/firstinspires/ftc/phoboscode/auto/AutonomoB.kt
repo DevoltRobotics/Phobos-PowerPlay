@@ -32,17 +32,17 @@ abstract class AutonomoB(
             UNSTABLE_addTemporalMarkerOffset(0.5) {
                 + prepareForPuttingCone(
                     40.0,
-                    Lift.highPos - 110
+                    Lift.highPos - 120
                 )
             }
             UNSTABLE_addTemporalMarkerOffset(1.2) {
                 + TurretMoveToAngleCmd(88.0)
             }
             UNSTABLE_addTemporalMarkerOffset(1.75) {
-                + IntakeArmAndTiltCmd(0.73, 0.48)
+                + IntakeArmAndTiltCmd(0.7, 0.48)
             }
             lineToConstantHeading(
-                Vector2d(35.9, 2.3), // TODO: Preload cone score position
+                Vector2d(35.9, 2.5), // TODO: Preload cone score position
                 SampleMecanumDrive.getVelocityConstraint(
                     DriveConstants.MAX_VEL * 1.15,
                     DriveConstants.MAX_ANG_VEL,
@@ -58,16 +58,17 @@ abstract class AutonomoB(
 
             var liftHeight = 485.0 // TODO: altura de los rieles
 
-            UNSTABLE_addTemporalMarkerOffset(0.1) {
-                +IntakeArmPositionSaveCmd()
-                +IntakeWheelsStopCmd()
-
-                +LiftMoveToPosCmd(liftHeight + 415)
-                +TurretMoveToAngleCmd(-90.0)
-            }
-
             // just park here when we won`t be doing any cycles
             if (cycles == 0) {
+
+                UNSTABLE_addTemporalMarkerOffset(1.0) {
+                    +IntakeArmPositionSaveCmd()
+                    +IntakeWheelsStopCmd()
+
+                    +LiftMoveToPosCmd(0.0)
+                    +TurretMoveToAngleCmd(0.0)
+                }
+
                 // park
                 when (sleevePattern) {
                     A -> {
@@ -91,29 +92,29 @@ abstract class AutonomoB(
                 return@apply
             }
 
+            UNSTABLE_addTemporalMarkerOffset(0.1) {
+                +IntakeArmPositionSaveCmd()
+                +IntakeWheelsStopCmd()
+
+                + LiftMoveToPosCmd(liftHeight + 425) // TODO: first cone grab height
+                + TurretMoveToAngleCmd(-90.0)
+            }
+
             var grabX = 57.0 // TODO: Grab coordinates
             var grabY = -6.3
 
             setReversed(true)
-            splineToConstantHeading(Vector2d(45.0, grabY), Math.toRadians(0.0))
+            splineToConstantHeading(Vector2d(40.0, grabY), Math.toRadians(0.0))
 
             UNSTABLE_addTemporalMarkerOffset(0.2) {
                 + IntakeArmAndZeroTiltCmd(0.43)
                 + IntakeWheelsAbsorbCmd()
             }
 
-            UNSTABLE_addTemporalMarkerOffset(0.4) {
-                + IntakeArmPositionCmd(0.4)
-            }
-
-            UNSTABLE_addTemporalMarkerOffset(1.0) {
-                + IntakeArmPositionCmd(0.55)
-            }
-
             lineToConstantHeading(Vector2d(grabX, grabY))
             setReversed(false)
 
-            waitSeconds(0.7)
+            waitSeconds(0.75)
 
             repeat(cycles - 1) {
                 liftHeight -= 130
