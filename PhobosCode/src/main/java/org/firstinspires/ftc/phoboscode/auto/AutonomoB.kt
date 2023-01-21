@@ -32,13 +32,13 @@ abstract class AutonomoB(
             UNSTABLE_addTemporalMarkerOffset(0.5) {
                 + prepareForPuttingCone(
                     40.0,
-                    Lift.highPos - 130
+                    Lift.highPos - 120
                 )
             }
             UNSTABLE_addTemporalMarkerOffset(1.2) {
                 + TurretMoveToAngleCmd(88.0)
             }
-            UNSTABLE_addTemporalMarkerOffset(1.75) {
+            UNSTABLE_addTemporalMarkerOffset(1.6) {
                 + IntakeArmAndTiltCmd(0.6, 0.48)
             }
             lineToConstantHeading(
@@ -155,7 +155,14 @@ abstract class AutonomoB(
                     lineToLinearHeading(Pose2d(36.0, -7.3, Math.toRadians(90.0)))
                 }
                 C -> {
-                    lineToLinearHeading(Pose2d(60.0, -7.3, Math.toRadians(90.0)))
+                    lineToLinearHeading(Pose2d(65.0, -7.3, Math.toRadians(90.0)),
+                        SampleMecanumDrive.getVelocityConstraint(
+                            DriveConstants.MAX_VEL * 1.5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH
+                        ),
+                        SampleMecanumDrive.getAccelerationConstraint(
+                            DriveConstants.MAX_ACCEL * 1.5
+                        )
+                    )
                 }
             }
 
