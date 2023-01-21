@@ -32,17 +32,17 @@ abstract class AutonomoB(
             UNSTABLE_addTemporalMarkerOffset(0.5) {
                 + prepareForPuttingCone(
                     40.0,
-                    Lift.highPos - 120
+                    Lift.highPos - 130
                 )
             }
             UNSTABLE_addTemporalMarkerOffset(1.2) {
                 + TurretMoveToAngleCmd(88.0)
             }
             UNSTABLE_addTemporalMarkerOffset(1.75) {
-                + IntakeArmAndTiltCmd(0.7, 0.48)
+                + IntakeArmAndTiltCmd(0.6, 0.48)
             }
             lineToConstantHeading(
-                Vector2d(35.9, 2.5), // TODO: Preload cone score position
+                Vector2d(35.9, 3.0), // TODO: Preload cone score position
                 SampleMecanumDrive.getVelocityConstraint(
                     DriveConstants.MAX_VEL * 1.15,
                     DriveConstants.MAX_ANG_VEL,
@@ -101,7 +101,7 @@ abstract class AutonomoB(
             }
 
             var grabX = 57.0 // TODO: Grab coordinates
-            var grabY = -6.3
+            var grabY = -6.1
 
             setReversed(true)
             splineToConstantHeading(Vector2d(40.0, grabY), Math.toRadians(0.0))
@@ -172,7 +172,7 @@ abstract class AutonomoB(
         -TurretMoveToAngleCmd(turretAngle).dontBlock()
     }
 
-    private var putOnHighX = 28.2
+    private var putOnHighX = 26.5
     private var elevatorOffset = 5.0
 
     fun TrajectorySequenceBuilder.putOnHigh(
@@ -185,7 +185,7 @@ abstract class AutonomoB(
         }
         UNSTABLE_addTemporalMarkerOffset(0.2) { // TODO: tiempo para que se mueva la torreta
             +prepareForPuttingCone(
-                28.0 /*11.5*/,
+                36.0 /*11.5*/,
                 (Lift.highPos + elevatorOffset).roundToInt()
             ) // TODO: Angulo de la torreta para poner
         }
@@ -196,7 +196,7 @@ abstract class AutonomoB(
         UNSTABLE_addTemporalMarkerOffset(1.3) {
             +IntakeArmAndTiltCmd(0.53, 0.45) // TODO: score position of intake arm
         }
-        lineToConstantHeading(Vector2d(putOnHighX, -6.65)) // TODO: high pole coordinates
+        lineToConstantHeading(Vector2d(putOnHighX, -5.1)) // TODO: high pole coordinates
 
         UNSTABLE_addTemporalMarkerOffset(0.0005) {
             +IntakeWheelsReleaseCmd()
