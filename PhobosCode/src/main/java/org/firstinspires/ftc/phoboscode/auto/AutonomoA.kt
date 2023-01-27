@@ -30,7 +30,7 @@ abstract class AutonomoA(
         // prepare for putting preload cone
         UNSTABLE_addTemporalMarkerOffset(0.3) { + prepareForPuttingCone(-50.0, Lift.highPos - 100) }
         UNSTABLE_addTemporalMarkerOffset(1.2) {
-            + TurretMoveToAngleCmd(-88.0)
+            + TurretMoveToAngleCmd(-75.0)
         }
         UNSTABLE_addTemporalMarkerOffset(1.6) {
             + IntakeArmAndTiltCmd(0.6, 0.48)
@@ -211,7 +211,7 @@ abstract class AutonomoA(
 
         waitSeconds(0.27)
 
-        putOnHighX += 0.08
+        putOnHighX += 0.05
         elevatorOffset += 7
     }
 

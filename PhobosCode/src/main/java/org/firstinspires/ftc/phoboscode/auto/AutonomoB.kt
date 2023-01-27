@@ -32,7 +32,7 @@ abstract class AutonomoB(
             UNSTABLE_addTemporalMarkerOffset(0.5) {
                 + prepareForPuttingCone(
                     40.0,
-                    Lift.highPos - 120
+                    Lift.highPos - 80
                 )
             }
             UNSTABLE_addTemporalMarkerOffset(1.2) {
@@ -42,7 +42,7 @@ abstract class AutonomoB(
                 + IntakeArmAndTiltCmd(0.6, 0.48)
             }
             lineToConstantHeading(
-                Vector2d(35.9, 3.0), // TODO: Preload cone score position
+                Vector2d(34.0, 3.9), // TODO: Preload cone score position
                 SampleMecanumDrive.getVelocityConstraint(
                     DriveConstants.MAX_VEL * 1.15,
                     DriveConstants.MAX_ANG_VEL,
@@ -96,7 +96,7 @@ abstract class AutonomoB(
                 +IntakeArmPositionSaveCmd()
                 +IntakeWheelsStopCmd()
 
-                + LiftMoveToPosCmd(liftHeight + 425) // TODO: first cone grab height
+                + LiftMoveToPosCmd(liftHeight + 435) // TODO: first cone grab height
                 + TurretMoveToAngleCmd(-90.0)
             }
 
@@ -179,7 +179,7 @@ abstract class AutonomoB(
         -TurretMoveToAngleCmd(turretAngle).dontBlock()
     }
 
-    private var putOnHighX = 26.5
+    private var putOnHighX = 26.8
     private var elevatorOffset = 5.0
 
     fun TrajectorySequenceBuilder.putOnHigh(
