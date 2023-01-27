@@ -184,7 +184,7 @@ abstract class AutonomoA(
 
         UNSTABLE_addTemporalMarkerOffset(0.2) { // TODO: tiempo para que se mueva la torreta
             +prepareForPuttingCone(
-                -20.0 /*11.5*/,
+                -14.0 /*11.5*/,
                 (Lift.highPos + elevatorOffset).roundToInt()
             ) // TODO: Angulo de la torreta para poner
         }
