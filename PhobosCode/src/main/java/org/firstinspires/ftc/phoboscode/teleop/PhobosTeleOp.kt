@@ -214,7 +214,7 @@ class PhobosTeleOp : PhobosOpMode() {
 
             telemetry.addData("arm", hardware.intakeArmServo.position)
             telemetry.addData("tilt", hardware.intakeTiltServo.position)
-            telemetry.addData("distance", hardware.intakeUltrasonic.voltage / 0.01 * 58)
+            telemetry.addData("distance", (hardware.intakeUltrasonic.voltage / 0.185) * 13.25)
             telemetry.addData("distance voltage", hardware.intakeUltrasonic.voltage)
 
             telemetry.update()
