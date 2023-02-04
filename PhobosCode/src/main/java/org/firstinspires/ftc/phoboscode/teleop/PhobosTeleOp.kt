@@ -4,21 +4,21 @@ import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.github.serivesmejia.deltacommander.command.DeltaInstantCmd
 import com.github.serivesmejia.deltacommander.command.DeltaRunCmd
-import com.github.serivesmejia.deltacommander.dsl.deltaSequence
 import com.github.serivesmejia.deltacommander.dsl.deltaSequenceInstant
 import com.github.serivesmejia.deltacommander.endRightAway
 import com.github.serivesmejia.deltaevent.gamepad.button.Button
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.phoboscode.PhobosOpMode
+import org.firstinspires.ftc.phoboscode.Side
 import org.firstinspires.ftc.phoboscode.command.intake.*
 import org.firstinspires.ftc.phoboscode.command.lift.*
 import org.firstinspires.ftc.phoboscode.command.mecanum.FieldCentricMecanumCmd
 import org.firstinspires.ftc.phoboscode.command.turret.TurretConeTrackingCmd
 import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveCmd
 import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveToAngleCmd
+import org.firstinspires.ftc.phoboscode.hardware.UltraSonicRelocalizer
 import org.firstinspires.ftc.phoboscode.lastKnownAlliance
 import org.firstinspires.ftc.phoboscode.lastKnownPose
-import org.firstinspires.ftc.phoboscode.rr.drive.StandardTrackingWheelLocalizer
 import org.firstinspires.ftc.phoboscode.vision.ConeTrackingPipeline
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.FocusControl
@@ -31,6 +31,8 @@ import kotlin.math.abs
 class PhobosTeleOp : PhobosOpMode() {
 
     val coneTrackingPipeline = ConeTrackingPipeline()
+
+    val ultraSonicRelocalizer by lazy { UltraSonicRelocalizer(hardware.leftMBUltraSonic, hardware.rightMBUltraSonic, Side.LEFT) }
 
     override fun setup() {
         // retract odo
@@ -214,8 +216,10 @@ class PhobosTeleOp : PhobosOpMode() {
 
             telemetry.addData("arm", hardware.intakeArmServo.position)
             telemetry.addData("tilt", hardware.intakeTiltServo.position)
-            telemetry.addData("distance", (hardware.intakeUltrasonic.voltage / 0.185) * 13.25)
-            telemetry.addData("distance voltage", hardware.intakeUltrasonic.voltage)
+            telemetry.addData("relocalized left x", ultraSonicRelocalizer.xEstimate)
+            telemetry.addData("left ultrasonic", hardware.leftMBUltraSonic.distance)
+
+            ultraSonicRelocalizer.relocalize(hardware.drive.localizer)
 
             telemetry.update()
         }
