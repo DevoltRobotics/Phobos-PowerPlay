@@ -28,7 +28,7 @@ abstract class AutonomoA(
         }
 
         // prepare for putting preload cone
-        UNSTABLE_addTemporalMarkerOffset(0.3) { + prepareForPuttingCone(-50.0, Lift.highPos - 100) }
+        UNSTABLE_addTemporalMarkerOffset(0.3) { + prepareForPuttingCone(-50.0, Lift.highPos - 110) } //TODO: altura elevador primer cono
         UNSTABLE_addTemporalMarkerOffset(1.2) {
             + TurretMoveToAngleCmd(-75.0)
         }
@@ -143,12 +143,12 @@ abstract class AutonomoA(
 
         when(sleevePattern) {
             A -> {
-                lineToLinearHeading(Pose2d(-68.0, -7.3, Math.toRadians(90.0)),
+                lineToLinearHeading(Pose2d(-60.0, -7.3, Math.toRadians(90.0)),
                     SampleMecanumDrive.getVelocityConstraint(
-                        DriveConstants.MAX_VEL * 1.5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH
+                        DriveConstants.MAX_VEL * 2.0, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH
                     ),
                     SampleMecanumDrive.getAccelerationConstraint(
-                        DriveConstants.MAX_ACCEL * 1.5
+                        DriveConstants.MAX_ACCEL * 2.0
                     )
                 )
             }
@@ -192,7 +192,7 @@ abstract class AutonomoA(
         UNSTABLE_addTemporalMarkerOffset(1.3) {
             + IntakeArmAndTiltCmd(0.53, 0.45) // TODO: score position of intake arm
         }
-        lineToConstantHeading(Vector2d(putOnHighX, -6.2)) // TODO: high pole coordinates
+        lineToConstantHeading(Vector2d(putOnHighX, -6.7)) // TODO: high pole coordinates
 
         UNSTABLE_addTemporalMarkerOffset(0.0005) {
             + IntakeWheelsReleaseCmd()

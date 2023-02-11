@@ -155,12 +155,12 @@ abstract class AutonomoB(
                     lineToLinearHeading(Pose2d(36.0, -7.3, Math.toRadians(90.0)))
                 }
                 C -> {
-                    lineToLinearHeading(Pose2d(65.0, -7.3, Math.toRadians(90.0)),
+                    lineToLinearHeading(Pose2d(64.0, -7.3, Math.toRadians(90.0)),
                         SampleMecanumDrive.getVelocityConstraint(
                             DriveConstants.MAX_VEL * 1.5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH
                         ),
                         SampleMecanumDrive.getAccelerationConstraint(
-                            DriveConstants.MAX_ACCEL * 1.5
+                            DriveConstants.MAX_ACCEL * 2.0
                         )
                     )
                 }
@@ -192,7 +192,7 @@ abstract class AutonomoB(
         }
         UNSTABLE_addTemporalMarkerOffset(0.2) { // TODO: tiempo para que se mueva la torreta
             +prepareForPuttingCone(
-                36.0 /*11.5*/,
+                35.5 /*11.5*/,
                 (Lift.highPos + elevatorOffset).roundToInt()
             ) // TODO: Angulo de la torreta para poner
         }
@@ -203,7 +203,7 @@ abstract class AutonomoB(
         UNSTABLE_addTemporalMarkerOffset(1.3) {
             +IntakeArmAndTiltCmd(0.53, 0.45) // TODO: score position of intake arm
         }
-        lineToConstantHeading(Vector2d(putOnHighX, -5.1)) // TODO: high pole coordinates
+        lineToConstantHeading(Vector2d(putOnHighX, -6.2)) // TODO: high pole coordinates
 
         UNSTABLE_addTemporalMarkerOffset(0.0005) {
             +IntakeWheelsReleaseCmd()
