@@ -21,13 +21,13 @@ open class TurretMoveToAngleCmd(var angle: Double, val endOnTargetReached: Boole
 
     override fun init() {
         sub.controller.reset()
-        timer.reset()
 
         motionProfile = generateProfile()
         sub.recreateController()
     }
 
     override fun run() {
+
         val t = timer.seconds()
 
         val state = motionProfile[t]
@@ -49,7 +49,7 @@ open class TurretMoveToAngleCmd(var angle: Double, val endOnTargetReached: Boole
 
     private fun generateProfile() = MotionProfileGenerator.generateSimpleMotionProfile(
         MotionState(sub.motor.currentPosition.toDouble(), 0.0, 0.0),
-        MotionState(angle * Turret.ticksPerAngle, Turret.maxDegreesPerSecond * Turret.ticksPerAngle * sign(angle), Turret.maxDegreesPerSecondPerSecond * Turret.ticksPerAngle * sign(angle)),
+        MotionState(angle * Turret.ticksPerAngle, 0.0, 0.0),
         Turret.maxDegreesPerSecond * Turret.ticksPerAngle,
         Turret.maxDegreesPerSecondPerSecond * Turret.ticksPerAngle
     )
