@@ -2,10 +2,10 @@ package org.firstinspires.ftc.phoboscode.hardware
 
 import com.qualcomm.robotcore.hardware.AnalogInput
 
-class MBUltraSonic(private val input: AnalogInput) {
+class MBUltraSonic(private val input: AnalogInput, private val inchesPerVolt: Double) {
 
-    var voltageRatio = (3.3 / input.maxVoltage)
+    var voltageRatio = 1.0//(3.3 / input.maxVoltage)
 
-    val distance get() = (input.voltage / (0.185 * voltageRatio)) * 13.25
+    val distance get() = input.voltage * (inchesPerVolt * voltageRatio)
 
 }

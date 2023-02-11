@@ -67,8 +67,6 @@ abstract class AutonomoBase(val alliance: Alliance, val side: Side, val useVisio
 
         drive.poseEstimate = startPose
         drive.followTrajectorySequenceAsync(sequence(pipeline.lastPattern))
-
-        relocalizeXEstimate()
     }
 
     override fun runUpdate() {

@@ -14,10 +14,10 @@ class PhobosHardware : SimpleHardware() {
     val drive by lazy { SampleMecanumDrive(hardwareMap) }
 
     val leftUltrasonic by hardware<AnalogInput>("lu")
-    val leftMBUltraSonic by lazy { MBUltraSonic(leftUltrasonic) }
+    val leftMBUltraSonic by lazy { MBUltraSonic(leftUltrasonic, (13.25 / 0.185)) }
 
     val rightUltrasonic by hardware<AnalogInput>("ru")
-    val rightMBUltraSonic by lazy { MBUltraSonic(rightUltrasonic) }
+    val rightMBUltraSonic by lazy { MBUltraSonic(rightUltrasonic, (28.5 / 0.405)) }
 
     val intakeLeftServo by hardware<CRServo>("il")
     val intakeRightServo by hardware<CRServo>("ir")
