@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.github.serivesmejia.deltacommander.dsl.deltaSequence
 import org.firstinspires.ftc.phoboscode.Alliance
+import org.firstinspires.ftc.phoboscode.Side
 import org.firstinspires.ftc.phoboscode.command.intake.*
 import org.firstinspires.ftc.phoboscode.command.lift.LiftMoveToPosCmd
 import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveToAngleCmd
@@ -18,19 +19,21 @@ import kotlin.math.roundToInt
 abstract class AutonomoA(
     alliance: Alliance,
     val cycles: Int = 5
-) : AutonomoBase(alliance) {
+) : AutonomoBase(alliance, Side.LEFT) {
 
     override val startPose = Pose2d(-35.0, -57.5, Math.toRadians(90.0))
 
     override fun sequence(sleevePattern: SleevePattern) = drive.trajectorySequenceBuilder(startPose).apply {
         UNSTABLE_addTemporalMarkerOffset(0.0) {
+            relocalizeXEstimate(offset = -1.0)
             + IntakeArmPositionSaveCmd()
         }
 
         // prepare for putting preload cone
         UNSTABLE_addTemporalMarkerOffset(0.3) { + prepareForPuttingCone(-50.0, Lift.highPos - 110) } //TODO: altura elevador primer cono
+
         UNSTABLE_addTemporalMarkerOffset(1.2) {
-            + TurretMoveToAngleCmd(-75.0)
+            + TurretMoveToAngleCmd(-90.0)
         }
         UNSTABLE_addTemporalMarkerOffset(1.6) {
             + IntakeArmAndTiltCmd(0.6, 0.48)
@@ -174,7 +177,7 @@ abstract class AutonomoA(
     }
 
     private var putOnHighX = -25.5
-    private var elevatorOffset = 5.0
+    private var elevatorOffset = 15.0
 
     fun TrajectorySequenceBuilder.putOnHigh(endingTurretAngle: Double, endingLiftPos: Double? = null) {
         UNSTABLE_addTemporalMarkerOffset(0.0) {
@@ -184,7 +187,7 @@ abstract class AutonomoA(
 
         UNSTABLE_addTemporalMarkerOffset(0.2) { // TODO: tiempo para que se mueva la torreta
             +prepareForPuttingCone(
-                -14.0 /*11.5*/,
+                -20.0 /*11.5*/,
                 (Lift.highPos + elevatorOffset).roundToInt()
             ) // TODO: Angulo de la torreta para poner
         }

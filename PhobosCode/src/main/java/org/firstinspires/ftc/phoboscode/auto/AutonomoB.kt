@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.github.serivesmejia.deltacommander.dsl.deltaSequence
 import org.firstinspires.ftc.phoboscode.Alliance
+import org.firstinspires.ftc.phoboscode.Side
 import org.firstinspires.ftc.phoboscode.command.intake.*
 import org.firstinspires.ftc.phoboscode.command.lift.LiftMoveToPosCmd
 import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveToAngleCmd
@@ -18,7 +19,7 @@ import kotlin.math.roundToInt
 abstract class AutonomoB(
     alliance: Alliance,
     val cycles: Int = 5
-) : AutonomoBase(alliance) {
+) : AutonomoBase(alliance, Side.RIGHT) {
 
     override val startPose = Pose2d(35.0, -58.0, Math.toRadians(90.0))
 

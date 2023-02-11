@@ -49,7 +49,7 @@ object Turret {
 
     @JvmField var kV = 0.0003
     @JvmField var kA = 0.00001
-    @JvmField var kStatic = 0.1
+    @JvmField var kStatic = 0.2
 
     @JvmField var maxDegreesPerSecond = 400.0
     @JvmField var maxDegreesPerSecondPerSecond = 360.0
