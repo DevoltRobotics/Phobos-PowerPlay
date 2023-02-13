@@ -32,8 +32,8 @@ abstract class AutonomoB(
             // prepare for putting preload cone
             UNSTABLE_addTemporalMarkerOffset(0.5) {
                 + prepareForPuttingCone(
-                    40.0,
-                    Lift.highPos - 80
+                    90.0,
+                    Lift.highPos - 70
                 )
             }
             UNSTABLE_addTemporalMarkerOffset(1.2) {
@@ -101,7 +101,7 @@ abstract class AutonomoB(
                 + TurretMoveToAngleCmd(-90.0)
             }
 
-            var grabX = 57.0 // TODO: Grab coordinates
+            var grabX = 56.5 // TODO: Grab coordinates
             var grabY = -6.1
 
             setReversed(true)
@@ -173,11 +173,11 @@ abstract class AutonomoB(
         }.build()
 
     fun prepareForPuttingCone(turretAngle: Double, liftPos: Int = Lift.highPos) = deltaSequence {
-        -LiftMoveToPosCmd(liftPos.toDouble()).dontBlock()
+        - TurretMoveToAngleCmd(turretAngle).dontBlock()
 
-        -waitForSeconds(0.1)
+        - waitForSeconds(0.2)
 
-        -TurretMoveToAngleCmd(turretAngle).dontBlock()
+        - LiftMoveToPosCmd(liftPos.toDouble()).dontBlock()
     }
 
     private var putOnHighX = 26.8

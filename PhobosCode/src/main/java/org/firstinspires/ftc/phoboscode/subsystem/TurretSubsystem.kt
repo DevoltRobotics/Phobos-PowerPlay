@@ -47,12 +47,12 @@ object Turret {
     val ticksPerRev = 1120
     val gearRatio = 119.0 / 32
 
-    @JvmField var kV = 0.0003
+    @JvmField var kV = 0.00027
     @JvmField var kA = 0.00001
-    @JvmField var kStatic = 0.2
+    @JvmField var kStatic = 0.05
 
-    @JvmField var maxDegreesPerSecond = 400.0
-    @JvmField var maxDegreesPerSecondPerSecond = 360.0
+    @JvmField var maxDegreesPerSecond = 360.0
+    @JvmField var maxDegreesPerSecondPerSecond = 290.0
 
     val ticksPerAngle = (ticksPerRev * gearRatio) / 360.0
 }

@@ -25,20 +25,17 @@ abstract class AutonomoA(
 
     override fun sequence(sleevePattern: SleevePattern) = drive.trajectorySequenceBuilder(startPose).apply {
         UNSTABLE_addTemporalMarkerOffset(0.0) {
-            relocalizeXEstimate(offset = -1.0)
+            relocalizeXEstimate(0.5)
             + IntakeArmPositionSaveCmd()
         }
 
         // prepare for putting preload cone
-        UNSTABLE_addTemporalMarkerOffset(0.3) { + prepareForPuttingCone(-50.0, Lift.highPos - 110) } //TODO: altura elevador primer cono
+        UNSTABLE_addTemporalMarkerOffset(0.4) { + prepareForPuttingCone(-90.0, Lift.highPos - 160) } //TODO: altura elevador primer cono
 
-        UNSTABLE_addTemporalMarkerOffset(1.2) {
-            + TurretMoveToAngleCmd(-90.0)
-        }
-        UNSTABLE_addTemporalMarkerOffset(1.6) {
+        UNSTABLE_addTemporalMarkerOffset(1.7) {
             + IntakeArmAndTiltCmd(0.6, 0.48)
         }
-        lineToConstantHeading(Vector2d(-35.9, 3.6), // TODO: Preload cone score position
+        lineToConstantHeading(Vector2d(-35.9, 3.2), // TODO: Preload cone score position
             SampleMecanumDrive.getVelocityConstraint(
                 DriveConstants.MAX_VEL * 1.15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH
             ),
@@ -85,14 +82,17 @@ abstract class AutonomoA(
         }
 
         UNSTABLE_addTemporalMarkerOffset(0.1) {
-            +IntakeArmPositionSaveCmd()
-            +IntakeWheelsStopCmd()
-
-            + LiftMoveToPosCmd(liftHeight + 425) // TODO: first cone grab height
-            + TurretMoveToAngleCmd(95.0)
+            + IntakeArmPositionSaveCmd()
+            + IntakeWheelsStopCmd()
+            + TurretMoveToAngleCmd(90.0)
+            + LiftMoveToPosCmd(liftHeight + 700) // TODO: first cone grab height
         }
 
-        var grabX = -57.8 // TODO: Grab coordinates
+        UNSTABLE_addTemporalMarkerOffset(0.15) {
+            + LiftMoveToPosCmd(liftHeight + 400) // TODO: first cone grab height
+        }
+
+        var grabX = -57.3 // TODO: Grab coordinates
         var grabY = -6.1
 
         setReversed(true)
@@ -111,7 +111,7 @@ abstract class AutonomoA(
         repeat(cycles - 1) {
             liftHeight -= 130
 
-            putOnHigh(95.0, liftHeight)
+            putOnHigh(90.0, liftHeight)
 
             UNSTABLE_addTemporalMarkerOffset(0.8) {
                 + IntakeWheelsAbsorbCmd()
@@ -131,15 +131,12 @@ abstract class AutonomoA(
 
             lineToSplineHeading(Pose2d(grabX, grabY, Math.toRadians(90.0)))
 
-            waitSeconds(0.3)
+            waitSeconds(0.2)
 
-            grabY -= 0.02
-
-            grabX += if(cycles == 5) {
-                0.3
-            } else {
-                0.08
+            if(it == 1) {
+                grabX += 0.2
             }
+            grabY -= 0.02
         }
 
         putOnHigh(endingLiftPos = 0.0, endingTurretAngle = 0.0)
@@ -169,15 +166,15 @@ abstract class AutonomoA(
     }.build()
 
     fun prepareForPuttingCone(turretAngle: Double, liftPos: Int = Lift.highPos) = deltaSequence {
-        - LiftMoveToPosCmd(liftPos.toDouble()).dontBlock()
-
-        - waitForSeconds(0.1)
-
         - TurretMoveToAngleCmd(turretAngle).dontBlock()
+
+        - waitForSeconds(0.2)
+
+        - LiftMoveToPosCmd(liftPos.toDouble()).dontBlock()
     }
 
     private var putOnHighX = -25.5
-    private var elevatorOffset = 15.0
+    private var elevatorOffset = -50.0
 
     fun TrajectorySequenceBuilder.putOnHigh(endingTurretAngle: Double, endingLiftPos: Double? = null) {
         UNSTABLE_addTemporalMarkerOffset(0.0) {
@@ -192,10 +189,10 @@ abstract class AutonomoA(
             ) // TODO: Angulo de la torreta para poner
         }
 
-        UNSTABLE_addTemporalMarkerOffset(1.3) {
+        UNSTABLE_addTemporalMarkerOffset(1.35) {
             + IntakeArmAndTiltCmd(0.53, 0.45) // TODO: score position of intake arm
         }
-        lineToConstantHeading(Vector2d(putOnHighX, -6.7)) // TODO: high pole coordinates
+        lineToConstantHeading(Vector2d(putOnHighX, -5.9)) // TODO: high pole coordinates
 
         UNSTABLE_addTemporalMarkerOffset(0.0005) {
             + IntakeWheelsReleaseCmd()
@@ -214,7 +211,7 @@ abstract class AutonomoA(
 
         waitSeconds(0.27)
 
-        putOnHighX += 0.05
+        putOnHighX += 0.03
         elevatorOffset += 7
     }
 

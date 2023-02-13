@@ -183,7 +183,7 @@ open class PhobosTeleOp @JvmOverloads constructor(val drivetrainEnabled: Boolean
             deltaSequenceInstant {
                 - IntakeArmPositionSaveCmd().endRightAway().dontBlock()
                 - waitForSeconds(0.2)
-                - TurretMoveToAngleCmd(20.0).dontBlock()
+                - TurretMoveToAngleCmd(90.0).dontBlock()
             }
         )
 
@@ -191,7 +191,7 @@ open class PhobosTeleOp @JvmOverloads constructor(val drivetrainEnabled: Boolean
             deltaSequenceInstant {
                 - IntakeArmPositionSaveCmd().endRightAway().dontBlock()
                 - waitForSeconds(0.2)
-                - TurretMoveToAngleCmd(-20.0).dontBlock()
+                - TurretMoveToAngleCmd(-90.0).dontBlock()
             }
         )
 
