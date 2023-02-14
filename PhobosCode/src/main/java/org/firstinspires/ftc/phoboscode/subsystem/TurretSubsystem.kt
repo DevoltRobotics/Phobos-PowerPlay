@@ -6,9 +6,10 @@ import com.acmerobotics.roadrunner.control.PIDFController
 import com.github.serivesmejia.deltacommander.DeltaSubsystem
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
+import com.qualcomm.robotcore.hardware.VoltageSensor
 import kotlin.math.abs
 
-class TurretSubsystem(val motor: DcMotorEx) : DeltaSubsystem() {
+class TurretSubsystem(val motor: DcMotorEx, val voltageSensor: VoltageSensor) : DeltaSubsystem() {
 
     var controller = createController()
         private set

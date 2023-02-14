@@ -27,7 +27,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory
 import org.openftc.easyopencv.OpenCvCameraRotation
 import kotlin.math.abs
 
-@TeleOp(name = "Nacho Libre")
+@TeleOp(name = "Nacho Libre", group = "#1")
 open class PhobosTeleOp @JvmOverloads constructor(val drivetrainEnabled: Boolean = true) : PhobosOpMode() {
 
     val coneTrackingPipeline = ConeTrackingPipeline()
@@ -157,7 +157,7 @@ open class PhobosTeleOp @JvmOverloads constructor(val drivetrainEnabled: Boolean
 
         // TURRET
 
-        turretSubsystem.defaultCommand = TurretMoveCmd { (gamepad2.left_trigger - gamepad2.right_trigger).toDouble() * 0.65 }
+        turretSubsystem.defaultCommand = TurretMoveCmd { (gamepad2.left_trigger - gamepad2.right_trigger).toDouble() * 0.7 }
 
         + DeltaRunCmd {
             if(abs(gamepad2.left_trigger - gamepad2.right_trigger) >= 0.5) {
@@ -235,5 +235,5 @@ open class PhobosTeleOp @JvmOverloads constructor(val drivetrainEnabled: Boolean
 
 }
 
-@TeleOp(name = "Behind the Bot")
+@TeleOp(name = "Behind the Bot", group = "#2")
 class NonDrivetrainTeleOp : PhobosTeleOp(drivetrainEnabled = false)

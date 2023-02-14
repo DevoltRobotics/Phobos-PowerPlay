@@ -88,7 +88,12 @@ abstract class AutonomoBase(val alliance: Alliance, val side: Side, val useVisio
     }
 
     fun relocalizeXEstimate(offset: Double = 0.0) {
+        val initialX = drive.localizer.poseEstimate.x
+
         ultraSonicRelocalizer.relocalize(drive.localizer, offset)
+
+        drive.localizer.poseEstimate = drive.localizer.poseEstimate.copy(x = (initialX + drive.localizer.poseEstimate.x) / 2)
+
         lastRelocalizeX = drive.localizer.poseEstimate.x
     }
 
