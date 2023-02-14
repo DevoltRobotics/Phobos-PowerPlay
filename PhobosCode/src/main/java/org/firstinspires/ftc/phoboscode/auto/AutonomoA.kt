@@ -42,14 +42,13 @@ abstract class AutonomoA(
             )
         )
 
-        UNSTABLE_addTemporalMarkerOffset(0.0) {
+        UNSTABLE_addTemporalMarkerOffset(0.1) {
             + IntakeArmAndTiltCmd(0.5, 0.43)
         }
 
+        UNSTABLE_addTemporalMarkerOffset(0.2) { + IntakeWheelsReleaseCmd() }
 
-        UNSTABLE_addTemporalMarkerOffset(0.1) { + IntakeWheelsReleaseCmd() }
-
-        lineToConstantHeading(Vector2d(-31.0, -4.0), SampleMecanumDrive.getVelocityConstraint(
+        lineToConstantHeading(Vector2d(-29.0, -4.0), SampleMecanumDrive.getVelocityConstraint(
             DriveConstants.MAX_VEL * 1.08, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH
         ),
             SampleMecanumDrive.getAccelerationConstraint(
@@ -198,7 +197,7 @@ abstract class AutonomoA(
         UNSTABLE_addTemporalMarkerOffset(1.3) {
             + IntakeArmAndTiltCmd(0.53, 0.45) // TODO: score position of intake arm
         }
-        lineToConstantHeading(Vector2d(putOnHighX, -5.75)) // TODO: high pole coordinates
+        lineToConstantHeading(Vector2d(putOnHighX, -5.0)) // TODO: high pole coordinates
 
         UNSTABLE_addTemporalMarkerOffset(0.0005) {
             + IntakeWheelsReleaseCmd()
