@@ -5,25 +5,19 @@ import com.qualcomm.hardware.rev.RevColorSensorV3
 import com.qualcomm.hardware.rev.RevTouchSensor
 
 import com.qualcomm.robotcore.hardware.*
-import org.firstinspires.ftc.phoboscode.hardware.MBUltraSonic
-import org.firstinspires.ftc.phoboscode.hardware.UltraSonicRelocalizer
 import org.firstinspires.ftc.phoboscode.rr.drive.SampleMecanumDrive
 
 class PhobosHardware : SimpleHardware() {
 
     val drive by lazy { SampleMecanumDrive(hardwareMap) }
 
-    val leftUltrasonic by hardware<AnalogInput>("lu")
-    val leftMBUltraSonic by lazy { MBUltraSonic(leftUltrasonic, (13.25 / 0.185)) }
-
-    val rightUltrasonic by hardware<AnalogInput>("ru")
-    val rightMBUltraSonic by lazy { MBUltraSonic(rightUltrasonic, (28.5 / 0.405)) }
-
     val intakeLeftServo by hardware<CRServo>("il")
     val intakeRightServo by hardware<CRServo>("ir")
 
     val intakeArmServo by hardware<Servo>("ia")
     val intakeTiltServo by hardware<Servo>("it")
+
+    val intakeUltrasonic by hardware<AnalogInput>("iu")
 
     val turretMotor by hardware<DcMotorEx>("tr")
 

@@ -19,8 +19,8 @@ abstract class PhobosOpMode : DeltaOpMode() {
         telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
 
         mecanumSub = MecanumSubsystem(hardware.drive)
-        turretSubsystem = TurretSubsystem(hardware.turretMotor, hardware.drive.batteryVoltageSensor)
-        liftSubsystem = LiftSubsystem(hardware.sliderLeftMotor, hardware.sliderRightMotor, hardware.sliderTopLimitSensor, hardware.sliderBottomLimitSensor, hardware.drive.batteryVoltageSensor)
+        turretSubsystem = TurretSubsystem(hardware.turretMotor)
+        liftSubsystem = LiftSubsystem(hardware.sliderLeftMotor, hardware.sliderRightMotor, hardware.sliderTopLimitSensor, hardware.sliderBottomLimitSensor)
         intakeArmSubsystem = IntakeArmSubsystem(hardware.intakeArmServo, hardware.intakeTiltServo)
         intakeWheelsSubsystem = IntakeWheelsSubsystem(hardware.intakeLeftServo, hardware.intakeRightServo)
 

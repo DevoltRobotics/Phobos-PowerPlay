@@ -2,8 +2,10 @@ package org.firstinspires.ftc.phoboscode.auto
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.roadrunner.geometry.Pose2d
-import org.firstinspires.ftc.phoboscode.*
-import org.firstinspires.ftc.phoboscode.hardware.UltraSonicRelocalizer
+import org.firstinspires.ftc.phoboscode.Alliance
+import org.firstinspires.ftc.phoboscode.PhobosOpMode
+import org.firstinspires.ftc.phoboscode.lastKnownAlliance
+import org.firstinspires.ftc.phoboscode.lastKnownPose
 import org.firstinspires.ftc.phoboscode.rr.trajectorysequence.TrajectorySequence
 import org.firstinspires.ftc.phoboscode.vision.ConeSleevePipeline
 import org.firstinspires.ftc.phoboscode.vision.SleevePattern
@@ -13,15 +15,11 @@ import org.openftc.easyopencv.OpenCvCameraFactory
 import org.openftc.easyopencv.OpenCvCameraRotation
 import org.openftc.easyopencv.OpenCvWebcam
 
-abstract class AutonomoBase(val alliance: Alliance, val side: Side, val useVision: Boolean = true) : PhobosOpMode() {
+abstract class AutonomoBase(val alliance: Alliance, val useVision: Boolean = true) : PhobosOpMode() {
 
     val drive get() = hardware.drive
 
-    val ultraSonicRelocalizer by lazy { UltraSonicRelocalizer(hardware.leftMBUltraSonic, hardware.rightMBUltraSonic, side) }
-
     open val startPose = Pose2d()
-
-    private var lastRelocalizeX = 0.0
 
     private var webcam: OpenCvWebcam? = null
     private val pipeline = ConeSleevePipeline()
@@ -57,7 +55,6 @@ abstract class AutonomoBase(val alliance: Alliance, val side: Side, val useVisio
 
     override fun initializeUpdate() {
         telemetry.addData("position", pipeline.lastPattern)
-        telemetry.addData("x relocalization", ultraSonicRelocalizer.xEstimate)
         telemetry.update()
     }
 
@@ -77,7 +74,6 @@ abstract class AutonomoBase(val alliance: Alliance, val side: Side, val useVisio
 
         telemetry.addData("turret target", turretSubsystem.controller.targetPosition)
         telemetry.addData("turret current", turretSubsystem.motor.currentPosition)
-        telemetry.addData("last x relocalization", lastRelocalizeX)
         telemetry.update()
 
         if(!drive.isBusy) {
@@ -85,16 +81,6 @@ abstract class AutonomoBase(val alliance: Alliance, val side: Side, val useVisio
         }
 
         lastKnownAlliance = alliance
-    }
-
-    fun relocalizeXEstimate(offset: Double = 0.0) {
-        val initialX = drive.localizer.poseEstimate.x
-
-        ultraSonicRelocalizer.relocalize(drive.localizer, offset)
-
-        drive.localizer.poseEstimate = drive.localizer.poseEstimate.copy(x = (initialX + drive.localizer.poseEstimate.x) / 2)
-
-        lastRelocalizeX = drive.localizer.poseEstimate.x
     }
 
     abstract fun sequence(sleevePattern: SleevePattern): TrajectorySequence

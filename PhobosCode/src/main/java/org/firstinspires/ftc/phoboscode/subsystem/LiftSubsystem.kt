@@ -12,8 +12,7 @@ class LiftSubsystem(
         val leftMotor: DcMotorEx,
         val rightMotor: DcMotorEx,
         val topLimitSensor: RevColorSensorV3,
-        val bottomLimitSensor: RevTouchSensor,
-        val voltageSensor: VoltageSensor
+        val bottomLimitSensor: RevTouchSensor
 ) : DeltaSubsystem() {
 
     val liftController = PIDFController(Lift.liftPid)
@@ -44,8 +43,6 @@ class LiftSubsystem(
                 pow += Lift.F
             }
 
-            pow *= 12.0 / voltageSensor.voltage
-
             leftMotor.power = pow
             rightMotor.power = pow
         }
@@ -75,7 +72,7 @@ object Lift {
     @JvmField var downwardsPid = PIDCoefficients(0.000000001, 0.0, 0.0)
 
     @JvmField var F = 0.08
-    @JvmField var highPos = 1590
+    @JvmField var highPos = 1520
     @JvmField var midPos = 1100
     @JvmField var lowPos = 780
 }

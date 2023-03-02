@@ -37,10 +37,12 @@ class DeltaSequenceBuilder(private val block: DeltaSequenceBuilder.() -> Unit) {
     inline fun <reified C: DeltaCommand> C.stopOn(noinline condition: C.() -> Boolean): DeltaCommand {
         val command = this
 
-        return deltaSequence {
+        - deltaSequence {
             - waitFor { command.hasRunOnce && condition(command) }
             - DeltaInstantCmd(command::requestEnd)
-        }
+        }.dontBlock()
+
+        return this
     }
 
     internal fun build(): DeltaSequentialCmd {

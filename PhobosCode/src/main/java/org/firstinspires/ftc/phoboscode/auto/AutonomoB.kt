@@ -4,7 +4,6 @@ import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.github.serivesmejia.deltacommander.dsl.deltaSequence
 import org.firstinspires.ftc.phoboscode.Alliance
-import org.firstinspires.ftc.phoboscode.Side
 import org.firstinspires.ftc.phoboscode.command.intake.*
 import org.firstinspires.ftc.phoboscode.command.lift.LiftMoveToPosCmd
 import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveToAngleCmd
@@ -19,7 +18,7 @@ import kotlin.math.roundToInt
 abstract class AutonomoB(
     alliance: Alliance,
     val cycles: Int = 5
-) : AutonomoBase(alliance, Side.RIGHT) {
+) : AutonomoBase(alliance) {
 
     override val startPose = Pose2d(35.0, -58.0, Math.toRadians(90.0))
 
@@ -32,8 +31,8 @@ abstract class AutonomoB(
             // prepare for putting preload cone
             UNSTABLE_addTemporalMarkerOffset(0.5) {
                 + prepareForPuttingCone(
-                    90.0,
-                    Lift.highPos - 70
+                    40.0,
+                    Lift.highPos - 100
                 )
             }
             UNSTABLE_addTemporalMarkerOffset(1.2) {
@@ -101,7 +100,7 @@ abstract class AutonomoB(
                 + TurretMoveToAngleCmd(-90.0)
             }
 
-            var grabX = 56.5 // TODO: Grab coordinates
+            var grabX = 57.0 // TODO: Grab coordinates
             var grabY = -6.1
 
             setReversed(true)
@@ -173,15 +172,15 @@ abstract class AutonomoB(
         }.build()
 
     fun prepareForPuttingCone(turretAngle: Double, liftPos: Int = Lift.highPos) = deltaSequence {
-        - TurretMoveToAngleCmd(turretAngle).dontBlock()
+        -LiftMoveToPosCmd(liftPos.toDouble()).dontBlock()
 
-        - waitForSeconds(0.2)
+        -waitForSeconds(0.1)
 
-        - LiftMoveToPosCmd(liftPos.toDouble()).dontBlock()
+        -TurretMoveToAngleCmd(turretAngle).dontBlock()
     }
 
     private var putOnHighX = 26.8
-    private var elevatorOffset = 5.0
+    private var elevatorOffset = -10.0
 
     fun TrajectorySequenceBuilder.putOnHigh(
         endingTurretAngle: Double,

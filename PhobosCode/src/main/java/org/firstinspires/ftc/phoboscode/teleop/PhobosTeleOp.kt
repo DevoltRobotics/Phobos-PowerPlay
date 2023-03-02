@@ -4,21 +4,21 @@ import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.github.serivesmejia.deltacommander.command.DeltaInstantCmd
 import com.github.serivesmejia.deltacommander.command.DeltaRunCmd
+import com.github.serivesmejia.deltacommander.dsl.deltaSequence
 import com.github.serivesmejia.deltacommander.dsl.deltaSequenceInstant
 import com.github.serivesmejia.deltacommander.endRightAway
 import com.github.serivesmejia.deltaevent.gamepad.button.Button
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.phoboscode.PhobosOpMode
-import org.firstinspires.ftc.phoboscode.Side
 import org.firstinspires.ftc.phoboscode.command.intake.*
 import org.firstinspires.ftc.phoboscode.command.lift.*
 import org.firstinspires.ftc.phoboscode.command.mecanum.FieldCentricMecanumCmd
 import org.firstinspires.ftc.phoboscode.command.turret.TurretConeTrackingCmd
 import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveCmd
 import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveToAngleCmd
-import org.firstinspires.ftc.phoboscode.hardware.UltraSonicRelocalizer
 import org.firstinspires.ftc.phoboscode.lastKnownAlliance
 import org.firstinspires.ftc.phoboscode.lastKnownPose
+import org.firstinspires.ftc.phoboscode.rr.drive.StandardTrackingWheelLocalizer
 import org.firstinspires.ftc.phoboscode.vision.ConeTrackingPipeline
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.FocusControl
@@ -27,18 +27,15 @@ import org.openftc.easyopencv.OpenCvCameraFactory
 import org.openftc.easyopencv.OpenCvCameraRotation
 import kotlin.math.abs
 
-@TeleOp(name = "Nacho Libre", group = "#1")
-open class PhobosTeleOp @JvmOverloads constructor(val drivetrainEnabled: Boolean = true) : PhobosOpMode() {
+@TeleOp(name = "Nacho Libre")
+class PhobosTeleOp : PhobosOpMode() {
 
     val coneTrackingPipeline = ConeTrackingPipeline()
-
-    val ultraSonicRelocalizer by lazy { UltraSonicRelocalizer(hardware.leftMBUltraSonic, hardware.rightMBUltraSonic, Side.LEFT) }
 
     override fun setup() {
         // retract odo
         hardware.odometryRetractServo.position = 0.0
 
-        /*
         // OR...  Do Not Activate the Camera Monitor View
         val webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName::class.java,"Webcam 1"));
 
@@ -57,7 +54,7 @@ open class PhobosTeleOp @JvmOverloads constructor(val drivetrainEnabled: Boolean
             }
 
             override fun onError(errorCode: Int) { }
-        }) */
+        })
 
         hardware.drive.poseEstimate = lastKnownPose.plus(Pose2d(0.0, 0.0, lastKnownAlliance.angleOffset))
 
@@ -66,16 +63,12 @@ open class PhobosTeleOp @JvmOverloads constructor(val drivetrainEnabled: Boolean
 
         /* START A */
 
+        // MECANUM
+        superGamepad1.scheduleOnPress(Button.DPAD_UP, DeltaInstantCmd {
+            hardware.drive.poseEstimate = Pose2d()
+        })
 
-        if(drivetrainEnabled) {
-            // MECANUM
-            superGamepad1.scheduleOnPress(Button.DPAD_UP, DeltaInstantCmd {
-                hardware.drive.poseEstimate = Pose2d()
-                println("reset heading")
-            })
-
-            + FieldCentricMecanumCmd(gamepad1)
-        }
+        + FieldCentricMecanumCmd(gamepad1)
 
         // INTAKE
 
@@ -150,14 +143,14 @@ open class PhobosTeleOp @JvmOverloads constructor(val drivetrainEnabled: Boolean
 
         intakeArmSubsystem.defaultCommand = IntakeArmPositionIncrementCmd { (-gamepad2.right_stick_y).toDouble() * 0.025 }
 
-        superGamepad2.toggleScheduleOn(Button.B,
-                IntakeTiltCmd(0.7).endRightAway(),
-                IntakeZeroTiltCmd().endRightAway()
-        )
+        //superGamepad2.toggleScheduleOn(Button.B,
+        //        IntakeTiltCmd(0.7).endRightAway(),
+        //        IntakeZeroTiltCmd().endRightAway()
+        //)
 
         // TURRET
 
-        turretSubsystem.defaultCommand = TurretMoveCmd { (gamepad2.left_trigger - gamepad2.right_trigger).toDouble() * 0.7 }
+        turretSubsystem.defaultCommand = TurretMoveCmd { (gamepad2.left_trigger - gamepad2.right_trigger).toDouble() * 0.65 }
 
         + DeltaRunCmd {
             if(abs(gamepad2.left_trigger - gamepad2.right_trigger) >= 0.5) {
@@ -165,10 +158,10 @@ open class PhobosTeleOp @JvmOverloads constructor(val drivetrainEnabled: Boolean
             }
         }
 
-        // superGamepad2.toggleScheduleOn(Button.B,
-        //    TurretMoveCmd(0.0),
-        //    TurretConeTrackingCmd(coneTrackingPipeline)
-        //)
+        superGamepad2.toggleScheduleOn(Button.B,
+            TurretMoveCmd(0.0),
+            TurretConeTrackingCmd(coneTrackingPipeline)
+        )
 
         // turret positions
         superGamepad2.scheduleOnPress(Button.DPAD_UP,
@@ -221,19 +214,10 @@ open class PhobosTeleOp @JvmOverloads constructor(val drivetrainEnabled: Boolean
 
             telemetry.addData("arm", hardware.intakeArmServo.position)
             telemetry.addData("tilt", hardware.intakeTiltServo.position)
-
-            telemetry.addData("relocalized left x", ultraSonicRelocalizer.xEstimate)
-            telemetry.addData("left ultrasonic", hardware.leftMBUltraSonic.distance)
-            telemetry.addData("right ultrasonic", hardware.rightMBUltraSonic.distance)
-            telemetry.addData("right ultrasonic voltage", hardware.rightUltrasonic.voltage)
-
-            // ultraSonicRelocalizer.relocalize(hardware.drive.localizer)
+            telemetry.addData("distance", ((5.0 /  5.0 * hardware.intakeUltrasonic.voltage) * 0.125))
 
             telemetry.update()
         }
     }
 
 }
-
-@TeleOp(name = "Behind the Bot", group = "#2")
-class NonDrivetrainTeleOp : PhobosTeleOp(drivetrainEnabled = false)

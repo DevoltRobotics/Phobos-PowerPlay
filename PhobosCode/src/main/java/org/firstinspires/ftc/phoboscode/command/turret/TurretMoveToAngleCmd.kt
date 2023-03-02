@@ -21,13 +21,13 @@ open class TurretMoveToAngleCmd(var angle: Double, val endOnTargetReached: Boole
 
     override fun init() {
         sub.controller.reset()
+        timer.reset()
 
         motionProfile = generateProfile()
         sub.recreateController()
     }
 
     override fun run() {
-
         val t = timer.seconds()
 
         val state = motionProfile[t]
@@ -36,9 +36,7 @@ open class TurretMoveToAngleCmd(var angle: Double, val endOnTargetReached: Boole
         sub.controller.targetVelocity = state.v
         sub.controller.targetAcceleration = state.a
 
-        val voltage = sub.voltageSensor.voltage
-
-        sub.motor.power = (sub.controller.update(sub.motor.currentPosition.toDouble(), sub.motor.velocity) * 0.9) * (12.0 / voltage)
+        sub.motor.power = sub.controller.update(sub.motor.currentPosition.toDouble(), sub.motor.velocity) * 0.85
 
         if(endOnTargetReached && !sub.isOnTarget) {
             deltaScheduler.end(this)
@@ -51,7 +49,7 @@ open class TurretMoveToAngleCmd(var angle: Double, val endOnTargetReached: Boole
 
     private fun generateProfile() = MotionProfileGenerator.generateSimpleMotionProfile(
         MotionState(sub.motor.currentPosition.toDouble(), 0.0, 0.0),
-        MotionState(angle * Turret.ticksPerAngle, 0.0, 0.0),
+        MotionState(angle * Turret.ticksPerAngle, Turret.maxDegreesPerSecond * Turret.ticksPerAngle * sign(angle), Turret.maxDegreesPerSecondPerSecond * Turret.ticksPerAngle * sign(angle)),
         Turret.maxDegreesPerSecond * Turret.ticksPerAngle,
         Turret.maxDegreesPerSecondPerSecond * Turret.ticksPerAngle
     )
