@@ -41,17 +41,17 @@ class TurretSubsystem(val motor: DcMotorEx) : DeltaSubsystem() {
 
 @Config
 object Turret {
-    @JvmField var pid = PIDCoefficients(0.002, 0.0001, 0.0001)
+    @JvmField var pid = PIDCoefficients(0.004, 0.0001, 0.0001)
     @JvmField var trackingPid = PIDCoefficients(0.005, 0.0, 0.0)
 
-    val ticksPerRev = 1120
-    val gearRatio = 119.0 / 32
+    val ticksPerRev = 537.7
+    val gearRatio = 119.0 / 24.0
 
-    @JvmField var kV = 0.0003
+    @JvmField var kV = 0.00027
     @JvmField var kA = 0.00001
-    @JvmField var kStatic = 0.1
+    @JvmField var kStatic = 0.05
 
-    @JvmField var maxDegreesPerSecond = 400.0
+    @JvmField var maxDegreesPerSecond = 360.0
     @JvmField var maxDegreesPerSecondPerSecond = 360.0
 
     val ticksPerAngle = (ticksPerRev * gearRatio) / 360.0

@@ -19,6 +19,8 @@ class IntakeArmSubsystem(
 
     var tiltSaveThreshold = 0.7
 
+    var downTilt = 0.5
+
     private var isTiltedForLimit = false
 
     init {
@@ -32,7 +34,7 @@ class IntakeArmSubsystem(
             tiltServo.position = 0.9
             isTiltedForLimit = true
         } else if(isTiltedForLimit) {
-            tiltServo.position = 0.5
+            tiltServo.position = downTilt
             isTiltedForLimit = false
         }
 

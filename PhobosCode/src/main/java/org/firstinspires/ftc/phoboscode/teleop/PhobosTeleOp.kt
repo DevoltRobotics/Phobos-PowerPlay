@@ -36,6 +36,7 @@ class PhobosTeleOp : PhobosOpMode() {
         // retract odo
         hardware.odometryRetractServo.position = 0.0
 
+        /*
         // OR...  Do Not Activate the Camera Monitor View
         val webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName::class.java,"Webcam 1"));
 
@@ -54,7 +55,7 @@ class PhobosTeleOp : PhobosOpMode() {
             }
 
             override fun onError(errorCode: Int) { }
-        })
+        })*/
 
         hardware.drive.poseEstimate = lastKnownPose.plus(Pose2d(0.0, 0.0, lastKnownAlliance.angleOffset))
 
@@ -143,10 +144,21 @@ class PhobosTeleOp : PhobosOpMode() {
 
         intakeArmSubsystem.defaultCommand = IntakeArmPositionIncrementCmd { (-gamepad2.right_stick_y).toDouble() * 0.025 }
 
-        //superGamepad2.toggleScheduleOn(Button.B,
-        //        IntakeTiltCmd(0.7).endRightAway(),
-        //        IntakeZeroTiltCmd().endRightAway()
-        //)
+        superGamepad2.toggleScheduleOn(Button.B,
+                deltaSequenceInstant {
+                    - IntakeTiltCmd(0.7).endRightAway()
+                    - DeltaRunCmd {
+                        intakeArmSubsystem.downTilt = 0.7
+                    }
+                },deltaSequenceInstant {
+                    - IntakeZeroTiltCmd().endRightAway()
+                    - DeltaRunCmd {
+                        intakeArmSubsystem.downTilt = 0.5
+                    }
+                }
+        )
+
+        intakeArmSubsystem.downTilt = 0.7
 
         // TURRET
 
@@ -157,11 +169,6 @@ class PhobosTeleOp : PhobosOpMode() {
                 turretSubsystem.free()
             }
         }
-
-        superGamepad2.toggleScheduleOn(Button.B,
-            TurretMoveCmd(0.0),
-            TurretConeTrackingCmd(coneTrackingPipeline)
-        )
 
         // turret positions
         superGamepad2.scheduleOnPress(Button.DPAD_UP,
