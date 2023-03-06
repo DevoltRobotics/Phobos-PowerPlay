@@ -146,15 +146,10 @@ class PhobosTeleOp : PhobosOpMode() {
 
         superGamepad2.toggleScheduleOn(Button.B,
                 deltaSequenceInstant {
-                    - IntakeTiltCmd(0.7).endRightAway()
-                    - DeltaRunCmd {
-                        intakeArmSubsystem.downTilt = 0.7
-                    }
-                },deltaSequenceInstant {
-                    - IntakeZeroTiltCmd().endRightAway()
-                    - DeltaRunCmd {
-                        intakeArmSubsystem.downTilt = 0.5
-                    }
+                    - IntakeTiltCmd(0.7, setDownTilt = true).endRightAway()
+                },
+                deltaSequenceInstant {
+                    - IntakeZeroTiltCmd(setDownTilt = true).endRightAway()
                 }
         )
 
