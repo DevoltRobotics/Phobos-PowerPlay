@@ -30,7 +30,7 @@ abstract class AutonomoA(
         // prepare for putting preload cone
         UNSTABLE_addTemporalMarkerOffset(0.3) { + prepareForPuttingCone(-50.0, Lift.highPos - 110) } //TODO: altura elevador primer cono
         UNSTABLE_addTemporalMarkerOffset(1.2) {
-            + TurretMoveToAngleCmd(-75.0)
+            + TurretMoveToAngleCmd(-14.0)
         }
         UNSTABLE_addTemporalMarkerOffset(1.6) {
             + IntakeArmAndTiltCmd(0.6, 0.48)
@@ -42,6 +42,8 @@ abstract class AutonomoA(
             SampleMecanumDrive.getAccelerationConstraint(
                 DriveConstants.MAX_ACCEL * 1.2
             ))
+
+        splineToConstantHeading(Vector2d(-25.5, -6.7), Math.toRadians(0.0))
 
         UNSTABLE_addTemporalMarkerOffset(0.003) { + IntakeWheelsReleaseCmd() }
         waitSeconds(0.26)
@@ -92,16 +94,12 @@ abstract class AutonomoA(
         var grabX = -57.8 // TODO: Grab coordinates
         var grabY = -6.1
 
-        setReversed(true)
-        splineToConstantHeading(Vector2d(-40.0, grabY), Math.toRadians(180.0))
-
         UNSTABLE_addTemporalMarkerOffset(0.2) {
             + IntakeArmAndZeroTiltCmd(0.43)
             + IntakeWheelsAbsorbCmd()
         }
 
         lineToConstantHeading(Vector2d(grabX, grabY))
-        setReversed(false)
 
         waitSeconds(0.7)
 

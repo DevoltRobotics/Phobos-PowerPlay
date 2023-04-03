@@ -19,13 +19,13 @@ fun main() {
             .setColorScheme(ColorSchemeBlueDark())
             .setConstraints(60.0, 60.0, Math.toRadians(180.0), Math.toRadians(180.0), 17.5)
             .followTrajectorySequence { drive ->
-                drive.trajectorySequenceBuilder(Pose2d(35.0, -58.0, Math.toRadians(90.0))).apply {
-                    lineToConstantHeading(Vector2d(35.5, 4.2)) // TODO: Preload cone score position
+                drive.trajectorySequenceBuilder(Pose2d(-35.0, -57.5, Math.toRadians(90.0))).apply {
+                    lineToConstantHeading(Vector2d(-35.5, -13.0)) // TODO: Preload cone score position
+                    splineToConstantHeading(Vector2d(-25.5, -6.7), Math.toRadians(0.0))
+
                     waitSeconds(0.5)
 
-                    setReversed(true)
-                    splineToConstantHeading(Vector2d(45.0, -8.6), Math.toRadians(0.0))
-                    lineToConstantHeading(Vector2d(59.5, -8.6))
+                    lineToConstantHeading(Vector2d(-57.8, -6.1))
                     //splineTo(Vector2d(-50.0, -7.6), Math.toRadians(90.0))
                 }.build()
             }
