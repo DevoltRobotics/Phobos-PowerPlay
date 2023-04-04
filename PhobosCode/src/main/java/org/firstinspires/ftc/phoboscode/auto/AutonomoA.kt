@@ -30,7 +30,7 @@ abstract class AutonomoA(
         // prepare for putting preload cone
         UNSTABLE_addTemporalMarkerOffset(0.3) { + prepareForPuttingCone(-50.0, Lift.highPos - 110) } //TODO: altura elevador primer cono
         UNSTABLE_addTemporalMarkerOffset(1.2) {
-            + TurretMoveToAngleCmd(-14.0)
+            + TurretMoveToAngleCmd(-75.0)
         }
         UNSTABLE_addTemporalMarkerOffset(1.6) {
             + IntakeArmAndTiltCmd(0.6, 0.48)
@@ -43,12 +43,10 @@ abstract class AutonomoA(
                 DriveConstants.MAX_ACCEL * 1.2
             ))
 
-        splineToConstantHeading(Vector2d(-25.5, -6.7), Math.toRadians(0.0))
-
         UNSTABLE_addTemporalMarkerOffset(0.003) { + IntakeWheelsReleaseCmd() }
         waitSeconds(0.26)
 
-        var liftHeight = 485.0 // TODO: altura de los rieles
+        var liftHeight = 450.0 // TODO: altura de los rieles
 
         // just park here when we won`t be doing any cycles
         if(cycles == 0) {
@@ -91,8 +89,11 @@ abstract class AutonomoA(
             + TurretMoveToAngleCmd(95.0)
         }
 
-        var grabX = -57.8 // TODO: Grab coordinates
+        var grabX = -57.5 // TODO: Grab coordinates
         var grabY = -6.1
+
+        setReversed(true)
+        splineToConstantHeading(Vector2d(-40.0, grabY), Math.toRadians(180.0))
 
         UNSTABLE_addTemporalMarkerOffset(0.2) {
             + IntakeArmAndZeroTiltCmd(0.43)
@@ -100,6 +101,7 @@ abstract class AutonomoA(
         }
 
         lineToConstantHeading(Vector2d(grabX, grabY))
+        setReversed(false)
 
         waitSeconds(0.7)
 
@@ -171,7 +173,7 @@ abstract class AutonomoA(
         - TurretMoveToAngleCmd(turretAngle).dontBlock()
     }
 
-    private var putOnHighX = -25.5
+    private var putOnHighX = -25.0
     private var elevatorOffset = 5.0
 
     fun TrajectorySequenceBuilder.putOnHigh(endingTurretAngle: Double, endingLiftPos: Double? = null) {
@@ -182,7 +184,7 @@ abstract class AutonomoA(
 
         UNSTABLE_addTemporalMarkerOffset(0.2) { // TODO: tiempo para que se mueva la torreta
             +prepareForPuttingCone(
-                -14.0 /*11.5*/,
+                -17.0 /*11.5*/,
                 (Lift.highPos + elevatorOffset).roundToInt()
             ) // TODO: Angulo de la torreta para poner
         }

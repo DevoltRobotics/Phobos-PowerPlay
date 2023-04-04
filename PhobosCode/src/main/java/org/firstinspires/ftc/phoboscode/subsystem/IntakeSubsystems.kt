@@ -19,7 +19,7 @@ class IntakeArmSubsystem(
 
     var tiltSaveThreshold = 0.7
 
-    var downTilt = 0.5
+    var downTilt = 0.48
 
     private var isTiltedForLimit = false
 

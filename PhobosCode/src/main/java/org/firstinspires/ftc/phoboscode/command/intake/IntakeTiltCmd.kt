@@ -19,5 +19,5 @@ open class IntakeTiltCmd(val position: Double, val setDownTilt: Boolean = false)
 
 }
 
-class IntakeZeroTiltCmd(setDownTilt: Boolean = false) : IntakeTiltCmd(0.5, setDownTilt)
-class IntakeSaveTiltCmd : IntakeTiltCmd(0.9)
+class IntakeZeroTiltCmd(setDownTilt: Boolean = false) : IntakeTiltCmd(0.48, setDownTilt)
+class IntakeSaveTiltCmd(setDownTilt: Boolean = false) : IntakeTiltCmd(0.9, setDownTilt)

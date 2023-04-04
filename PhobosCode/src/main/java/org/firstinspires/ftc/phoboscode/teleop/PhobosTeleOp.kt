@@ -145,15 +145,9 @@ class PhobosTeleOp : PhobosOpMode() {
         intakeArmSubsystem.defaultCommand = IntakeArmPositionIncrementCmd { (-gamepad2.right_stick_y).toDouble() * 0.025 }
 
         superGamepad2.toggleScheduleOn(Button.B,
-                deltaSequenceInstant {
-                    - IntakeTiltCmd(0.7, setDownTilt = true).endRightAway()
-                },
-                deltaSequenceInstant {
-                    - IntakeZeroTiltCmd(setDownTilt = true).endRightAway()
-                }
+            IntakeTiltCmd(0.7, setDownTilt = true).endRightAway(),
+            IntakeZeroTiltCmd(setDownTilt = true).endRightAway()
         )
-
-        intakeArmSubsystem.downTilt = 0.7
 
         // TURRET
 
