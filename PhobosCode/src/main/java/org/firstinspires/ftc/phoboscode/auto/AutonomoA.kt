@@ -28,25 +28,23 @@ abstract class AutonomoA(
         }
 
         // prepare for putting preload cone
-        UNSTABLE_addTemporalMarkerOffset(0.3) { + prepareForPuttingCone(-50.0, Lift.highPos - 110) } //TODO: altura elevador primer cono
-        UNSTABLE_addTemporalMarkerOffset(1.2) {
-            + TurretMoveToAngleCmd(-75.0)
-        }
-        UNSTABLE_addTemporalMarkerOffset(1.6) {
-            + IntakeArmAndTiltCmd(0.6, 0.48)
+        UNSTABLE_addTemporalMarkerOffset(0.0) { + prepareForPuttingCone(-80.0, Lift.highPos - 110) } //TODO: altura elevador primer cono
+
+        UNSTABLE_addTemporalMarkerOffset(1.7) {
+            + IntakeArmAndTiltCmd(0.5, 0.45)
         }
         lineToConstantHeading(Vector2d(-35.9, 3.6), // TODO: Preload cone score position
             SampleMecanumDrive.getVelocityConstraint(
-                DriveConstants.MAX_VEL * 1.15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH
+                DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH
             ),
             SampleMecanumDrive.getAccelerationConstraint(
-                DriveConstants.MAX_ACCEL * 1.2
+                DriveConstants.MAX_ACCEL
             ))
 
         UNSTABLE_addTemporalMarkerOffset(0.003) { + IntakeWheelsReleaseCmd() }
         waitSeconds(0.26)
 
-        var liftHeight = 450.0 // TODO: altura de los rieles
+        var liftHeight = 410.0 // TODO: altura de los rieles
 
         // just park here when we won`t be doing any cycles
         if(cycles == 0) {
@@ -81,15 +79,18 @@ abstract class AutonomoA(
             return@apply
         }
 
-        UNSTABLE_addTemporalMarkerOffset(0.1) {
+        UNSTABLE_addTemporalMarkerOffset(0.0) {
             +IntakeArmPositionSaveCmd()
+        }
+
+        UNSTABLE_addTemporalMarkerOffset(0.1) {
             +IntakeWheelsStopCmd()
 
-            + LiftMoveToPosCmd(liftHeight + 425) // TODO: first cone grab height
+            + LiftMoveToPosCmd(liftHeight + 350) // TODO: first cone grab height
             + TurretMoveToAngleCmd(95.0)
         }
 
-        var grabX = -57.5 // TODO: Grab coordinates
+        var grabX = -57.0 // TODO: Grab coordinates
         var grabY = -6.1
 
         setReversed(true)
@@ -103,7 +104,7 @@ abstract class AutonomoA(
         lineToConstantHeading(Vector2d(grabX, grabY))
         setReversed(false)
 
-        waitSeconds(0.7)
+        waitSeconds(0.6)
 
         repeat(cycles - 1) {
             liftHeight -= 130
@@ -128,7 +129,7 @@ abstract class AutonomoA(
 
             lineToSplineHeading(Pose2d(grabX, grabY, Math.toRadians(90.0)))
 
-            waitSeconds(0.3)
+            waitSeconds(0.25)
 
             grabY -= 0.02
 
@@ -184,7 +185,7 @@ abstract class AutonomoA(
 
         UNSTABLE_addTemporalMarkerOffset(0.2) { // TODO: tiempo para que se mueva la torreta
             +prepareForPuttingCone(
-                -17.0 /*11.5*/,
+                -19.0 /*11.5*/,
                 (Lift.highPos + elevatorOffset).roundToInt()
             ) // TODO: Angulo de la torreta para poner
         }
@@ -194,22 +195,22 @@ abstract class AutonomoA(
         }
         lineToConstantHeading(Vector2d(putOnHighX, -6.7)) // TODO: high pole coordinates
 
-        UNSTABLE_addTemporalMarkerOffset(0.0005) {
+        UNSTABLE_addTemporalMarkerOffset(0.00008) {
             + IntakeWheelsReleaseCmd()
         }
 
-        UNSTABLE_addTemporalMarkerOffset(0.25) {
+        UNSTABLE_addTemporalMarkerOffset(0.29) {
             + IntakeArmPositionSaveCmd()
+        }
+
+        UNSTABLE_addTemporalMarkerOffset(0.33) {
+            + IntakeWheelsStopCmd()
 
             + LiftMoveToPosCmd(endingLiftPos ?: Lift.lowPos.toDouble())
             + TurretMoveToAngleCmd(endingTurretAngle)
         }
 
-        UNSTABLE_addTemporalMarkerOffset(0.3) {
-            + IntakeWheelsStopCmd()
-        }
-
-        waitSeconds(0.27)
+        waitSeconds(0.32)
 
         putOnHighX += 0.05
         elevatorOffset += 7
