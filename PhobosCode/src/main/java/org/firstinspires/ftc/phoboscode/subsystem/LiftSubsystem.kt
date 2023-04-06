@@ -72,7 +72,7 @@ object Lift {
     @JvmField var downwardsPid = PIDCoefficients(0.000000001, 0.0, 0.0)
 
     @JvmField var F = 0.08
-    @JvmField var highPos = 1400
+    @JvmField var highPos = 1580
     @JvmField var midPos = 1100
     @JvmField var lowPos = 780
 }

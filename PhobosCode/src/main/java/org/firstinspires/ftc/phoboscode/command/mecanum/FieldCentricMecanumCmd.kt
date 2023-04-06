@@ -23,8 +23,8 @@ class FieldCentricMecanumCmd(val gamepad: Gamepad, val applyTurboWithTriggers: B
         val pose = sub.drive.localizer.poseEstimate
 
         val input = Vector2d(
-            (-gamepad.left_stick_y).toDouble() * 0.7 * turbo,
-            (-gamepad.left_stick_x).toDouble() * 0.7 * turbo
+            (-gamepad.left_stick_y).toDouble() * turbo,
+            (-gamepad.left_stick_x).toDouble() * turbo
         ).rotated(-pose.heading)
 
         sub.drive.setWeightedDrivePower(
