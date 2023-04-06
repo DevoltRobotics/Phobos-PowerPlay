@@ -17,7 +17,8 @@ import kotlin.math.roundToInt
 
 abstract class AutonomoB(
     alliance: Alliance,
-    val cycles: Int = 5
+    val cycles: Int = 5,
+    val centerline: Boolean = false
 ) : AutonomoBase(alliance) {
 
     override val startPose = Pose2d(35.0, -57.5, Math.toRadians(90.0))
@@ -28,12 +29,13 @@ abstract class AutonomoB(
         }
 
         // prepare for putting preload cone
-        UNSTABLE_addTemporalMarkerOffset(0.0) { + prepareForPuttingCone(80.0, Lift.highPos - 110) } //TODO: altura elevador primer cono
+        //TODO: altura elevador primer cono
+        UNSTABLE_addTemporalMarkerOffset(0.0) { + prepareForPuttingCone(if(centerline) 80.0 else 13.0, Lift.highPos - 110) }
 
         UNSTABLE_addTemporalMarkerOffset(1.8) {
-            + IntakeArmAndTiltCmd(0.5, 0.45)
+            + IntakeArmAndTiltCmd(0.5, if(centerline) 0.45 else 0.4)
         }
-        lineToConstantHeading(Vector2d(35.9, 3.6), // TODO: Preload cone score position
+        lineToConstantHeading(Vector2d(35.9, if(centerline) 3.6 else -1.0), // TODO: Preload cone score position
             SampleMecanumDrive.getVelocityConstraint(
                 DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH
             ),
@@ -46,39 +48,6 @@ abstract class AutonomoB(
         waitSeconds(0.26)
 
         var liftHeight = 410.0 // TODO: altura de los rieles
-
-        // just park here when we won`t be doing any cycles
-        if(cycles == 0) {
-            UNSTABLE_addTemporalMarkerOffset(1.0) {
-                +IntakeArmPositionSaveCmd()
-                +IntakeWheelsStopCmd()
-
-                +LiftMoveToPosCmd(0.0)
-                +TurretMoveToAngleCmd(0.0)
-            }
-
-            // park
-            when(sleevePattern) {
-                A -> {
-                    lineToSplineHeading(Pose2d(35.0, -33.0, Math.toRadians(0.0)))
-
-                    setReversed(true)
-                    splineToConstantHeading(Vector2d(58.0, -35.0), Math.toRadians(180.0))
-                    setReversed(false)
-                }
-                B -> {
-                    lineToLinearHeading(Pose2d(35.0, -35.0, Math.toRadians(0.0)))
-                }
-                C -> {
-                    lineToSplineHeading(Pose2d(35.0, -33.0, Math.toRadians(0.0)))
-                    lineToConstantHeading(Vector2d(-11.5, -35.0))
-
-                    turn(Math.toRadians(-90.0))
-                }
-            }
-
-            return@apply
-        }
 
         UNSTABLE_addTemporalMarkerOffset(0.0) {
             +IntakeArmPositionSaveCmd()
@@ -94,16 +63,18 @@ abstract class AutonomoB(
         var grabX = 57.3 // TODO: Grab coordinates
         var grabY = -6.1
 
-        setReversed(true)
-        splineToConstantHeading(
-            Vector2d(40.0, grabY), Math.toRadians(0.0),
-            SampleMecanumDrive.getVelocityConstraint(
-                DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH
-            ),
-            SampleMecanumDrive.getAccelerationConstraint(
-                DriveConstants.MAX_ACCEL * 0.4
+        if(centerline) {
+            setReversed(true)
+            splineToConstantHeading(
+                Vector2d(40.0, grabY), Math.toRadians(0.0),
+                SampleMecanumDrive.getVelocityConstraint(
+                    DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH
+                ),
+                SampleMecanumDrive.getAccelerationConstraint(
+                    DriveConstants.MAX_ACCEL * 0.4
+                )
             )
-        )
+        }
 
         UNSTABLE_addTemporalMarkerOffset(0.0) {
             + IntakeArmAndZeroTiltCmd(0.45)

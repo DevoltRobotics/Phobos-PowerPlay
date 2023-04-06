@@ -11,7 +11,7 @@ import org.firstinspires.ftc.phoboscode.command.intake.IntakeTiltCmd
 import org.firstinspires.ftc.phoboscode.command.lift.LiftMoveToPosCmd
 import org.firstinspires.ftc.phoboscode.command.turret.TurretMoveToAngleCmd
 
-@Autonomous(name = "Jueces", group = "#B")
+@Autonomous(name = "Jueces", group = "#Z")
 class Jueces : PhobosOpMode() {
 
     override fun setup() {
