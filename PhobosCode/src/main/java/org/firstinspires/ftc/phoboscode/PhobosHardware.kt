@@ -17,6 +17,8 @@ class PhobosHardware : SimpleHardware() {
     val intakeArmServo by hardware<Servo>("ia")
     val intakeTiltServo by hardware<Servo>("it")
 
+    val intakePoleServo by hardware<Servo>("ip")
+
     val intakeUltrasonic by hardware<AnalogInput>("iu")
 
     val turretMotor by hardware<DcMotorEx>("tr")
@@ -30,13 +32,21 @@ class PhobosHardware : SimpleHardware() {
     val odometryRetractServo by hardware<Servo>("or")
 
     override fun init() {
-        // squeezing out extra degrees from gobilda servos
-        (intakeArmServo as ServoImplEx).pwmRange = PwmControl.PwmRange(500.0, 2500.0)
+        intakeArmServo.gobilda()
+        intakePoleServo.gobilda()
 
-        (intakeLeftServo as CRServoImplEx).pwmRange = PwmControl.PwmRange(500.0, 2500.0)
-        (intakeRightServo as CRServoImplEx).pwmRange = PwmControl.PwmRange(500.0, 2500.0)
+        intakeLeftServo.gobilda()
+        intakeRightServo.gobilda()
 
-        (odometryRetractServo as ServoImplEx).pwmRange = PwmControl.PwmRange(500.0, 2500.0)
+        odometryRetractServo.gobilda()
     }
+
+    // squeezing out extra degrees from gobilda servos
+    fun PwmControl.gobilda() {
+        pwmRange = PwmControl.PwmRange(500.0, 2500.0)
+    }
+
+    fun Servo.gobilda() = (this as PwmControl).gobilda()
+    fun CRServo.gobilda() = (this as PwmControl).gobilda()
 
 }

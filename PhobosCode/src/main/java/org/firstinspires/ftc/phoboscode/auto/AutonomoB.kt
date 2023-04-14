@@ -30,12 +30,12 @@ abstract class AutonomoB(
 
         // prepare for putting preload cone
         //TODO: altura elevador primer cono
-        UNSTABLE_addTemporalMarkerOffset(0.0) { + prepareForPuttingCone(if(centerline) 80.0 else 13.0, Lift.highPos - 110) }
+        UNSTABLE_addTemporalMarkerOffset(0.0) { + prepareForPuttingCone(if(centerline) 80.0 else 46.0, Lift.highPos - 110) }
 
-        UNSTABLE_addTemporalMarkerOffset(1.8) {
-            + IntakeArmAndTiltCmd(0.5, if(centerline) 0.45 else 0.4)
+        UNSTABLE_addTemporalMarkerOffset(if(centerline) 1.8 else 1.4) {
+            + IntakeArmAndTiltCmd(if(centerline) 0.52 else 0.49, if(centerline) 0.45 else 0.4)
         }
-        lineToConstantHeading(Vector2d(35.9, if(centerline) 3.6 else -1.0), // TODO: Preload cone score position
+        lineToConstantHeading(Vector2d(if(centerline) 35.9 else 32.5, if(centerline) 3.6 else -2.5), // TODO: Preload cone score position
             SampleMecanumDrive.getVelocityConstraint(
                 DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH
             ),
@@ -44,7 +44,7 @@ abstract class AutonomoB(
             )
         )
 
-        UNSTABLE_addTemporalMarkerOffset(0.003) { + IntakeWheelsReleaseCmd() }
+        UNSTABLE_addTemporalMarkerOffset(0.001) { + IntakeWheelsReleaseCmd() }
         waitSeconds(0.26)
 
         var liftHeight = 410.0 // TODO: altura de los rieles
@@ -57,10 +57,10 @@ abstract class AutonomoB(
             +IntakeWheelsStopCmd()
 
             + LiftMoveToPosCmd(liftHeight + 400) // TODO: first cone grab height
-            + TurretMoveToAngleCmd(-95.0)
+            + TurretMoveToAngleCmd(-90.0)
         }
 
-        var grabX = 57.3 // TODO: Grab coordinates
+        var grabX = 57.65 // TODO: Grab coordinates
         var grabY = -6.1
 
         if(centerline) {
@@ -76,12 +76,12 @@ abstract class AutonomoB(
             )
         }
 
-        UNSTABLE_addTemporalMarkerOffset(0.0) {
+        UNSTABLE_addTemporalMarkerOffset(if(centerline) 0.0 else 1.1) {
             + IntakeArmAndZeroTiltCmd(0.45)
             + IntakeWheelsAbsorbCmd()
         }
 
-        UNSTABLE_addTemporalMarkerOffset(2.0) {
+        UNSTABLE_addTemporalMarkerOffset(1.8) {
             + IntakeWheelsHoldCmd()
         }
 
@@ -100,7 +100,7 @@ abstract class AutonomoB(
         repeat(cycles - 1) {
             liftHeight -= 130
 
-            putOnHigh(-95.0, liftHeight)
+            putOnHigh(-90.0, liftHeight)
 
             UNSTABLE_addTemporalMarkerOffset(0.8) {
                 + IntakeWheelsAbsorbCmd()
@@ -123,12 +123,6 @@ abstract class AutonomoB(
             waitSeconds(0.1)
 
             grabY -= 0.02
-
-            grabX -= if(cycles == 5) {
-                0.3
-            } else {
-                0.08
-            }
         }
 
         putOnHigh(endingLiftPos = 0.0, endingTurretAngle = 0.0)

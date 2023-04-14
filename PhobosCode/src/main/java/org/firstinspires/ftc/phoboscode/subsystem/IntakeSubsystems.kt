@@ -24,7 +24,7 @@ class IntakeArmSubsystem(
     private var isTiltedForLimit = false
 
     init {
-        armServo.direction = Servo.Direction.REVERSE
+        armServo.direction = Servo.Direction.FORWARD
 
         defaultCommand = IntakeArmAndTiltZeroCmd()
     }
@@ -38,7 +38,7 @@ class IntakeArmSubsystem(
             isTiltedForLimit = false
         }
 
-        //armServo.position = Range.clip(armServo.position, 0.0, 0.8)
+        armServo.position = Range.clip(armServo.position, 0.0, 0.9)
     }
 
     fun reset() {
