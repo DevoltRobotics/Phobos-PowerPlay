@@ -129,6 +129,12 @@ abstract class AutonomoB(
 
         when(sleevePattern) {
             A -> {
+                lineToLinearHeading(Pose2d(11.0, -7.7, Math.toRadians(90.0)))
+            }
+            B -> {
+                lineToLinearHeading(Pose2d(34.5, -7.3, Math.toRadians(90.0)))
+            }
+            C -> {
                 lineToLinearHeading(Pose2d(60.0, -7.3, Math.toRadians(90.0)),
                     SampleMecanumDrive.getVelocityConstraint(
                         DriveConstants.MAX_VEL * 2.0, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH
@@ -137,12 +143,6 @@ abstract class AutonomoB(
                         DriveConstants.MAX_ACCEL * 2.0
                     )
                 )
-            }
-            B -> {
-                lineToLinearHeading(Pose2d(34.5, -7.3, Math.toRadians(90.0)))
-            }
-            C -> {
-                lineToLinearHeading(Pose2d(11.0, -7.7, Math.toRadians(90.0)))
             }
         }
 
