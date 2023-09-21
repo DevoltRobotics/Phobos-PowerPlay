@@ -17,14 +17,14 @@ class IntakeArmSubsystem(
         val tiltServo: Servo
 ) : DeltaSubsystem() {
 
-    var tiltSaveThreshold = 0.7
+    var tiltSaveThreshold = 0.65
 
     var downTilt = 0.48
 
     private var isTiltedForLimit = false
 
     init {
-        armServo.direction = Servo.Direction.FORWARD
+        armServo.direction = Servo.Direction.REVERSE
 
         defaultCommand = IntakeArmAndTiltZeroCmd()
     }

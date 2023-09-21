@@ -134,7 +134,7 @@ class PhobosTeleOp : PhobosOpMode() {
             deltaSequenceInstant {
                 - LiftMoveDownCmd().dontBlock()
                 - TurretMoveToAngleCmd(0.0).dontBlock()
-                - IntakeZeroTiltCmd().endRightAway()
+                - IntakeZeroTiltCmd(setDownTilt = true).endRightAway()
                 - waitForSeconds(0.5)
                 - IntakeArmPositionMiddleCmd().endRightAway()
             }
